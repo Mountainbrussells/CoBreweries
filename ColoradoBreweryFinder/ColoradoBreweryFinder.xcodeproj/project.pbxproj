@@ -16,6 +16,7 @@
 		C9FBC3CE1BFE80E00055E01B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9FBC3CC1BFE80E00055E01B /* LaunchScreen.storyboard */; };
 		C9FBC3D91BFE80E00055E01B /* ColoradoBreweryFinderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3D81BFE80E00055E01B /* ColoradoBreweryFinderTests.m */; };
 		C9FBC3E41BFE80E00055E01B /* ColoradoBreweryFinderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3E31BFE80E00055E01B /* ColoradoBreweryFinderUITests.m */; };
+		C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		C9FBC3DF1BFE80E00055E01B /* ColoradoBreweryFinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColoradoBreweryFinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBC3E31BFE80E00055E01B /* ColoradoBreweryFinderUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColoradoBreweryFinderUITests.m; sourceTree = "<group>"; };
 		C9FBC3E51BFE80E00055E01B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9FBC3F11BFF78430055E01B /* BRPersistenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRPersistenceController.h; sourceTree = "<group>"; };
+		C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRPersistenceController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +86,8 @@
 		C9FBC3AF1BFE80E00055E01B = {
 			isa = PBXGroup;
 			children = (
+				C9FBC3F11BFF78430055E01B /* BRPersistenceController.h */,
+				C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */,
 				C9FBC3BA1BFE80E00055E01B /* ColoradoBreweryFinder */,
 				C9FBC3D71BFE80E00055E01B /* ColoradoBreweryFinderTests */,
 				C9FBC3E21BFE80E00055E01B /* ColoradoBreweryFinderUITests */,
@@ -274,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */,
+				C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */,
 				C9FBC3C91BFE80E00055E01B /* ColoradoBreweryFinder.xcdatamodeld in Sources */,
 				C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */,
 				C9FBC3BD1BFE80E00055E01B /* main.m in Sources */,
