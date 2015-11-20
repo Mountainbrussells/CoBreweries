@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C9FBC3F41BFF9AE70055E01B /* Mogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C9FBC3F71BFF9AE70055E01B /* Build configuration list for PBXAggregateTarget "Mogenerator" */;
+			buildPhases = (
+				C9FBC3F81BFF9AF70055E01B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Mogenerator;
+			productName = Mogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		C9FBC3BD1BFE80E00055E01B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BC1BFE80E00055E01B /* main.m */; };
 		C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */; };
@@ -224,6 +238,9 @@
 						CreatedOnToolsVersion = 7.1.1;
 						TestTargetID = C9FBC3B71BFE80E00055E01B;
 					};
+					C9FBC3F41BFF9AE70055E01B = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
 				};
 			};
 			buildConfigurationList = C9FBC3B31BFE80E00055E01B /* Build configuration list for PBXProject "ColoradoBreweryFinder" */;
@@ -242,6 +259,7 @@
 				C9FBC3B71BFE80E00055E01B /* ColoradoBreweryFinder */,
 				C9FBC3D31BFE80E00055E01B /* ColoradoBreweryFinderTests */,
 				C9FBC3DE1BFE80E00055E01B /* ColoradoBreweryFinderUITests */,
+				C9FBC3F41BFF9AE70055E01B /* Mogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -272,6 +290,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C9FBC3F81BFF9AF70055E01B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mogenerator -m ColoradoBreweryFinder/ColoradoBreweryFinder.xcdatamodeld -O ColoradBreweryFinder/Model -- template-var arc=true\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9FBC3B41BFE80E00055E01B /* Sources */ = {
@@ -489,6 +523,20 @@
 			};
 			name = Release;
 		};
+		C9FBC3F51BFF9AE70055E01B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C9FBC3F61BFF9AE70055E01B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -508,6 +556,7 @@
 				C9FBC3EA1BFE80E00055E01B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9FBC3EB1BFE80E00055E01B /* Build configuration list for PBXNativeTarget "ColoradoBreweryFinderTests" */ = {
 			isa = XCConfigurationList;
@@ -516,12 +565,22 @@
 				C9FBC3ED1BFE80E00055E01B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C9FBC3EE1BFE80E00055E01B /* Build configuration list for PBXNativeTarget "ColoradoBreweryFinderUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C9FBC3EF1BFE80E00055E01B /* Debug */,
 				C9FBC3F01BFE80E00055E01B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9FBC3F71BFF9AE70055E01B /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9FBC3F51BFF9AE70055E01B /* Debug */,
+				C9FBC3F61BFF9AE70055E01B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
