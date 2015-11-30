@@ -31,6 +31,17 @@
 		C9FBC3D91BFE80E00055E01B /* ColoradoBreweryFinderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3D81BFE80E00055E01B /* ColoradoBreweryFinderTests.m */; };
 		C9FBC3E41BFE80E00055E01B /* ColoradoBreweryFinderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3E31BFE80E00055E01B /* ColoradoBreweryFinderUITests.m */; };
 		C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */; };
+		C9FBC4301BFFD46B0055E01B /* CBFBeer.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC41C1BFFD46B0055E01B /* CBFBeer.m */; };
+		C9FBC4311BFFD46B0055E01B /* CBFBeerRating.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC41E1BFFD46B0055E01B /* CBFBeerRating.m */; };
+		C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC4201BFFD46B0055E01B /* CBFBrewery.m */; };
+		C9FBC4331BFFD46B0055E01B /* CBFBreweryRating.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC4221BFFD46B0055E01B /* CBFBreweryRating.m */; };
+		C9FBC4341BFFD46B0055E01B /* CBFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC4241BFFD46B0055E01B /* CBFUser.m */; };
+		C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC4271BFFD46B0055E01B /* _CBFBeer.m */; };
+		C9FBC4361BFFD46B0055E01B /* _CBFBeerRating.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC4291BFFD46B0055E01B /* _CBFBeerRating.m */; };
+		C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC42B1BFFD46B0055E01B /* _CBFBrewery.m */; };
+		C9FBC4381BFFD46B0055E01B /* _CBFBreweryRating.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC42D1BFFD46B0055E01B /* _CBFBreweryRating.m */; };
+		C9FBC4391BFFD46B0055E01B /* _CBFUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC42F1BFFD46B0055E01B /* _CBFUser.m */; };
+		C9FBC43B1C0384F70055E01B /* CBFBeerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC43A1C0384F70055E01B /* CBFBeerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +58,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C9FBC3B71BFE80E00055E01B;
 			remoteInfo = ColoradoBreweryFinder;
+		};
+		C9FBC4181BFFD1B30055E01B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9FBC3B01BFE80E00055E01B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9FBC3F41BFF9AE70055E01B;
+			remoteInfo = Mogenerator;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,6 +88,27 @@
 		C9FBC3E51BFE80E00055E01B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9FBC3F11BFF78430055E01B /* BRPersistenceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRPersistenceController.h; sourceTree = "<group>"; };
 		C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRPersistenceController.m; sourceTree = "<group>"; };
+		C9FBC41B1BFFD46B0055E01B /* CBFBeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeer.h; sourceTree = "<group>"; };
+		C9FBC41C1BFFD46B0055E01B /* CBFBeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeer.m; sourceTree = "<group>"; };
+		C9FBC41D1BFFD46B0055E01B /* CBFBeerRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeerRating.h; sourceTree = "<group>"; };
+		C9FBC41E1BFFD46B0055E01B /* CBFBeerRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeerRating.m; sourceTree = "<group>"; };
+		C9FBC41F1BFFD46B0055E01B /* CBFBrewery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBrewery.h; sourceTree = "<group>"; };
+		C9FBC4201BFFD46B0055E01B /* CBFBrewery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBrewery.m; sourceTree = "<group>"; };
+		C9FBC4211BFFD46B0055E01B /* CBFBreweryRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryRating.h; sourceTree = "<group>"; };
+		C9FBC4221BFFD46B0055E01B /* CBFBreweryRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryRating.m; sourceTree = "<group>"; };
+		C9FBC4231BFFD46B0055E01B /* CBFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFUser.h; sourceTree = "<group>"; };
+		C9FBC4241BFFD46B0055E01B /* CBFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFUser.m; sourceTree = "<group>"; };
+		C9FBC4261BFFD46B0055E01B /* _CBFBeer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CBFBeer.h; sourceTree = "<group>"; };
+		C9FBC4271BFFD46B0055E01B /* _CBFBeer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CBFBeer.m; sourceTree = "<group>"; };
+		C9FBC4281BFFD46B0055E01B /* _CBFBeerRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CBFBeerRating.h; sourceTree = "<group>"; };
+		C9FBC4291BFFD46B0055E01B /* _CBFBeerRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CBFBeerRating.m; sourceTree = "<group>"; };
+		C9FBC42A1BFFD46B0055E01B /* _CBFBrewery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CBFBrewery.h; sourceTree = "<group>"; };
+		C9FBC42B1BFFD46B0055E01B /* _CBFBrewery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CBFBrewery.m; sourceTree = "<group>"; };
+		C9FBC42C1BFFD46B0055E01B /* _CBFBreweryRating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CBFBreweryRating.h; sourceTree = "<group>"; };
+		C9FBC42D1BFFD46B0055E01B /* _CBFBreweryRating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CBFBreweryRating.m; sourceTree = "<group>"; };
+		C9FBC42E1BFFD46B0055E01B /* _CBFUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CBFUser.h; sourceTree = "<group>"; };
+		C9FBC42F1BFFD46B0055E01B /* _CBFUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CBFUser.m; sourceTree = "<group>"; };
+		C9FBC43A1C0384F70055E01B /* CBFBeerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +161,7 @@
 		C9FBC3BA1BFE80E00055E01B /* ColoradoBreweryFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C9FBC3F91BFFD12A0055E01B /* Model */,
 				C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */,
 				C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */,
 				C9FBC3C11BFE80E00055E01B /* ViewController.h */,
@@ -149,6 +189,7 @@
 			children = (
 				C9FBC3D81BFE80E00055E01B /* ColoradoBreweryFinderTests.m */,
 				C9FBC3DA1BFE80E00055E01B /* Info.plist */,
+				C9FBC43A1C0384F70055E01B /* CBFBeerTests.m */,
 			);
 			path = ColoradoBreweryFinderTests;
 			sourceTree = "<group>";
@@ -160,6 +201,49 @@
 				C9FBC3E51BFE80E00055E01B /* Info.plist */,
 			);
 			path = ColoradoBreweryFinderUITests;
+			sourceTree = "<group>";
+		};
+		C9FBC3F91BFFD12A0055E01B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C9FBC41A1BFFD46B0055E01B /* Human */,
+				C9FBC4251BFFD46B0055E01B /* Machine */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C9FBC41A1BFFD46B0055E01B /* Human */ = {
+			isa = PBXGroup;
+			children = (
+				C9FBC41B1BFFD46B0055E01B /* CBFBeer.h */,
+				C9FBC41C1BFFD46B0055E01B /* CBFBeer.m */,
+				C9FBC41D1BFFD46B0055E01B /* CBFBeerRating.h */,
+				C9FBC41E1BFFD46B0055E01B /* CBFBeerRating.m */,
+				C9FBC41F1BFFD46B0055E01B /* CBFBrewery.h */,
+				C9FBC4201BFFD46B0055E01B /* CBFBrewery.m */,
+				C9FBC4211BFFD46B0055E01B /* CBFBreweryRating.h */,
+				C9FBC4221BFFD46B0055E01B /* CBFBreweryRating.m */,
+				C9FBC4231BFFD46B0055E01B /* CBFUser.h */,
+				C9FBC4241BFFD46B0055E01B /* CBFUser.m */,
+			);
+			path = Human;
+			sourceTree = "<group>";
+		};
+		C9FBC4251BFFD46B0055E01B /* Machine */ = {
+			isa = PBXGroup;
+			children = (
+				C9FBC4261BFFD46B0055E01B /* _CBFBeer.h */,
+				C9FBC4271BFFD46B0055E01B /* _CBFBeer.m */,
+				C9FBC4281BFFD46B0055E01B /* _CBFBeerRating.h */,
+				C9FBC4291BFFD46B0055E01B /* _CBFBeerRating.m */,
+				C9FBC42A1BFFD46B0055E01B /* _CBFBrewery.h */,
+				C9FBC42B1BFFD46B0055E01B /* _CBFBrewery.m */,
+				C9FBC42C1BFFD46B0055E01B /* _CBFBreweryRating.h */,
+				C9FBC42D1BFFD46B0055E01B /* _CBFBreweryRating.m */,
+				C9FBC42E1BFFD46B0055E01B /* _CBFUser.h */,
+				C9FBC42F1BFFD46B0055E01B /* _CBFUser.m */,
+			);
+			path = Machine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +260,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9FBC4191BFFD1B30055E01B /* PBXTargetDependency */,
 			);
 			name = ColoradoBreweryFinder;
 			productName = ColoradoBreweryFinder;
@@ -303,7 +388,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mogenerator -m ColoradoBreweryFinder/ColoradoBreweryFinder.xcdatamodeld -O ColoradBreweryFinder/Model -- template-var arc=true\n";
+			shellScript = "cd ColoradoBreweryFinder\nmogenerator -m ./ColoradoBreweryFinder.xcdatamodeld -O ./Model --template-var arc=true -M Model/Machine/ -H Model/Human/\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -312,10 +397,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9FBC4311BFFD46B0055E01B /* CBFBeerRating.m in Sources */,
+				C9FBC4331BFFD46B0055E01B /* CBFBreweryRating.m in Sources */,
+				C9FBC4341BFFD46B0055E01B /* CBFUser.m in Sources */,
 				C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */,
+				C9FBC4361BFFD46B0055E01B /* _CBFBeerRating.m in Sources */,
+				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
+				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,
+				C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */,
 				C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */,
+				C9FBC4381BFFD46B0055E01B /* _CBFBreweryRating.m in Sources */,
 				C9FBC3C91BFE80E00055E01B /* ColoradoBreweryFinder.xcdatamodeld in Sources */,
+				C9FBC4301BFFD46B0055E01B /* CBFBeer.m in Sources */,
 				C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */,
+				C9FBC4391BFFD46B0055E01B /* _CBFUser.m in Sources */,
 				C9FBC3BD1BFE80E00055E01B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9FBC3D91BFE80E00055E01B /* ColoradoBreweryFinderTests.m in Sources */,
+				C9FBC43B1C0384F70055E01B /* CBFBeerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +444,11 @@
 			isa = PBXTargetDependency;
 			target = C9FBC3B71BFE80E00055E01B /* ColoradoBreweryFinder */;
 			targetProxy = C9FBC3E01BFE80E00055E01B /* PBXContainerItemProxy */;
+		};
+		C9FBC4191BFFD1B30055E01B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C9FBC3F41BFF9AE70055E01B /* Mogenerator */;
+			targetProxy = C9FBC4181BFFD1B30055E01B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

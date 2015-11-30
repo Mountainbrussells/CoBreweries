@@ -1,7 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
-    <entity name="Entity" syncable="YES"/>
+    <entity name="Beer" representedClassName="CBFBeer" syncable="YES">
+        <attribute name="averageRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="createdBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="brewery" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brewery" inverseName="beers" inverseEntity="Brewery" syncable="YES"/>
+        <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BeerRating" inverseName="beer" inverseEntity="BeerRating" syncable="YES"/>
+    </entity>
+    <entity name="BeerRating" representedClassName="CBFBeerRating" syncable="YES">
+        <attribute name="createdBy" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="review" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="beer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Beer" inverseName="ratings" inverseEntity="Beer" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="beerRatings" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="Brewery" representedClassName="CBFBrewery" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="averageRating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="lattitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="logo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="websiteURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="beers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Beer" inverseName="brewery" inverseEntity="Beer" syncable="YES"/>
+        <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BreweryRating" inverseName="brewery" inverseEntity="BreweryRating" syncable="YES"/>
+    </entity>
+    <entity name="BreweryRating" representedClassName="CBFBreweryRating" syncable="YES">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="brewery" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Brewery" inverseName="ratings" inverseEntity="Brewery" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="breweryRatings" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName="CBFUser" syncable="YES">
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="beerRatings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BeerRating" inverseName="user" inverseEntity="BeerRating" syncable="YES"/>
+        <relationship name="breweryRatings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BreweryRating" inverseName="user" inverseEntity="BreweryRating" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Entity" positionX="-63" positionY="-18" width="128" height="45"/>
+        <element name="Brewery" positionX="-441" positionY="54" width="128" height="223"/>
+        <element name="BreweryRating" positionX="-243" positionY="-96" width="128" height="118"/>
+        <element name="User" positionX="-2" positionY="-207" width="128" height="163"/>
+        <element name="Beer" positionX="-189" positionY="111" width="128" height="148"/>
+        <element name="BeerRating" positionX="9" positionY="162" width="128" height="148"/>
     </elements>
 </model>

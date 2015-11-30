@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "BRPersistenceController.h"
+#import "ViewController.h"
 
 
 @interface AppDelegate ()
@@ -25,7 +26,12 @@
     [self setPersistenceController:[[BRPersistenceController alloc] initWithCallBack:^{
         [self completeUserInterface];
     }]];
+    
+    ViewController *controller = (ViewController *)self.window.rootViewController;
+    controller.persistenceController = self.persistenceController;
+    
     return YES;
+    
 }
 
 - (void)completeUserInterface

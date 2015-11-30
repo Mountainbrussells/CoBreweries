@@ -39,7 +39,7 @@
     
     NSURL *modelURL= [[NSBundle mainBundle] URLForResource:@"ColoradoBreweryFinder" withExtension:@"momd"];
     NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    NSAssert2(mom, @"%@:%@ No madel to generate store from", [self class], NSStringFromSelector(_cmd));
+    NSAssert2(mom, @"%@:%@ No model to generate store from", [self class], NSStringFromSelector(_cmd));
     
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
     NSAssert(coordinator, @"Failed to initialize coordinator");
