@@ -5,7 +5,6 @@
 
 const struct CBFBeerAttributes CBFBeerAttributes = {
 	.averageRating = @"averageRating",
-	.createdBy = @"createdBy",
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
 	.name = @"name",
@@ -14,6 +13,7 @@ const struct CBFBeerAttributes CBFBeerAttributes = {
 const struct CBFBeerRelationships CBFBeerRelationships = {
 	.brewery = @"brewery",
 	.ratings = @"ratings",
+	.user = @"user",
 };
 
 @implementation CBFBeerID
@@ -71,8 +71,6 @@ const struct CBFBeerRelationships CBFBeerRelationships = {
 	[self setPrimitiveAverageRating:[NSNumber numberWithFloat:value_]];
 }
 
-@dynamic createdBy;
-
 @dynamic dateCreated;
 
 @dynamic dateUpdated;
@@ -91,6 +89,8 @@ const struct CBFBeerRelationships CBFBeerRelationships = {
 	[self didAccessValueForKey:@"ratings"];
 	return result;
 }
+
+@dynamic user;
 
 @end
 

@@ -5,7 +5,6 @@
 
 extern const struct CBFBeerAttributes {
 	__unsafe_unretained NSString *averageRating;
-	__unsafe_unretained NSString *createdBy;
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *name;
@@ -14,10 +13,12 @@ extern const struct CBFBeerAttributes {
 extern const struct CBFBeerRelationships {
 	__unsafe_unretained NSString *brewery;
 	__unsafe_unretained NSString *ratings;
+	__unsafe_unretained NSString *user;
 } CBFBeerRelationships;
 
 @class CBFBrewery;
 @class CBFBeerRating;
+@class CBFUser;
 
 @interface CBFBeerID : NSManagedObjectID {}
 @end
@@ -35,10 +36,6 @@ extern const struct CBFBeerRelationships {
 - (void)setAverageRatingValue:(float)value_;
 
 //- (BOOL)validateAverageRating:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* createdBy;
-
-//- (BOOL)validateCreatedBy:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSDate* dateCreated;
 
@@ -60,6 +57,10 @@ extern const struct CBFBeerRelationships {
 
 - (NSMutableSet*)ratingsSet;
 
+@property (nonatomic, strong) CBFUser *user;
+
+//- (BOOL)validateUser:(id*)value_ error:(NSError**)error_;
+
 @end
 
 @interface _CBFBeer (RatingsCoreDataGeneratedAccessors)
@@ -78,9 +79,6 @@ extern const struct CBFBeerRelationships {
 - (float)primitiveAverageRatingValue;
 - (void)setPrimitiveAverageRatingValue:(float)value_;
 
-- (NSString*)primitiveCreatedBy;
-- (void)setPrimitiveCreatedBy:(NSString*)value;
-
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;
 
@@ -95,5 +93,8 @@ extern const struct CBFBeerRelationships {
 
 - (NSMutableSet*)primitiveRatings;
 - (void)setPrimitiveRatings:(NSMutableSet*)value;
+
+- (CBFUser*)primitiveUser;
+- (void)setPrimitiveUser:(CBFUser*)value;
 
 @end

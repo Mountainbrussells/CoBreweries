@@ -8,7 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import "CBFBeer.h"
-#import "BRPersistenceController.h"
+#import "CBFUser.h"
+#import "CBFBeerRating.h"
 
 @interface CBFBeerTests : XCTestCase
 
@@ -32,7 +33,33 @@
     self.moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     self.moc.persistentStoreCoordinator = psc;
     
+    NSManagedObjectContext *moc = self.moc;
     
+    CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
+    user.userName = @"Smith123";
+    
+    
+    self.beer = [CBFBeer insertInManagedObjectContext:moc createdByUser:user];
+    
+    CBFBeerRating *rating1 = [CBFBeerRating insertInManagedObjectContext:moc];
+    rating1.rating = [NSNumber numberWithInteger:4];
+    rating1.beer = self.beer;
+    
+    
+    CBFBeerRating *rating2 = [CBFBeerRating insertInManagedObjectContext:moc];
+    rating2.rating = [NSNumber numberWithInteger:1];
+    rating2.beer = self.beer;
+    
+    CBFBeerRating *rating3 = [CBFBeerRating insertInManagedObjectContext:moc];
+    rating3.rating = [NSNumber numberWithInteger:4];
+    rating3.beer = self.beer;
+    
+    CBFBeerRating *rating4 = [CBFBeerRating insertInManagedObjectContext:moc];
+    rating4.rating = [NSNumber numberWithInteger:2];
+    rating4.beer = self.beer;
+    
+    NSError *error;
+    [self.moc save:&error];
     
 }
 
@@ -41,21 +68,35 @@
 }
 
 
-- (void)testExample {
-    NSManagedObjectContext *moc = self.moc;
+- (void)testDateModified {
     
-    self.beer = [CBFBeer insertInManagedObjectContext:moc];
     
     [self.beer setName:@"Budwiser"];
     NSDate *date = [NSDate date];
     NSError *error;
     [self.moc save:&error];
     [self.moc obtainPermanentIDsForObjects:@[self.beer] error:nil];
-    XCTAssertTrue([date compare:self.beer.dateUpdated] == NSOrderedAscending, @"%f Should be equal to %f", [date timeIntervalSinceReferenceDate], [self.beer.dateUpdated timeIntervalSinceReferenceDate]);
+    XCTAssertTrue([date compare:self.beer.dateUpdated] == NSOrderedAscending, @"%f Should be less then %f", [date timeIntervalSinceReferenceDate], [self.beer.dateUpdated timeIntervalSinceReferenceDate]);
     
-//    XCTAssertTrue([self.beer isInserted], @"Self.beer has not been inserted");
+    XCTAssertTrue([self.beer.dateCreated compare:self.beer.dateUpdated] == NSOrderedAscending, @"%f Should be less then %f", [self.beer.dateCreated timeIntervalSinceReferenceDate], [self.beer.dateUpdated timeIntervalSinceReferenceDate]);
+
 }
 
+- (void)testDateCreated
+{
+    XCTAssertTrue(self.beer.dateCreated != nil, @"Self.beer should have a date created not: %@", self.beer.dateCreated);
+}
+
+- (void)testUser
+{
+    XCTAssertTrue(self.beer.user != nil, @"Self.beer.user should not be nil");
+}
+
+- (void)testAverageRating
+{
+    [self.beer calculateAndSetAverageRating];
+    XCTAssertTrue([self.beer.averageRating isEqualToNumber:[NSNumber numberWithInt:3]], @"%@ should be equal to 3", self.beer.averageRating);
+}
 
 
 @end

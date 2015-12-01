@@ -14,6 +14,7 @@ const struct CBFUserAttributes CBFUserAttributes = {
 
 const struct CBFUserRelationships CBFUserRelationships = {
 	.beerRatings = @"beerRatings",
+	.beers = @"beers",
 	.breweryRatings = @"breweryRatings",
 };
 
@@ -90,6 +91,17 @@ const struct CBFUserRelationships CBFUserRelationships = {
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"beerRatings"];
 
 	[self didAccessValueForKey:@"beerRatings"];
+	return result;
+}
+
+@dynamic beers;
+
+- (NSMutableSet*)beersSet {
+	[self willAccessValueForKey:@"beers"];
+
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"beers"];
+
+	[self didAccessValueForKey:@"beers"];
 	return result;
 }
 

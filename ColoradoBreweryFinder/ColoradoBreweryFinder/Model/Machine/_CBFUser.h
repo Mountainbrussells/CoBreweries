@@ -14,10 +14,12 @@ extern const struct CBFUserAttributes {
 
 extern const struct CBFUserRelationships {
 	__unsafe_unretained NSString *beerRatings;
+	__unsafe_unretained NSString *beers;
 	__unsafe_unretained NSString *breweryRatings;
 } CBFUserRelationships;
 
 @class CBFBeerRating;
+@class CBFBeer;
 @class CBFBreweryRating;
 
 @interface CBFUserID : NSManagedObjectID {}
@@ -61,6 +63,10 @@ extern const struct CBFUserRelationships {
 
 - (NSMutableSet*)beerRatingsSet;
 
+@property (nonatomic, strong) NSSet *beers;
+
+- (NSMutableSet*)beersSet;
+
 @property (nonatomic, strong) NSSet *breweryRatings;
 
 - (NSMutableSet*)breweryRatingsSet;
@@ -72,6 +78,14 @@ extern const struct CBFUserRelationships {
 - (void)removeBeerRatings:(NSSet*)value_;
 - (void)addBeerRatingsObject:(CBFBeerRating*)value_;
 - (void)removeBeerRatingsObject:(CBFBeerRating*)value_;
+
+@end
+
+@interface _CBFUser (BeersCoreDataGeneratedAccessors)
+- (void)addBeers:(NSSet*)value_;
+- (void)removeBeers:(NSSet*)value_;
+- (void)addBeersObject:(CBFBeer*)value_;
+- (void)removeBeersObject:(CBFBeer*)value_;
 
 @end
 
@@ -108,6 +122,9 @@ extern const struct CBFUserRelationships {
 
 - (NSMutableSet*)primitiveBeerRatings;
 - (void)setPrimitiveBeerRatings:(NSMutableSet*)value;
+
+- (NSMutableSet*)primitiveBeers;
+- (void)setPrimitiveBeers:(NSMutableSet*)value;
 
 - (NSMutableSet*)primitiveBreweryRatings;
 - (void)setPrimitiveBreweryRatings:(NSMutableSet*)value;

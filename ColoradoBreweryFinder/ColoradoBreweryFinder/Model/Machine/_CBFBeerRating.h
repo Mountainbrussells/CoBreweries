@@ -4,7 +4,6 @@
 #import <CoreData/CoreData.h>
 
 extern const struct CBFBeerRatingAttributes {
-	__unsafe_unretained NSString *createdBy;
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *rating;
@@ -27,10 +26,6 @@ extern const struct CBFBeerRatingRelationships {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CBFBeerRatingID* objectID;
-
-@property (nonatomic, strong) NSString* createdBy;
-
-//- (BOOL)validateCreatedBy:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSDate* dateCreated;
 
@@ -63,9 +58,6 @@ extern const struct CBFBeerRatingRelationships {
 @end
 
 @interface _CBFBeerRating (CoreDataGeneratedPrimitiveAccessors)
-
-- (NSString*)primitiveCreatedBy;
-- (void)setPrimitiveCreatedBy:(NSString*)value;
 
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;

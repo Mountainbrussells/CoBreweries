@@ -4,7 +4,6 @@
 #import "_CBFBeerRating.h"
 
 const struct CBFBeerRatingAttributes CBFBeerRatingAttributes = {
-	.createdBy = @"createdBy",
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
 	.rating = @"rating",
@@ -50,8 +49,6 @@ const struct CBFBeerRatingRelationships CBFBeerRatingRelationships = {
 
 	return keyPaths;
 }
-
-@dynamic createdBy;
 
 @dynamic dateCreated;
 
