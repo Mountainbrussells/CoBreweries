@@ -8,17 +8,19 @@
 
 @implementation CBFBeerRating
 
-- (id)init
++ (id)insertInManagedObjectContext:(NSManagedObjectContext *)moc fromUser:(CBFUser *)user withRating:(NSNumber *)number
 {
-    self = [super init];
-    if (self) {
-        
-        [self setDateCreated:[NSDate date]];
-        // Not sure how to access the User of the class that is creating the Beer entity in order to automatically set it.
-        
+    NSParameterAssert(moc);
+    CBFBeerRating *rating = [CBFBeerRating insertInManagedObjectContext:moc];
+    if (user) {
+        rating.user = user;
     }
     
-    return self;
+    if (number) {
+        rating.rating = number;
+    }
+    
+    return rating;
 }
 
 - (void)willSave
@@ -26,6 +28,14 @@
     [super willSave];
     if (![self isDeleted] && self.changedValues[@"dateUpdated"] == nil) {
         self.dateUpdated = [NSDate date];
+    }
+}
+
+- (void) awakeFromInsert
+{
+    if (!self.dateCreated) {
+        self.dateCreated = [NSDate date];
+        
     }
 }
 

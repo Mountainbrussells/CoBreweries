@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
+		C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */; };
+		C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE31C109EC900618F50 /* CBFServiceController.m */; };
 		C9FBC3BD1BFE80E00055E01B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BC1BFE80E00055E01B /* main.m */; };
 		C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */; };
 		C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3C21BFE80E00055E01B /* ViewController.m */; };
@@ -69,6 +72,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFLogInViewController.h; sourceTree = "<group>"; };
+		C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFLogInViewController.m; sourceTree = "<group>"; };
+		C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceControllerTests.m; sourceTree = "<group>"; };
+		C9F5CAE21C109EC900618F50 /* CBFServiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFServiceController.h; sourceTree = "<group>"; };
+		C9F5CAE31C109EC900618F50 /* CBFServiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFServiceController.m; sourceTree = "<group>"; };
 		C9FBC3B81BFE80E00055E01B /* ColoradoBreweryFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColoradoBreweryFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBC3BC1BFE80E00055E01B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -136,6 +144,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C9F5CACB1C0F952700618F50 /* DataControl */ = {
+			isa = PBXGroup;
+			children = (
+				C9F5CAE21C109EC900618F50 /* CBFServiceController.h */,
+				C9F5CAE31C109EC900618F50 /* CBFServiceController.m */,
+			);
+			name = DataControl;
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C9FBC3AF1BFE80E00055E01B = {
 			isa = PBXGroup;
 			children = (
@@ -161,11 +179,14 @@
 		C9FBC3BA1BFE80E00055E01B /* ColoradoBreweryFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C9F5CACB1C0F952700618F50 /* DataControl */,
 				C9FBC3F91BFFD12A0055E01B /* Model */,
 				C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */,
 				C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */,
 				C9FBC3C11BFE80E00055E01B /* ViewController.h */,
 				C9FBC3C21BFE80E00055E01B /* ViewController.m */,
+				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
+				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
 				C9FBC3C41BFE80E00055E01B /* Main.storyboard */,
 				C9FBC3CA1BFE80E00055E01B /* Assets.xcassets */,
 				C9FBC3CC1BFE80E00055E01B /* LaunchScreen.storyboard */,
@@ -190,6 +211,7 @@
 				C9FBC3D81BFE80E00055E01B /* ColoradoBreweryFinderTests.m */,
 				C9FBC3DA1BFE80E00055E01B /* Info.plist */,
 				C9FBC43A1C0384F70055E01B /* CBFBeerTests.m */,
+				C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */,
 			);
 			path = ColoradoBreweryFinderTests;
 			sourceTree = "<group>";
@@ -405,6 +427,8 @@
 				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
 				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,
 				C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */,
+				C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */,
+				C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */,
 				C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */,
 				C9FBC4381BFFD46B0055E01B /* _CBFBreweryRating.m in Sources */,
 				C9FBC3C91BFE80E00055E01B /* ColoradoBreweryFinder.xcdatamodeld in Sources */,
@@ -421,6 +445,7 @@
 			files = (
 				C9FBC3D91BFE80E00055E01B /* ColoradoBreweryFinderTests.m in Sources */,
 				C9FBC43B1C0384F70055E01B /* CBFBeerTests.m in Sources */,
+				C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -684,6 +709,7 @@
 				C9FBC3F61BFF9AE70055E01B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

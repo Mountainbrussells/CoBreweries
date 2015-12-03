@@ -1,5 +1,8 @@
 #import "_CBFBreweryRating.h"
+#import "CBFUser.h"
 
 @interface CBFBreweryRating : _CBFBreweryRating {}
-// Custom logic goes here.
+
++ (id)insertInManagedObjectContext:(NSManagedObjectContext *)moc fromUser:(CBFUser *)user withRating:(NSNumber *)number;
+
 @end

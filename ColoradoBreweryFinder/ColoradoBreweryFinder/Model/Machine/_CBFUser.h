@@ -47,11 +47,7 @@ extern const struct CBFUserRelationships {
 
 //- (BOOL)validatePassword:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSNumber* uid;
-
-@property (atomic) float uidValue;
-- (float)uidValue;
-- (void)setUidValue:(float)value_;
+@property (nonatomic, strong) NSString* uid;
 
 //- (BOOL)validateUid:(id*)value_ error:(NSError**)error_;
 
@@ -111,11 +107,8 @@ extern const struct CBFUserRelationships {
 - (NSString*)primitivePassword;
 - (void)setPrimitivePassword:(NSString*)value;
 
-- (NSNumber*)primitiveUid;
-- (void)setPrimitiveUid:(NSNumber*)value;
-
-- (float)primitiveUidValue;
-- (void)setPrimitiveUidValue:(float)value_;
+- (NSString*)primitiveUid;
+- (void)setPrimitiveUid:(NSString*)value;
 
 - (NSString*)primitiveUserName;
 - (void)setPrimitiveUserName:(NSString*)value;

@@ -94,8 +94,8 @@
 
 - (void)testAverageRating
 {
-    [self.beer calculateAndSetAverageRating];
-    XCTAssertTrue([self.beer.averageRating isEqualToNumber:[NSNumber numberWithInt:3]], @"%@ should be equal to 3", self.beer.averageRating);
+    
+    XCTAssertTrue([self.beer calculateAverageRating] == 3.0, @"%f should be equal to 3", [self.beer calculateAverageRating]);
 }
 
 

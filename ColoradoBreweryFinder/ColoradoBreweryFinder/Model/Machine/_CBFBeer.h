@@ -4,7 +4,6 @@
 #import <CoreData/CoreData.h>
 
 extern const struct CBFBeerAttributes {
-	__unsafe_unretained NSString *averageRating;
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *name;
@@ -28,14 +27,6 @@ extern const struct CBFBeerRelationships {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CBFBeerID* objectID;
-
-@property (nonatomic, strong) NSNumber* averageRating;
-
-@property (atomic) float averageRatingValue;
-- (float)averageRatingValue;
-- (void)setAverageRatingValue:(float)value_;
-
-//- (BOOL)validateAverageRating:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSDate* dateCreated;
 
@@ -72,12 +63,6 @@ extern const struct CBFBeerRelationships {
 @end
 
 @interface _CBFBeer (CoreDataGeneratedPrimitiveAccessors)
-
-- (NSNumber*)primitiveAverageRating;
-- (void)setPrimitiveAverageRating:(NSNumber*)value;
-
-- (float)primitiveAverageRatingValue;
-- (void)setPrimitiveAverageRatingValue:(float)value_;
 
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;

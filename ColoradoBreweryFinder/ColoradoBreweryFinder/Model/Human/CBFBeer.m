@@ -9,9 +9,9 @@
 
 @implementation CBFBeer
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ createdByUser:(CBFUser *)user {
-    NSParameterAssert(moc_);
-    CBFBeer *beer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:moc_];
++ (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc createdByUser:(CBFUser *)user {
+    NSParameterAssert(moc);
+    CBFBeer *beer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:moc];
     if (user) {
         beer.user = user;
     }
@@ -21,10 +21,10 @@
     
 }
 
-+ (id)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ createdByUser:(CBFUser *)user forBrewery:(CBFBrewery *)brewery withName:(NSString *)name
++ (id)insertInManagedObjectContext:(NSManagedObjectContext *)moc createdByUser:(CBFUser *)user forBrewery:(CBFBrewery *)brewery withName:(NSString *)name
 {
-    NSParameterAssert(moc_);
-    CBFBeer *beer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:moc_];
+    NSParameterAssert(moc);
+    CBFBeer *beer = [NSEntityDescription insertNewObjectForEntityForName:@"Beer" inManagedObjectContext:moc];
     if (user) {
         beer.user = user;
     }
@@ -60,7 +60,7 @@
     }
 }
 
-- (void)calculateAndSetAverageRating
+- (float)calculateAverageRating
 {
     NSNumber *average;
     NSNumber *ratingsSum = 0;
@@ -75,9 +75,13 @@
     // Add 0.5 in order to round the int up
     average = [NSNumber numberWithInt:([ratingsSum floatValue]/[ratingsCount floatValue] + 0.5)];
 
-    float intAverage = [average floatValue];
-    // Taken from _CBFBeer
-    [self setAverageRatingValue:(float)intAverage];
+    float floatAverage = [average floatValue];
+    
+    //  Possible KVC situation as an easier way to get the average.  Need to play with it.
+    //    float floatAverage = [[self.ratings valueForKeyPath:@"@avg.rating.rating"] floatValue];
+    
+    return floatAverage;
+    
 }
 
 

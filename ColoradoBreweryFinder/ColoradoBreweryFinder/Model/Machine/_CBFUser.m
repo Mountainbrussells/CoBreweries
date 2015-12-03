@@ -44,12 +44,6 @@ const struct CBFUserRelationships CBFUserRelationships = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
-	if ([key isEqualToString:@"uidValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"uid"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-
 	return keyPaths;
 }
 
@@ -62,24 +56,6 @@ const struct CBFUserRelationships CBFUserRelationships = {
 @dynamic password;
 
 @dynamic uid;
-
-- (float)uidValue {
-	NSNumber *result = [self uid];
-	return [result floatValue];
-}
-
-- (void)setUidValue:(float)value_ {
-	[self setUid:[NSNumber numberWithFloat:value_]];
-}
-
-- (float)primitiveUidValue {
-	NSNumber *result = [self primitiveUid];
-	return [result floatValue];
-}
-
-- (void)setPrimitiveUidValue:(float)value_ {
-	[self setPrimitiveUid:[NSNumber numberWithFloat:value_]];
-}
 
 @dynamic userName;
 

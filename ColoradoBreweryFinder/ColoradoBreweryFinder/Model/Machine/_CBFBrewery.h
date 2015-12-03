@@ -5,7 +5,6 @@
 
 extern const struct CBFBreweryAttributes {
 	__unsafe_unretained NSString *address;
-	__unsafe_unretained NSString *averageRating;
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *lattitude;
@@ -36,14 +35,6 @@ extern const struct CBFBreweryRelationships {
 @property (nonatomic, strong) NSString* address;
 
 //- (BOOL)validateAddress:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* averageRating;
-
-@property (atomic) float averageRatingValue;
-- (float)averageRatingValue;
-- (void)setAverageRatingValue:(float)value_;
-
-//- (BOOL)validateAverageRating:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSDate* dateCreated;
 
@@ -115,12 +106,6 @@ extern const struct CBFBreweryRelationships {
 
 - (NSString*)primitiveAddress;
 - (void)setPrimitiveAddress:(NSString*)value;
-
-- (NSNumber*)primitiveAverageRating;
-- (void)setPrimitiveAverageRating:(NSNumber*)value;
-
-- (float)primitiveAverageRatingValue;
-- (void)setPrimitiveAverageRatingValue:(float)value_;
 
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;

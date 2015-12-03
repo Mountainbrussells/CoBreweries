@@ -4,7 +4,6 @@
 #import "_CBFBeer.h"
 
 const struct CBFBeerAttributes CBFBeerAttributes = {
-	.averageRating = @"averageRating",
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
 	.name = @"name",
@@ -42,33 +41,7 @@ const struct CBFBeerRelationships CBFBeerRelationships = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
-	if ([key isEqualToString:@"averageRatingValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"averageRating"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-
 	return keyPaths;
-}
-
-@dynamic averageRating;
-
-- (float)averageRatingValue {
-	NSNumber *result = [self averageRating];
-	return [result floatValue];
-}
-
-- (void)setAverageRatingValue:(float)value_ {
-	[self setAverageRating:[NSNumber numberWithFloat:value_]];
-}
-
-- (float)primitiveAverageRatingValue {
-	NSNumber *result = [self primitiveAverageRating];
-	return [result floatValue];
-}
-
-- (void)setPrimitiveAverageRatingValue:(float)value_ {
-	[self setPrimitiveAverageRating:[NSNumber numberWithFloat:value_]];
 }
 
 @dynamic dateCreated;
