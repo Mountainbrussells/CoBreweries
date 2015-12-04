@@ -44,8 +44,18 @@
 - (void)testUserGeneration
 {
     CBFUser *user = [self.serviceController createUserWithUserName:@"Bobby" password:@"1234" email:@"bobby@bobby.com" managedObjectContext:self.moc];
+   
     
     XCTAssert(user != nil, @"Self.user should not be nil");
+}
+
+- (void)testUserLogIn
+{
+    CBFUser *user = [self.serviceController createUserWithUserName:@"Bobby" password:@"1234" email:@"bobby@bobby.com" managedObjectContext:self.moc];
+    XCTAssert(user != nil, @"Self.user should not be nil");
+    CBFUser *fetchedUser = [self.serviceController logInUserWithName:@"Bobby" andPassword:@"1234" inManagedObjectContext:self.moc];
+    
+    XCTAssert(fetchedUser != nil, @"Self.user should not be nil");
 }
 
 @end

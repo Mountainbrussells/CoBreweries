@@ -27,8 +27,28 @@
         [self completeUserInterface];
     }]];
     
-    ViewController *controller = (ViewController *)self.window.rootViewController;
-    controller.persistenceController = self.persistenceController;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UserLoggedIn"]) {
+        
+        self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        uvc.persistenceController = self.persistenceController;
+        self.window.rootViewController = uvc;
+        [self.window makeKeyAndVisible];
+        
+        
+    } else {
+        self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"LogIn"];
+        
+        self.window.rootViewController = uvc;
+        [self.window makeKeyAndVisible];
+    }
+    
+    
     
     return YES;
     

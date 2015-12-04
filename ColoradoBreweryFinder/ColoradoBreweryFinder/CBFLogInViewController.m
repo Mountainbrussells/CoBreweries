@@ -7,8 +7,18 @@
 //
 
 #import "CBFLogInViewController.h"
+#import "CBFUser.h"
+#import "CBFServiceController.h"
+
 
 @interface CBFLogInViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) CBFUser *user;
+
+
+
 
 @end
 
@@ -23,6 +33,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)logInPressed:(id)sender {
+    
+    if (self.userNameTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
+        NSString *userName = self.userNameTextField.text;
+        NSString *passWord = self.passwordTextField.text;
+        NSManagedObjectContext *moc = self.persistenceController.managedObjectContext;
+        self.user = [self.serviceController logInUserWithName:userName
+                                                  andPassword:passWord
+                                       inManagedObjectContext:moc];
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"UserLoggedIn"];
+        
+    }
+}
+
 
 /*
 #pragma mark - Navigation

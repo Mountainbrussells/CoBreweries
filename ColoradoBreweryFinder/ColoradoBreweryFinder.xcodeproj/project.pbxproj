@@ -24,6 +24,8 @@
 		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
 		C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */; };
 		C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE31C109EC900618F50 /* CBFServiceController.m */; };
+		C9F5CAE71C10A5ED00618F50 /* CBFSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE61C10A5ED00618F50 /* CBFSignUpViewController.m */; };
+		C9F5CAEB1C110D4200618F50 /* NSString+NSString_EscapedString.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAEA1C110D4200618F50 /* NSString+NSString_EscapedString.m */; };
 		C9FBC3BD1BFE80E00055E01B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BC1BFE80E00055E01B /* main.m */; };
 		C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */; };
 		C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3C21BFE80E00055E01B /* ViewController.m */; };
@@ -77,6 +79,10 @@
 		C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceControllerTests.m; sourceTree = "<group>"; };
 		C9F5CAE21C109EC900618F50 /* CBFServiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFServiceController.h; sourceTree = "<group>"; };
 		C9F5CAE31C109EC900618F50 /* CBFServiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFServiceController.m; sourceTree = "<group>"; };
+		C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFSignUpViewController.h; sourceTree = "<group>"; };
+		C9F5CAE61C10A5ED00618F50 /* CBFSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFSignUpViewController.m; sourceTree = "<group>"; };
+		C9F5CAE91C110D4200618F50 /* NSString+NSString_EscapedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSString_EscapedString.h"; sourceTree = "<group>"; };
+		C9F5CAEA1C110D4200618F50 /* NSString+NSString_EscapedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSString_EscapedString.m"; sourceTree = "<group>"; };
 		C9FBC3B81BFE80E00055E01B /* ColoradoBreweryFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColoradoBreweryFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBC3BC1BFE80E00055E01B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -154,6 +160,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		C9F5CAE81C110BFA00618F50 /* Catagories */ = {
+			isa = PBXGroup;
+			children = (
+				C9F5CAE91C110D4200618F50 /* NSString+NSString_EscapedString.h */,
+				C9F5CAEA1C110D4200618F50 /* NSString+NSString_EscapedString.m */,
+			);
+			name = Catagories;
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C9FBC3AF1BFE80E00055E01B = {
 			isa = PBXGroup;
 			children = (
@@ -179,6 +195,7 @@
 		C9FBC3BA1BFE80E00055E01B /* ColoradoBreweryFinder */ = {
 			isa = PBXGroup;
 			children = (
+				C9F5CAE81C110BFA00618F50 /* Catagories */,
 				C9F5CACB1C0F952700618F50 /* DataControl */,
 				C9FBC3F91BFFD12A0055E01B /* Model */,
 				C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */,
@@ -187,6 +204,8 @@
 				C9FBC3C21BFE80E00055E01B /* ViewController.m */,
 				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
 				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
+				C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */,
+				C9F5CAE61C10A5ED00618F50 /* CBFSignUpViewController.m */,
 				C9FBC3C41BFE80E00055E01B /* Main.storyboard */,
 				C9FBC3CA1BFE80E00055E01B /* Assets.xcassets */,
 				C9FBC3CC1BFE80E00055E01B /* LaunchScreen.storyboard */,
@@ -426,6 +445,7 @@
 				C9FBC4361BFFD46B0055E01B /* _CBFBeerRating.m in Sources */,
 				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
 				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,
+				C9F5CAEB1C110D4200618F50 /* NSString+NSString_EscapedString.m in Sources */,
 				C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */,
 				C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */,
 				C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */,
@@ -435,6 +455,7 @@
 				C9FBC4301BFFD46B0055E01B /* CBFBeer.m in Sources */,
 				C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */,
 				C9FBC4391BFFD46B0055E01B /* _CBFUser.m in Sources */,
+				C9F5CAE71C10A5ED00618F50 /* CBFSignUpViewController.m in Sources */,
 				C9FBC3BD1BFE80E00055E01B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

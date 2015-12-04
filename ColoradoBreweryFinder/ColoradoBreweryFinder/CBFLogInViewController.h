@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BRPersistenceController.h"
+
+@class CBFServiceController;
 
 @interface CBFLogInViewController : UIViewController
+
+@property (strong, nonatomic) CBFServiceController *serviceController;
+@property (strong, nonatomic) BRPersistenceController *persistenceController;
 
 @end

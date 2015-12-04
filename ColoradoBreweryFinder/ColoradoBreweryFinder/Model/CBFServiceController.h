@@ -16,4 +16,6 @@
 // May need to add error:(NSError *__autoreleasing *)error to this method
 - (CBFUser *)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc;
 
+- (CBFUser *)logInUserWithName:(NSString *)name andPassword:(NSString *)password inManagedObjectContext:(NSManagedObjectContext *)moc;
+
 @end
