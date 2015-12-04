@@ -9,6 +9,10 @@
 #import "CBFSignUpViewController.h"
 
 @interface CBFSignUpViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *checkPasswordTextField;
 
 @end
 
@@ -22,6 +26,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)backButton:(id)sender {
+}
+- (IBAction)signUpPressed:(id)sender {
 }
 
 /*

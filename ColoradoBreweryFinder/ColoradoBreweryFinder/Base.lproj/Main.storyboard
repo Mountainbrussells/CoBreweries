@@ -116,6 +116,9 @@
                                 <rect key="frame" x="109" y="67" width="34" height="30"/>
                                 <animations/>
                                 <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backButton:" destination="3we-uG-C8n" eventType="touchUpInside" id="VZX-kP-L1T"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sGt-Qy-FZa">
                                 <rect key="frame" x="169" y="182" width="262" height="30"/>
@@ -149,6 +152,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
+                                    <action selector="signUpPressed:" destination="3we-uG-C8n" eventType="touchUpInside" id="4a1-jP-bmK"/>
                                     <segue destination="BYZ-38-t0r" kind="show" identifier="SingUpSeque" id="Okh-Bh-4sf"/>
                                 </connections>
                             </button>
@@ -181,6 +185,12 @@
                             <constraint firstItem="HDC-NM-1Vb" firstAttribute="trailing" secondItem="coc-9j-w4W" secondAttribute="trailing" id="xbF-AH-K98"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="checkPasswordTextField" destination="HDC-NM-1Vb" id="YvQ-5h-SMz"/>
+                        <outlet property="emailTextField" destination="9ID-ZH-GxY" id="08G-6D-Wzo"/>
+                        <outlet property="passwordTextField" destination="coc-9j-w4W" id="JA9-io-uyf"/>
+                        <outlet property="userNameTextField" destination="sGt-Qy-FZa" id="Crk-eW-PWw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IlA-BH-BZf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
