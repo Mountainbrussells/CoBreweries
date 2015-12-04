@@ -44,7 +44,7 @@
                                 <animations/>
                                 <state key="normal" title="Sign Up"/>
                                 <connections>
-                                    <segue destination="3we-uG-C8n" kind="show" customClass="SignUp" id="o9q-F1-Kf3"/>
+                                    <segue destination="3we-uG-C8n" kind="show" identifier="SingUpSegue" customClass="SignUp" id="o9q-F1-Kf3"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New User?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gpi-uH-YKO">
@@ -153,7 +153,7 @@
                                 </state>
                                 <connections>
                                     <action selector="signUpPressed:" destination="3we-uG-C8n" eventType="touchUpInside" id="4a1-jP-bmK"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="SingUpSeque" id="Okh-Bh-4sf"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="SingUpCompleteSeque" id="Okh-Bh-4sf"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9ID-ZH-GxY">
@@ -198,6 +198,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Okh-Bh-4sf"/>
+        <segue reference="kCy-7r-hhV"/>
     </inferredMetricsTieBreakers>
 </document>

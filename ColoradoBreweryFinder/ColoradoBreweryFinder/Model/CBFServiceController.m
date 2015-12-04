@@ -25,11 +25,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 
 @implementation CBFServiceController
 
-- (CBFUser *)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc
+- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *userId, NSError *error))completion
 {
-    //TODO: Deal with error from sessiontask block.
-    
-    CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
     
     
     NSString *urlString = kBaseParseAPIURL;
@@ -56,9 +53,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-    // Create  and enter task group to prevent return before end of asynchronous operation
-    dispatch_group_t taskGroup = dispatch_group_create();
-    dispatch_group_enter(taskGroup);
+   
     
     
     
@@ -80,27 +75,28 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
             NSError *error;
             [moc save:&error];
             
+            if (completion) {
+                completion(objectID, nil);
+            }
+            
             
         }
         
         
         if (error) {
             NSLog(@"RequestError:%@", error);
-            // Need to do something with this error.  Should I throw an NSAlertViewcController here?
+            
+            if (completion) {
+                completion(nil, error);
+            }
             
         }
-        // Leave task group
-        dispatch_group_leave(taskGroup);
+        
         
     }];
     
     [task resume];
     
-    // Waiting for task group to end
-    dispatch_group_wait(taskGroup, DISPATCH_TIME_FOREVER);
-    
-    
-    return user;
 }
 
 - (CBFUser *)logInUserWithName:(NSString *)name andPassword:(NSString *)password inManagedObjectContext:(NSManagedObjectContext *)moc

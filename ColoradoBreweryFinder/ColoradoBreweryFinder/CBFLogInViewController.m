@@ -45,15 +45,30 @@
                                        inManagedObjectContext:moc];
         if (self.user) {
             [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"UserLoggedIn"];
-            [self performSegueWithIdentifier:@"LoginSuccesful" sender:self];
+            [self performSegueWithIdentifier:@"LogInSuccessful" sender:self];
+        } else {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Enter User Name and Password" preferredStyle:UIAlertControllerStyleAlert];
+            [self presentViewController:alert animated:YES completion:nil];
         }
         
         
+    } else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Enter User Name and Password" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* ok = [UIAlertAction
+                             actionWithTitle:@"OK"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [alert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -61,6 +76,18 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    
+    if ([identifier isEqualToString:@"LogInSuccessful" ]) {
+        
+        return NO;
+        
+    }
+    
+    return YES;
+    
+}
+
 
 @end

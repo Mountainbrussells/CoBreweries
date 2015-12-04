@@ -10,11 +10,15 @@
 #import "BRPersistenceController.h"
 #import "ViewController.h"
 #import "CBFLogInViewController.h"
+#import "CBFServiceController.h"
+#import "CBFCoreDataController.h"
 
 
 @interface AppDelegate ()
 
 @property (strong, readwrite) BRPersistenceController *persistenceController;
+@property (strong, readwrite) CBFCoreDataController *coreDataController;
+@property (strong, readwrite) CBFServiceController *serviceController;
 
 - (void)completeUserInterface;
 
@@ -28,6 +32,7 @@
         [self completeUserInterface];
     }]];
     
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UserLoggedIn"]) {
         
         self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
@@ -35,6 +40,7 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"Main"];
         uvc.persistenceController = self.persistenceController;
+        
         self.window.rootViewController = uvc;
         [self.window makeKeyAndVisible];
         
@@ -45,6 +51,9 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         CBFLogInViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"LogIn"];
         uvc.persistenceController = self.persistenceController;
+        uvc.serviceController = self.serviceController;
+        uvc.coreDataController = self.coreDataController;
+        
         self.window.rootViewController = uvc;
         [self.window makeKeyAndVisible];
     }
