@@ -43,7 +43,11 @@
         self.user = [self.serviceController logInUserWithName:userName
                                                   andPassword:passWord
                                        inManagedObjectContext:moc];
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"UserLoggedIn"];
+        if (self.user) {
+            [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"UserLoggedIn"];
+            [self performSegueWithIdentifier:@"LoginSuccesful" sender:self];
+        }
+        
         
     }
 }

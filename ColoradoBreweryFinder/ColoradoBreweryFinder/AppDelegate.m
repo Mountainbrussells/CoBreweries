@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "BRPersistenceController.h"
 #import "ViewController.h"
+#import "CBFLogInViewController.h"
 
 
 @interface AppDelegate ()
@@ -42,8 +43,8 @@
         self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
         
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UIViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"LogIn"];
-        
+        CBFLogInViewController *uvc = [storyboard instantiateViewControllerWithIdentifier:@"LogIn"];
+        uvc.persistenceController = self.persistenceController;
         self.window.rootViewController = uvc;
         [self.window makeKeyAndVisible];
     }
