@@ -33,10 +33,10 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     return self;
 }
 
-- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *, NSError *))completion
+- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *, NSString *, NSError *))completion
 {
     
-    
+    // Create Parse POST request
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseLoginVenue];
     
@@ -61,30 +61,55 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     NSURLSession *session = [NSURLSession sharedSession];
     
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
     
-    
-    
+    // task creates parse user
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (response) {
             NSLog(@"Request Response:%@", response);
         }
         
+        NSManagedObjectID *managedObjectId;
+        
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSLog(@"Data: %@", responseDictionary);
-            NSString *objectID = [responseDictionary valueForKey:@"objectId"];
+            NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
+            NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
             
-            CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
-            user.userName = name;
-            user.password = password;
-            user.email = email;
-            user.uid = objectID;
-            NSError *error;
-            [moc save:&error];
-            
-            if (completion) {
-                completion(objectID, nil);
+            if (objectIDNumber) {
+                // if task is successful create CD user object
+                CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
+                user.userName = name;
+                user.password = password;
+                user.email = email;
+                user.uid = objectIDNumber;
+                NSArray *userArray = [[NSArray alloc] initWithObjects:user, nil];
+                NSError *objectIdError;
+                [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                self.user = user;
+                
+                managedObjectId = self.user.objectID;
+                
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // pass back managedObjectId and sessionToken
+                        completion(managedObjectId, sessionToken, nil);
+                    });
+                }
+            } else {
+                
+                // Deal with invalid login error from parse
+                
+                NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, nil, error);
+                    });
+                }
             }
             
             
@@ -95,7 +120,9 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
             NSLog(@"RequestError:%@", error);
             
             if (completion) {
-                completion(nil, error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, nil, error);
+                });
             }
             
         }
@@ -200,7 +227,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                                 completion(nil, nil, error);
                             });
                         }
-                    }
+                    } 
                     
                     
                     

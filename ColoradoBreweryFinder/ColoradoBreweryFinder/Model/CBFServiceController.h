@@ -18,7 +18,7 @@
 
 - (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
 
-- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *userId,  NSError *error))completion;
+- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken,  NSError *error))completion;
 
 
 - (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error))completion;
