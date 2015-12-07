@@ -13,6 +13,8 @@
 #import "CBFServiceController.h"
 #import "CBFCoreDataController.h"
 
+#import "STKeychain.h"
+
 
 @interface AppDelegate ()
 

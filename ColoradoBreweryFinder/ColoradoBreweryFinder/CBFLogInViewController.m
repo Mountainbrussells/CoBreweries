@@ -11,6 +11,8 @@
 #import "CBFServiceController.h"
 #import "ViewController.h"
 
+#import "STKeychain.h"
+
 
 @interface CBFLogInViewController ()
 

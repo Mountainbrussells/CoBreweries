@@ -7,6 +7,7 @@
 //
 
 #import "CBFSignUpViewController.h"
+#import "STKeychain.h"
 
 @interface CBFSignUpViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
