@@ -31,7 +31,11 @@
     [self setPersistenceController:[[BRPersistenceController alloc] initWithCallBack:^{
         [self completeUserInterface];
     }]];
+    self.serviceController = [[CBFServiceController alloc] initWithPersistenceController:self.persistenceController];
+    self.coreDataController = [[CBFCoreDataController alloc] initWithPersistenceController:self.persistenceController];
     
+    
+    // This should be done in login vc
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UserLoggedIn"]) {
         

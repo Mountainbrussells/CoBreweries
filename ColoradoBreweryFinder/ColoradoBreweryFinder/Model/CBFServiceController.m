@@ -18,14 +18,22 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 
 @interface CBFServiceController ()
 
-@property (strong, nonatomic) CBFUser *user;
+@property (strong, readwrite) CBFUser *user;
+@property (strong, nonatomic) BRPersistenceController *persistencController;
 
 @end
 
 
 @implementation CBFServiceController
 
-- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *userId, NSError *error))completion
+- (id)initWithPersistenceController:(BRPersistenceController *)persistenceController
+{
+    self = [super init];
+    self.persistencController = persistenceController;
+    return self;
+}
+
+- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *, NSError *))completion
 {
     
     
@@ -53,7 +61,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-   
+    
     
     
     
@@ -99,8 +107,10 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
 }
 
-- (CBFUser *)logInUserWithName:(NSString *)name andPassword:(NSString *)password inManagedObjectContext:(NSManagedObjectContext *)moc
+- (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *, NSString *, NSError *))completion
 {
+    
+    // First Log in to Parse
     
     NSString * userLoginString = [NSString stringWithFormat:@"?username=%@&password=%@", [name CBF_URLEscapedString], [password CBF_URLEscapedString]];
     
@@ -117,20 +127,9 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
     
     
-    
-    
-//    NSDictionary *postDictionary = @{@"username": name, @"password": password};
-//    
-//    NSError *error;
-//    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
-//    
-//    [parseRequest setHTTPBody:postBody];
-    
     NSURLSession *session = [NSURLSession sharedSession];
     
-    // Create  and enter task group to prevent return before end of asynchronous operation
-    dispatch_group_t taskGroup = dispatch_group_create();
-    dispatch_group_enter(taskGroup);
+    
     
     
     
@@ -140,44 +139,120 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
         }
         
         if (data) {
+            
+            // If user exist, get objectID and session Token
+            
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
             NSLog(@"Data: %@", responseDictionary);
             NSString *objectID = [responseDictionary valueForKey:@"objectId"];
+            NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
             
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:moc];
-            [fetchRequest setEntity:entity];
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", objectID];
-            fetchRequest.predicate = predicate;
-            NSError *error;
-            NSArray *fetchedUser = [moc executeFetchRequest:fetchRequest error:&error];
             
-            if (fetchedUser.count > 0 && fetchedUser.count < 2) {
-                self.user = fetchedUser[0];
+            
+            
+            NSManagedObjectID *managedObjectId = nil;
+            
+            // Need to check if it actually returned a User, as invalid login comes back as data
+            
+            if (objectID) {
+                
+                
+                [moc performBlockAndWait:^ {
+                    
+                    
+                    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:moc];
+                    [fetchRequest setEntity:entity];
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", objectID];
+                    fetchRequest.predicate = predicate;
+                    NSError *error;
+                    NSArray *fetchedUser = [moc executeFetchRequest:fetchRequest error:&error];
+                    NSError *idError;
+                    [moc obtainPermanentIDsForObjects:fetchedUser error:&idError];
+                    
+                    if (fetchedUser.count > 0 && fetchedUser.count < 2) {
+                        
+                        //  User exists on this device: fetch was successful
+                        self.user = fetchedUser[0];
+                        
+                    } else if (fetchedUser.count == 0) {
+                        
+                        // User exists but not on this device: create user
+                        CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
+                        user.userName = name;
+                        user.password = password;
+                        user.uid = objectID;
+                        self.user = user;
+                        
+                    } else if (idError) {
+                        
+                        // There was an error in the core data fetch
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                completion(nil, nil, idError);
+                            });
+                        }
+                        
+                    } else if (error) {
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                completion(nil, nil, error);
+                            });
+                        }
+                    }
+                    
+                    
+                    
+                    
+                }];
+                
+                managedObjectId = self.user.objectID;
+                
+                if (completion) {
+                    
+                    // Do what needs to be done after user validated and Return NSmanagedObjectID
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(managedObjectId, sessionToken, nil);
+                    });
+                }
+            } else {
+                
+                // Deal with invalid login error from parse
+                
+                NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, nil, error);
+                    });
+                }
             }
-            
             
         }
         
         
         if (error) {
+            // Login with Parse Failed
             NSLog(@"RequestError:%@", error);
-            // Need to do something with this error.  Should I throw an NSAlertViewcController here?
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, nil, error);
+                });
+            }
             
         }
-        // Leave task group
-        dispatch_group_leave(taskGroup);
+        
         
     }];
     
     [task resume];
     
-    // Waiting for task group to end
-    dispatch_group_wait(taskGroup, DISPATCH_TIME_FOREVER);
     
     
-    return self.user;
-
+    
+    
+    
 }
 
 

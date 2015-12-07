@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "BRPersistenceController.h"
 
 @class CBFUser;
 
 @interface CBFServiceController : NSObject
 
-// May need to add error:(NSError *__autoreleasing *)error to this method
+@property (strong, readonly) CBFUser *user;
+
+- (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
+
 - (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email managedObjectContext:(NSManagedObjectContext *)moc completion:(void (^)(NSString *userId,  NSError *error))completion;
 
 
+- (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error))completion;
 
-- (CBFUser *)logInUserWithName:(NSString *)name andPassword:(NSString *)password inManagedObjectContext:(NSManagedObjectContext *)moc;
 
 @end

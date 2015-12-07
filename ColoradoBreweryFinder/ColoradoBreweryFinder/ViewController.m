@@ -10,6 +10,7 @@
 #import "CBFBeer.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @end
 
@@ -18,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.userNameLabel.text = self.user.userName;
     
 }
 

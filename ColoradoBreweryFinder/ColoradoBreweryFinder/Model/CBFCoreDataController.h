@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "CBFUser.h"
+#import "BRPersistenceController.h"
+
+
 
 @interface CBFCoreDataController : NSObject
 
-- (CBFUser *)fetchUserWithId:(NSString *)userId inManagedObjectContext:(NSManagedObjectContext *)moc;
+- (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
+
+- (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
 
 @end
