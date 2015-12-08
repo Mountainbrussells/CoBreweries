@@ -12,6 +12,7 @@
 #import "ViewController.h"
 #import "CBFSignUpViewController.h"
 #import "STKeychain.h"
+#import "CBFSpinner.h"
 
 
 
@@ -48,13 +49,9 @@
             UIActivityIndicatorView * spinner;
             
             //alloc init it  in the viewdidload
-            spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            spinner = [[CBFSpinner alloc] init];
             [self.view addSubview:spinner];
-            [spinner setFrame:CGRectMake(0, 0, 100, 100)];
             [spinner setCenter:CGPointMake(self.view.center.x, 150)];
-            spinner.transform = CGAffineTransformMakeScale(2, 2);
-            [spinner setColor:[UIColor darkGrayColor]];
-            
             [self.view bringSubviewToFront:spinner];
             [spinner startAnimating];
             // Login with Parse
@@ -64,26 +61,26 @@
                                            completion:^(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error) {
                                                __strong typeof(weakSelf) strongSelf = weakSelf;
                                                if (objectId) {
-                                                   self.user =[self.coreDataController fetchUserWithId:objectId];
+                                                   strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
                                                    
                                                    
                                                    [spinner stopAnimating];
-                                                   if (self.user) {
+                                                   if (strongSelf.user) {
                                                        // Need to persist User between launches
                                                        NSError *keychainError;
-                                                       if (![STKeychain storeUsername:self.user.userName andPassword:self.user.password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {
+                                                       if (![STKeychain storeUsername:strongSelf.user.userName andPassword:strongSelf.user.password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {
                                                            NSLog(@"Username and password not saved for relaunch, error: %@", keychainError);
                                                        }
-                                                       [[NSUserDefaults standardUserDefaults] setValue:self.user.userName forKey:@"StoredUserName"];
+                                                       [[NSUserDefaults standardUserDefaults] setValue:strongSelf.user.userName forKey:@"StoredUserName"];
                                                        if (sessionToken) {
-                                                           self.sessionToken = sessionToken;
+                                                           strongSelf.sessionToken = sessionToken;
                                                            //What Happens if no sessionToken?
                                                        }
-                                                       [self performSegueWithIdentifier:@"LogInSuccessful" sender:self];
+                                                       [strongSelf performSegueWithIdentifier:@"LogInSuccessful" sender:self];
                                                    } else {
                                                        NSLog(@"self.user returned nil");
                                                        [spinner stopAnimating];
-                                                       [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
+                                                       [strongSelf presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                    }
                                                }
                                                
@@ -91,7 +88,7 @@
                                                if (error) {
                                                    NSLog(@"Login error: %@", error);
                                                    [spinner stopAnimating];
-                                                   [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
+                                                   [strongSelf presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                }
                                                
                                            }];
@@ -99,11 +96,6 @@
         }
         
     }
-    
-    
-    
-    
-    
     
 }
 
@@ -122,61 +114,57 @@
         UIActivityIndicatorView * spinner;
         
         //alloc init it  in the viewdidload
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        spinner = [[CBFSpinner alloc] init];
         [self.view addSubview:spinner];
-        [spinner setFrame:CGRectMake(0, 0, 100, 100)];
         [spinner setCenter:CGPointMake(self.view.center.x, 150)];
-        spinner.transform = CGAffineTransformMakeScale(2, 2);
-        [spinner setColor:[UIColor darkGrayColor]];
+        [self.view bringSubviewToFront:spinner];
         
         NSString *userName = self.userNameTextField.text;
         NSString *passWord = self.passwordTextField.text;
         
-        [self.view bringSubviewToFront:spinner];
         [spinner startAnimating];
         
         // Login with Parse
+        __weak typeof(self) weakSelf = self;
         [self.serviceController logInUserWithName:userName
                                       andPassword:passWord
                                        completion:^(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error) {
-                                           
+                                           __strong typeof(weakSelf) strongSelf = weakSelf;
                                            if (objectId) {
-                                               self.user =[self.coreDataController fetchUserWithId:objectId];
+                                               strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
                                                
                                                
                                                [spinner stopAnimating];
-                                               if (self.user) {
+                                               if (strongSelf.user) {
                                                    // Need to persist User between launches
                                                    NSError *keychainError;
-                                                   if (![STKeychain storeUsername:self.user.userName andPassword:self.user.password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {
+                                                   NSString *user = strongSelf.user.userName;
+                                                   NSString *password = strongSelf.user.password;
+                                                   if (![STKeychain storeUsername:user andPassword:password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {
                                                        NSLog(@"Username and password not saved for relaunch, error: %@", keychainError);
                                                    }
-                                                   [[NSUserDefaults standardUserDefaults] setValue:self.user.userName forKey:@"StoredUserName"];
-                                                   [self performSegueWithIdentifier:@"LogInSuccessful" sender:self];
+                                                   [[NSUserDefaults standardUserDefaults] setValue:strongSelf.user.userName forKey:@"StoredUserName"];
+                                                   [self performSegueWithIdentifier:@"LogInSuccessful" sender:strongSelf];
                                                } else {
                                                    NSLog(@"self.user returned nil");
                                                    [spinner stopAnimating];
-                                                   [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
+                                                   [strongSelf presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                }
                                            }
                                            
                                            if (sessionToken) {
-                                               self.sessionToken = sessionToken;
+                                               strongSelf.sessionToken = sessionToken;
                                                //What Happens if no sessionToken?
                                            }
                                            
                                            if (error) {
                                                NSLog(@"Login error: %@", error);
                                                [spinner stopAnimating];
-                                               [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
+                                               [strongSelf presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                            }
                                            
-                                           
-                                           
-                                       }];
-        
-        
-        
+                                    }];
+
     } else {
         [self presentLogInFailedAlertWithMessage:@"Please Enter User Name and Password"];
     }
