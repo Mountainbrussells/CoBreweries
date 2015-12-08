@@ -13,6 +13,7 @@
 static NSString *const kBaseParseAPIURL = @"https://api.parse.com";
 static NSString *const kParseUserVenue = @"/1/users";
 static NSString *const kParseLoginVenue = @"/1/login";
+static NSString *const kParseBreweryClassVenue = @"/1/classes/Brewery";
 static NSString *const kPARSE_APPLICATION_ID = @"Ly0UjZGre3fILHVIHX9Hk19lb9v5Dev2nUSOynkF";
 static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVLo";
 
@@ -33,6 +34,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     return self;
 }
 
+
+#pragma mark - User Calls
 - (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *, NSString *, NSError *))completion
 {
     
@@ -276,11 +279,40 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     [task resume];
     
+}
+
+#pragma mark - Brewery Calls
+
+- (void)requestBreweriesWithCompletion:(void (^)(NSArray *breweryArray, NSError *error))completion
+{
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
     
+    NSURL *parseURL = [NSURL URLWithString:urlString];
     
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     
+    NSURLSession *session = [NSURLSession sharedSession];
     
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"responseDicionary:%@", responseDictionary);
+        }
+        
+        if (response) {
+             NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
     
+    [task resume];
 }
 
 

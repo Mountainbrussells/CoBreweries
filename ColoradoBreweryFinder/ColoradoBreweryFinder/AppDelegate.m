@@ -37,11 +37,16 @@
     self.serviceController = [[CBFServiceController alloc] initWithPersistenceController:self.persistenceController];
     self.coreDataController = [[CBFCoreDataController alloc] initWithPersistenceController:self.persistenceController];
     
+
+    
     
     CBFLogInViewController *livc = (CBFLogInViewController *)self.window.rootViewController;
     livc.persistenceController = self.persistenceController;
     livc.serviceController = self.serviceController;
     livc.coreDataController = self.coreDataController;
+    
+    // populate brewery data
+    [self.serviceController requestBreweriesWithCompletion:nil];
     
     
 
