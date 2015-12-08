@@ -44,7 +44,7 @@
                                 <animations/>
                                 <state key="normal" title="Sign Up"/>
                                 <connections>
-                                    <segue destination="3we-uG-C8n" kind="show" identifier="SingUpSegue" customClass="SignUp" id="o9q-F1-Kf3"/>
+                                    <segue destination="3we-uG-C8n" kind="show" identifier="SingUpSegue" id="NK7-hA-wwV"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New User?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gpi-uH-YKO">
@@ -129,7 +129,7 @@
                                 <animations/>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <action selector="backButton:" destination="3we-uG-C8n" eventType="touchUpInside" id="VZX-kP-L1T"/>
+                                    <segue destination="ckE-UZ-xCg" kind="unwind" unwindAction="prepareForUnwind:" id="Rax-LX-LeD"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sGt-Qy-FZa">
@@ -205,6 +205,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IlA-BH-BZf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ckE-UZ-xCg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-120" y="1053"/>
         </scene>

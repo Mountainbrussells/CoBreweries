@@ -198,6 +198,9 @@
     
 }
 
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+}
+
 - (void)presentLogInFailedAlertWithMessage:(NSString *)message
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:message preferredStyle:UIAlertControllerStyleAlert];
