@@ -38,7 +38,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     // Create Parse POST request
     NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseLoginVenue];
+    urlString = [urlString stringByAppendingString:kParseUserVenue];
     
     NSURL *parseURL = [NSURL URLWithString:urlString];
     
@@ -88,6 +88,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                 NSArray *userArray = [[NSArray alloc] initWithObjects:user, nil];
                 NSError *objectIdError;
                 [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                
                 self.user = user;
                 
                 managedObjectId = self.user.objectID;

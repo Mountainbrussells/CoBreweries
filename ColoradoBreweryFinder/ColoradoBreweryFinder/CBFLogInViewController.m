@@ -12,7 +12,7 @@
 #import "ViewController.h"
 #import "CBFSignUpViewController.h"
 #import "STKeychain.h"
-#import "CBFSpinner.h"
+
 
 
 
@@ -45,11 +45,11 @@
         if (!password) {
             // Need to have them re-login
         } else {
-            //set ivar in your view controller
-            UIActivityIndicatorView * spinner;
-            
             //alloc init it  in the viewdidload
-            spinner = [[CBFSpinner alloc] init];
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [spinner setFrame:CGRectMake(0, 0, 100, 100)];
+            spinner.transform = CGAffineTransformMakeScale(2, 2);
+            [spinner setColor:[UIColor darkGrayColor]];
             [self.view addSubview:spinner];
             [spinner setCenter:CGPointMake(self.view.center.x, 150)];
             [self.view bringSubviewToFront:spinner];
@@ -110,11 +110,10 @@
     
     if (self.userNameTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         
-        //set ivar in your view controller
-        UIActivityIndicatorView * spinner;
-        
-        //alloc init it  in the viewdidload
-        spinner = [[CBFSpinner alloc] init];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [spinner setFrame:CGRectMake(0, 0, 100, 100)];
+        spinner.transform = CGAffineTransformMakeScale(2, 2);
+        [spinner setColor:[UIColor darkGrayColor]];
         [self.view addSubview:spinner];
         [spinner setCenter:CGPointMake(self.view.center.x, 150)];
         [self.view bringSubviewToFront:spinner];
@@ -206,6 +205,9 @@
     
     return YES;
     
+}
+
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
 }
 
 - (void)presentLogInFailedAlertWithMessage:(NSString *)message

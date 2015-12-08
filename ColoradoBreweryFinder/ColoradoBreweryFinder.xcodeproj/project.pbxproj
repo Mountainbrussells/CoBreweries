@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		C98775581C168D570012D83B /* CBFSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = C98775571C168D570012D83B /* CBFSpinner.m */; };
 		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
 		C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */; };
 		C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE31C109EC900618F50 /* CBFServiceController.m */; };
@@ -78,8 +77,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C98775561C168D570012D83B /* CBFSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBFSpinner.h; path = ../CBFSpinner.h; sourceTree = "<group>"; };
-		C98775571C168D570012D83B /* CBFSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBFSpinner.m; path = ../CBFSpinner.m; sourceTree = "<group>"; };
 		C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFLogInViewController.h; sourceTree = "<group>"; };
 		C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFLogInViewController.m; sourceTree = "<group>"; };
 		C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceControllerTests.m; sourceTree = "<group>"; };
@@ -225,8 +222,6 @@
 				C9FBC3F91BFFD12A0055E01B /* Model */,
 				C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */,
 				C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */,
-				C98775561C168D570012D83B /* CBFSpinner.h */,
-				C98775571C168D570012D83B /* CBFSpinner.m */,
 				C9FBC3C11BFE80E00055E01B /* ViewController.h */,
 				C9FBC3C21BFE80E00055E01B /* ViewController.m */,
 				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
@@ -476,7 +471,6 @@
 				C9F5CAEB1C110D4200618F50 /* NSString+NSString_EscapedString.m in Sources */,
 				C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */,
 				C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */,
-				C98775581C168D570012D83B /* CBFSpinner.m in Sources */,
 				C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */,
 				C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */,
 				C9FBC4381BFFD46B0055E01B /* _CBFBreweryRating.m in Sources */,
