@@ -34,7 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     // TODO:Check if user login is stored
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -42,7 +41,7 @@
         NSString *username = [defaults objectForKey:@"StoredUserName"];
         NSError *error;
         NSString *password = [STKeychain getPasswordForUsername:username andServiceName:@"ColoradoBreweryFinder" error:&error];
-        if (error) {
+        if (!password) {
             // Need to have them re-login
         } else {
             //set ivar in your view controller
@@ -59,10 +58,11 @@
             [self.view bringSubviewToFront:spinner];
             [spinner startAnimating];
             // Login with Parse
+            __weak typeof(self) weakSelf = self;
             [self.serviceController logInUserWithName:username
                                           andPassword:password
                                            completion:^(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error) {
-                                               
+                                               __strong typeof(weakSelf) strongSelf = weakSelf;
                                                if (objectId) {
                                                    self.user =[self.coreDataController fetchUserWithId:objectId];
                                                    
@@ -83,20 +83,7 @@
                                                    } else {
                                                        NSLog(@"self.user returned nil");
                                                        [spinner stopAnimating];
-                                                       UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Re-enter User Name and Password or Create a New User" preferredStyle:UIAlertControllerStyleAlert];
-                                                       UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                                                                    style:UIAlertActionStyleDefault
-                                                                                                  handler:^(UIAlertAction * action)
-                                                                            {
-                                                                                self.userNameTextField.text = @"";
-                                                                                self.passwordTextField.text = @"";
-                                                                                [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                                
-                                                                                
-                                                                            }];
-                                                       
-                                                       [alert addAction:ok];
-                                                       [self presentViewController:alert animated:YES completion:nil];
+                                                       [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                    }
                                                }
                                                
@@ -104,27 +91,10 @@
                                                if (error) {
                                                    NSLog(@"Login error: %@", error);
                                                    [spinner stopAnimating];
-                                                   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Re-enter User Name and Password or Create a New User" preferredStyle:UIAlertControllerStyleAlert];
-                                                   UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                                                                style:UIAlertActionStyleDefault
-                                                                                              handler:^(UIAlertAction * action)
-                                                                        {
-                                                                            self.userNameTextField.text = @"";
-                                                                            self.passwordTextField.text = @"";
-                                                                            [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                            
-                                                                            
-                                                                        }];
-                                                   
-                                                   [alert addAction:ok];
-                                                   [self presentViewController:alert animated:YES completion:nil];
+                                                   [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                }
                                                
-                                               
-                                               
                                            }];
-            
-            
             
         }
         
@@ -186,20 +156,7 @@
                                                } else {
                                                    NSLog(@"self.user returned nil");
                                                    [spinner stopAnimating];
-                                                   UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Re-enter User Name and Password or Create a New User" preferredStyle:UIAlertControllerStyleAlert];
-                                                   UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                                                                style:UIAlertActionStyleDefault
-                                                                                              handler:^(UIAlertAction * action)
-                                                                        {
-                                                                            self.userNameTextField.text = @"";
-                                                                            self.passwordTextField.text = @"";
-                                                                            [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                            
-                                                                            
-                                                                        }];
-                                                   
-                                                   [alert addAction:ok];
-                                                   [self presentViewController:alert animated:YES completion:nil];
+                                                   [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                                }
                                            }
                                            
@@ -211,20 +168,7 @@
                                            if (error) {
                                                NSLog(@"Login error: %@", error);
                                                [spinner stopAnimating];
-                                               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Re-enter User Name and Password or Create a New User" preferredStyle:UIAlertControllerStyleAlert];
-                                               UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                                                            style:UIAlertActionStyleDefault
-                                                                                          handler:^(UIAlertAction * action)
-                                                                    {
-                                                                        self.userNameTextField.text = @"";
-                                                                        self.passwordTextField.text = @"";
-                                                                        [alert dismissViewControllerAnimated:YES completion:nil];
-                                                                        
-                                                                        
-                                                                    }];
-                                               
-                                               [alert addAction:ok];
-                                               [self presentViewController:alert animated:YES completion:nil];
+                                               [self presentLogInFailedAlertWithMessage:@"Please Re-enter User Name and Password or Create a New User"];
                                            }
                                            
                                            
@@ -234,19 +178,7 @@
         
         
     } else {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:@"Please Enter User Name and Password" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* ok = [UIAlertAction
-                             actionWithTitle:@"OK"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 self.userNameTextField.text = @"";
-                                 self.passwordTextField.text = @"";
-                                 [alert dismissViewControllerAnimated:YES completion:nil];
-                                 
-                             }];
-        [alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
+        [self presentLogInFailedAlertWithMessage:@"Please Enter User Name and Password"];
     }
 }
 
@@ -264,9 +196,6 @@
         mainView.serviceController = self.serviceController;
         mainView.coreDataController = self.coreDataController;
         mainView.sessionToken = self.sessionToken;
-        
-        
-        
     }
     
     if ([segue.identifier isEqualToString:@"SingUpSegue"]) {
@@ -275,8 +204,8 @@
         signupView.serviceController = self.serviceController;
         signupView.coreDataController = self.coreDataController;
     }
-
-
+    
+    
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
@@ -289,6 +218,24 @@
     
     return YES;
     
+}
+
+- (void)presentLogInFailedAlertWithMessage:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Log In Failed" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             self.userNameTextField.text = @"";
+                             self.passwordTextField.text = @"";
+                             [alert dismissViewControllerAnimated:YES completion:nil];
+                             
+                             
+                         }];
+    
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 
