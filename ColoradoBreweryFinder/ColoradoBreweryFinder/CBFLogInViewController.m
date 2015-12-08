@@ -12,7 +12,6 @@
 #import "ViewController.h"
 #import "CBFSignUpViewController.h"
 #import "STKeychain.h"
-#import "CBFReusableViewsCreator.h"
 
 
 
@@ -47,7 +46,12 @@
             // Need to have them re-login
         } else {
             //alloc init it  in the viewdidload
-            UIActivityIndicatorView *spinner = [CBFReusableViewsCreator createSpinnerViewWithParentController:self];
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            [spinner setFrame:CGRectMake(0, 0, 100, 100)];
+            spinner.transform = CGAffineTransformMakeScale(2, 2);
+            [spinner setColor:[UIColor darkGrayColor]];
+            [self.view addSubview:spinner];
+            [spinner setCenter:CGPointMake(self.view.center.x, 150)];
             [self.view bringSubviewToFront:spinner];
             [spinner startAnimating];
             // Login with Parse
@@ -106,7 +110,12 @@
     
     if (self.userNameTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         
-        UIActivityIndicatorView *spinner = [CBFReusableViewsCreator createSpinnerViewWithParentController:self];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [spinner setFrame:CGRectMake(0, 0, 100, 100)];
+        spinner.transform = CGAffineTransformMakeScale(2, 2);
+        [spinner setColor:[UIColor darkGrayColor]];
+        [self.view addSubview:spinner];
+        [spinner setCenter:CGPointMake(self.view.center.x, 150)];
         [self.view bringSubviewToFront:spinner];
         
         NSString *userName = self.userNameTextField.text;
