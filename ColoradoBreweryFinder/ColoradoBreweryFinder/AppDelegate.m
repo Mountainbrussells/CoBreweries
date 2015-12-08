@@ -9,11 +9,19 @@
 #import "AppDelegate.h"
 #import "BRPersistenceController.h"
 #import "ViewController.h"
+#import "CBFLogInViewController.h"
+#import "CBFServiceController.h"
+#import "CBFCoreDataController.h"
+
+#import "STKeychain.h"
 
 
 @interface AppDelegate ()
 
 @property (strong, readwrite) BRPersistenceController *persistenceController;
+@property (strong, readwrite) CBFCoreDataController *coreDataController;
+@property (strong, readwrite) CBFServiceController *serviceController;
+
 
 - (void)completeUserInterface;
 
@@ -26,9 +34,20 @@
     [self setPersistenceController:[[BRPersistenceController alloc] initWithCallBack:^{
         [self completeUserInterface];
     }]];
+    self.serviceController = [[CBFServiceController alloc] initWithPersistenceController:self.persistenceController];
+    self.coreDataController = [[CBFCoreDataController alloc] initWithPersistenceController:self.persistenceController];
     
-    ViewController *controller = (ViewController *)self.window.rootViewController;
-    controller.persistenceController = self.persistenceController;
+    
+    CBFLogInViewController *livc = (CBFLogInViewController *)self.window.rootViewController;
+    livc.persistenceController = self.persistenceController;
+    livc.serviceController = self.serviceController;
+    livc.coreDataController = self.coreDataController;
+    
+    
+
+    
+    
+    
     
     return YES;
     
@@ -36,7 +55,7 @@
 
 - (void)completeUserInterface
 {
-    // 
+    //
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

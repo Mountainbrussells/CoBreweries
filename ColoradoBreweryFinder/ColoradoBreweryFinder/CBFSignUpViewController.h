@@ -1,22 +1,21 @@
 //
-//  CBFLogInViewController.h
+//  CBFSignUpViewController.h
 //  ColoradoBreweryFinder
 //
-//  Created by Ben Russell on 12/2/15.
+//  Created by Ben Russell on 12/3/15.
 //  Copyright © 2015 Ben Russell. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "BRPersistenceController.h"
 #import "CBFServiceController.h"
+#import "BRPersistenceController.h"
 #import "CBFCoreDataController.h"
-#import "STKeychain.h"
 
-@interface CBFLogInViewController : UIViewController
+@interface CBFSignUpViewController : UIViewController
 
 @property (strong, nonatomic) CBFServiceController *serviceController;
-@property (strong, nonatomic) CBFCoreDataController *coreDataController;
 @property (strong, nonatomic) BRPersistenceController *persistenceController;
+@property (strong, nonatomic) CBFCoreDataController *coreDataController;
 
 
 @end
