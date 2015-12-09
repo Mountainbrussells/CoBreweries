@@ -19,4 +19,6 @@
 
 - (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
 
+- (NSArray *)fetchBreweries;
+
 @end

@@ -9,6 +9,7 @@
 #import "CBFServiceController.h"
 #import "CBFUser.h"
 #import "NSString+NSString_EscapedString.h"
+#import "CBFBrewery.h"
 
 static NSString *const kBaseParseAPIURL = @"https://api.parse.com";
 static NSString *const kParseUserVenue = @"/1/users";
@@ -283,8 +284,10 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 
 #pragma mark - Brewery Calls
 
-- (void)requestBreweriesWithCompletion:(void (^)(NSArray *breweryArray, NSError *error))completion
+- (void)requestBreweriesWithCompletion:(void (^)(NSError *error))completion
 {
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
     
@@ -301,6 +304,26 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             NSLog(@"responseDicionary:%@", responseDictionary);
+            NSError *dataError;
+            NSDictionary *breweryData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
+            
+            NSArray *breweries = [breweryData valueForKey:@"results"];
+            
+            for (id brewery in breweries) {
+                CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:moc];
+                mocBrewery.name = [brewery objectForKey:@"name"];
+                mocBrewery.address = [brewery objectForKey:@"address"];
+                NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                
+            }
+            
+            if (completion) {
+                completion(nil);
+            }
         }
         
         if (response) {

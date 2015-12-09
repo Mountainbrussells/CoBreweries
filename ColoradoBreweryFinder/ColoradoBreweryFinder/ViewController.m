@@ -9,8 +9,11 @@
 #import "ViewController.h"
 #import "CBFBeer.h"
 
+
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+
+@property (strong, nonatomic) NSArray *breweries;
 
 @end
 
@@ -20,6 +23,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.userNameLabel.text = self.user.userName;
+    self.breweries = [self.coreDataController fetchBreweries];
+    NSLog(@"Breweries for main VC:%@", self.breweries);
     
 }
 
