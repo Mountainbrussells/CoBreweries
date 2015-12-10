@@ -9,11 +9,14 @@
 #import "CBFGeofenceManager.h"
 #import <CoreLocation/CoreLocation.h>
 
+static double const kCLLocationHorizontalAccuracyDistance = 20;
+static double const kCLLocationMinimumDistanceFromlastLocation = 804;
+
+
 @interface CBFGeofenceManager () <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *location;
-
 
 @end
 
@@ -49,22 +52,26 @@
     
     NSLog(@"Current Location: %@", [locations lastObject]);
     CLLocation *lastlocation = [locations lastObject];
-    BOOL accuracyGood = lastlocation.horizontalAccuracy < 20;
+    BOOL accuracyGood = lastlocation.horizontalAccuracy < kCLLocationHorizontalAccuracyDistance;
     if (!self.location) {
         if (accuracyGood) {
+            [defaultCenter postNotificationName:@"LocationWillChange" object:self];
             self.location = lastlocation;
             [self setCurrentState:CBFGeofenceManagerLocationLocated];
+            [defaultCenter postNotificationName:@"LocationDidChange" object:self];
         } else {
             [self setCurrentState:CBFGeofenceManagerLocationLocating];
             [self.locationManager requestLocation];
         }
     } else {
         double distanceFromLastLocation = [lastlocation distanceFromLocation:self.location];
-        BOOL isEnoughDistance = distanceFromLastLocation > 804;
+        BOOL isEnoughDistance = distanceFromLastLocation > kCLLocationMinimumDistanceFromlastLocation;
         if (accuracyGood) {
             if (isEnoughDistance) {
+                [defaultCenter postNotificationName:@"LocationWillChange" object:self];
                 self.location = lastlocation;
                 [self setCurrentState:CBFGeofenceManagerLocationLocated];
+                [defaultCenter postNotificationName:@"LocationDidChange" object:self];
             }
         } else {
             if (isEnoughDistance) {
@@ -75,6 +82,7 @@
         }
         
     }
+    
 }
 
 @end
