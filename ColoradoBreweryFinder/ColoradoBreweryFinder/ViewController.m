@@ -10,15 +10,18 @@
 #import "CBFBeer.h"
 #import "CBFBrewery.h"
 #import <CoreLocation/CoreLocation.h>
+#import "CBFGeofenceManager.h"
 
 
 
-@interface ViewController () <CLLocationManagerDelegate>
+@interface ViewController () <CLLocationManagerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (strong, nonatomic) NSArray *breweries;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation *location;
+@property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
@@ -30,10 +33,10 @@
     self.userNameLabel.text = self.user.userName;
     self.breweries = [self.coreDataController fetchBreweries];
     NSLog(@"Breweries for main VC:%@", self.breweries);
-    [self setUpLocationManager];
-    
-    
-    
+    self.geofenceManager = [CBFGeofenceManager sharedManager];
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
+    [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,29 +44,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Location Manager Delegate
-
-- (void)setUpLocationManager
+- (void)prepareForLocationUpdate:(id)sender
 {
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-    self.locationManager.delegate = self;
-    self.locationManager.distanceFilter = 20;
-    
-    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
-    [self.locationManager startUpdatingLocation];
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"==========================");
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+- (void)updateLocation:(id)sender
 {
-    NSLog(@"Current Location: %@", [locations lastObject]);
-    self.location = [locations lastObject];
-    
-    NSArray *sortedBreweries = [self sortedBreweryArray];
-    NSLog(@"Sorted Brewery Array: %@", sortedBreweries);
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"==========================");
 }
+
 
 - (NSArray *)sortedBreweryArray
 {

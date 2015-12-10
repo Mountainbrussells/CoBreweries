@@ -12,6 +12,9 @@
 static double const kCLLocationHorizontalAccuracyDistance = 20;
 static double const kCLLocationMinimumDistanceFromlastLocation = 804;
 
+NSString *const CBFLocationWillChangeNotification = @"LocationWillChange";
+NSString *const CBFLocationDidChangeNotification = @"LocationDidChange";
+
 
 @interface CBFGeofenceManager () <CLLocationManagerDelegate>
 
@@ -28,8 +31,10 @@ static double const kCLLocationMinimumDistanceFromlastLocation = 804;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[self alloc] init];
+        
     });
     
+    [sharedInstance setUpLocationManager];
     
     return sharedInstance;
 }
@@ -55,27 +60,27 @@ static double const kCLLocationMinimumDistanceFromlastLocation = 804;
     BOOL accuracyGood = lastlocation.horizontalAccuracy < kCLLocationHorizontalAccuracyDistance;
     if (!self.location) {
         if (accuracyGood) {
-            [defaultCenter postNotificationName:@"LocationWillChange" object:self];
+            [defaultCenter postNotificationName:CBFLocationWillChangeNotification object:self];
             self.location = lastlocation;
             [self setCurrentState:CBFGeofenceManagerLocationLocated];
-            [defaultCenter postNotificationName:@"LocationDidChange" object:self];
+            [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self];
         } else {
             [self setCurrentState:CBFGeofenceManagerLocationLocating];
-            [self.locationManager requestLocation];
+            // [self.locationManager requestLocation];
         }
     } else {
         double distanceFromLastLocation = [lastlocation distanceFromLocation:self.location];
         BOOL isEnoughDistance = distanceFromLastLocation > kCLLocationMinimumDistanceFromlastLocation;
         if (accuracyGood) {
             if (isEnoughDistance) {
-                [defaultCenter postNotificationName:@"LocationWillChange" object:self];
+                [defaultCenter postNotificationName:CBFLocationWillChangeNotification object:self];
                 self.location = lastlocation;
                 [self setCurrentState:CBFGeofenceManagerLocationLocated];
-                [defaultCenter postNotificationName:@"LocationDidChange" object:self];
+                [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self];
             }
         } else {
             if (isEnoughDistance) {
-                [self.locationManager requestLocation];
+                // [self.locationManager requestLocation];
                 [self setCurrentState:CBFGeofenceManagerLocationOutOfArea];
             }
             

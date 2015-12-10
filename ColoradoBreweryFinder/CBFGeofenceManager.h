@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const CBFLocationWillChangeNotification;
+extern NSString *const CBFLocationDidChangeNotification;
+
 
 
 @interface CBFGeofenceManager : NSObject
