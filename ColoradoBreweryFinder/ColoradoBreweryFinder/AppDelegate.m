@@ -65,7 +65,18 @@
 
 - (void)completeUserInterface
 {
-    //
+//    CBFLogInViewController *livc = (CBFLogInViewController *)self.window.rootViewController;
+//    livc.persistenceController = self.persistenceController;
+//    livc.serviceController = self.serviceController;
+//    livc.coreDataController = self.coreDataController;
+//    
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    
+//    if ([defaults valueForKey:@"DataHasBeenLoaded"] == NO) {
+//        // populate brewery data
+//        [self.serviceController requestBreweriesWithCompletion:nil];
+//        [defaults setBool:YES forKey:@"DataHasBeenLoaded"];
+//    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

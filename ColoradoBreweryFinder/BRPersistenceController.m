@@ -61,6 +61,8 @@
         NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
         NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"ColoradoBreweryFinder.sqlite"];
         
+        NSLog(@"Core Data store path = \"%@\"", [storeURL path]);
+        
         NSError *error;
         NSAssert2([psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error], @"Error initializing PSC: %@\n%@", [error localizedDescription], [error userInfo]);
         

@@ -30,6 +30,7 @@
 		C9F5CAF31C16057700618F50 /* STKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAF21C16057700618F50 /* STKeychain.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C9F5CAF61C160FD800618F50 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F5CAF51C160FD800618F50 /* Security.framework */; };
 		C9FBBD5E1C1783E00008D7A6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FBBD5D1C1783E00008D7A6 /* CoreLocation.framework */; };
+		C9FBBD641C19D3820008D7A6 /* CBFGeofenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBBD631C19D3820008D7A6 /* CBFGeofenceManager.m */; };
 		C9FBC3BD1BFE80E00055E01B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BC1BFE80E00055E01B /* main.m */; };
 		C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */; };
 		C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3C21BFE80E00055E01B /* ViewController.m */; };
@@ -93,6 +94,8 @@
 		C9F5CAF21C16057700618F50 /* STKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STKeychain.m; sourceTree = "<group>"; };
 		C9F5CAF51C160FD800618F50 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		C9FBBD5D1C1783E00008D7A6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C9FBBD621C19D3820008D7A6 /* CBFGeofenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFGeofenceManager.h; sourceTree = "<group>"; };
+		C9FBBD631C19D3820008D7A6 /* CBFGeofenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFGeofenceManager.m; sourceTree = "<group>"; };
 		C9FBC3B81BFE80E00055E01B /* ColoradoBreweryFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColoradoBreweryFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBC3BC1BFE80E00055E01B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				C9F5CAF51C160FD800618F50 /* Security.framework */,
 				C9FBC3F11BFF78430055E01B /* BRPersistenceController.h */,
 				C9FBC3F21BFF78430055E01B /* BRPersistenceController.m */,
+				C9FBBD621C19D3820008D7A6 /* CBFGeofenceManager.h */,
+				C9FBBD631C19D3820008D7A6 /* CBFGeofenceManager.m */,
 				C9FBC3BA1BFE80E00055E01B /* ColoradoBreweryFinder */,
 				C9FBC3D71BFE80E00055E01B /* ColoradoBreweryFinderTests */,
 				C9FBC3E21BFE80E00055E01B /* ColoradoBreweryFinderUITests */,
@@ -473,6 +478,7 @@
 				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
 				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,
 				C9F5CAEB1C110D4200618F50 /* NSString+NSString_EscapedString.m in Sources */,
+				C9FBBD641C19D3820008D7A6 /* CBFGeofenceManager.m in Sources */,
 				C9FBC4351BFFD46B0055E01B /* _CBFBeer.m in Sources */,
 				C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */,
 				C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */,

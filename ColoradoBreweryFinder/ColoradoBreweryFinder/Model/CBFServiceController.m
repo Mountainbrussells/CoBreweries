@@ -318,6 +318,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                 mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
                 mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
                 mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                NSError *mocError;
+                [moc save:&mocError];
                 
             }
             
