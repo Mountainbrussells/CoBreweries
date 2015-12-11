@@ -8,6 +8,7 @@ extern const struct CBFBreweryAttributes {
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *lattitude;
+	__unsafe_unretained NSString *location;
 	__unsafe_unretained NSString *logo;
 	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *name;
@@ -22,6 +23,8 @@ extern const struct CBFBreweryRelationships {
 
 @class CBFBeer;
 @class CBFBreweryRating;
+
+@class NSObject;
 
 @interface CBFBreweryID : NSManagedObjectID {}
 @end
@@ -51,6 +54,10 @@ extern const struct CBFBreweryRelationships {
 - (void)setLattitudeValue:(double)value_;
 
 //- (BOOL)validateLattitude:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) id location;
+
+//- (BOOL)validateLocation:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSData* logo;
 
@@ -118,6 +125,9 @@ extern const struct CBFBreweryRelationships {
 
 - (double)primitiveLattitudeValue;
 - (void)setPrimitiveLattitudeValue:(double)value_;
+
+- (id)primitiveLocation;
+- (void)setPrimitiveLocation:(id)value;
 
 - (NSData*)primitiveLogo;
 - (void)setPrimitiveLogo:(NSData*)value;

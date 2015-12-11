@@ -62,8 +62,12 @@ NSString *const CBFLocationDidChangeNotification = @"LocationDidChange";
         if (accuracyGood) {
             [defaultCenter postNotificationName:CBFLocationWillChangeNotification object:self];
             self.location = lastlocation;
+            double lat = lastlocation.coordinate
+                              .latitude;
+            double lon = lastlocation.coordinate.longitude;
+            NSDictionary *latLonDict = @{@"latitude": [NSNumber numberWithDouble:lat], @"longitude":[NSNumber numberWithDouble:lon]};
             [self setCurrentState:CBFGeofenceManagerLocationLocated];
-            [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self];
+            [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self userInfo:latLonDict];
         } else {
             [self setCurrentState:CBFGeofenceManagerLocationLocating];
             // [self.locationManager requestLocation];
@@ -75,8 +79,12 @@ NSString *const CBFLocationDidChangeNotification = @"LocationDidChange";
             if (isEnoughDistance) {
                 [defaultCenter postNotificationName:CBFLocationWillChangeNotification object:self];
                 self.location = lastlocation;
+                double lat = lastlocation.coordinate
+                .latitude;
+                double lon = lastlocation.coordinate.longitude;
+                NSDictionary *latLonDict = @{@"latitude": [NSNumber numberWithDouble:lat], @"longitude":[NSNumber numberWithDouble:lon]};
                 [self setCurrentState:CBFGeofenceManagerLocationLocated];
-                [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self];
+                [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self userInfo:latLonDict];
             }
         } else {
             if (isEnoughDistance) {

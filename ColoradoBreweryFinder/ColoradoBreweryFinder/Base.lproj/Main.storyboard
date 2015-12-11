@@ -24,7 +24,7 @@
                                 <state key="normal" title="Log In"/>
                                 <connections>
                                     <action selector="logInPressed:" destination="Smt-x2-Mlc" eventType="touchUpInside" id="LCZ-sB-Ydf"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="LogInSuccessful" id="kCy-7r-hhV"/>
+                                    <segue destination="7DZ-fm-QCG" kind="show" identifier="LogInSuccessful" id="kCy-7r-hhV"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="UserName" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hGf-D8-1op">
@@ -93,24 +93,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8t-HU-6Ye">
-                                <rect key="frame" x="184" y="83" width="232" height="21"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="v9K-Xt-BhH">
+                                <rect key="frame" x="20" y="16" width="560" height="564"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Q0q-Sn-BQM">
+                                    <size key="itemSize" width="152" height="155"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="XHb-d7-sXO">
+                                        <rect key="frame" x="0.0" y="64" width="152" height="155"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="152" height="155"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <animations/>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="v9K-Xt-BhH" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="16" id="67d-1S-c1F"/>
+                            <constraint firstItem="v9K-Xt-BhH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="bnS-An-qug"/>
+                            <constraint firstItem="v9K-Xt-BhH" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="fE4-g9-1Oe"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="v9K-Xt-BhH" secondAttribute="bottom" constant="20" id="qqD-So-HXI"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="XjW-if-ZAE"/>
                     <connections>
-                        <outlet property="userNameLabel" destination="c8t-HU-6Ye" id="PwC-ZO-6nv"/>
+                        <outlet property="collectionView" destination="v9K-Xt-BhH" id="RG4-5K-0Fi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="982" y="330"/>
+            <point key="canvasLocation" x="1794" y="330"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="L6v-rd-kzB">
@@ -165,7 +188,7 @@
                                 </state>
                                 <connections>
                                     <action selector="signUpPressed:" destination="3we-uG-C8n" eventType="touchUpInside" id="4a1-jP-bmK"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" identifier="SingUpCompleteSeque" id="Okh-Bh-4sf"/>
+                                    <segue destination="7DZ-fm-QCG" kind="show" identifier="SingUpCompleteSeque" id="Okh-Bh-4sf"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9ID-ZH-GxY">
@@ -208,6 +231,25 @@
                 <exit id="ckE-UZ-xCg" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-120" y="1053"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Yli-c9-9bM">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7DZ-fm-QCG" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Xpa-sT-RYv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="8Nd-Tm-nwe"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="42Y-V8-rhq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="982" y="330"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

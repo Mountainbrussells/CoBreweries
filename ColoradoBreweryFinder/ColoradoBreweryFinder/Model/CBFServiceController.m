@@ -10,6 +10,8 @@
 #import "CBFUser.h"
 #import "NSString+NSString_EscapedString.h"
 #import "CBFBrewery.h"
+#import <CoreLocation/CoreLocation.h>
+
 
 static NSString *const kBaseParseAPIURL = @"https://api.parse.com";
 static NSString *const kParseUserVenue = @"/1/users";
@@ -316,6 +318,11 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                 NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
                 mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
                 mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                
+                CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
+                mocBrewery.location = location;
+                
+                
                 mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
                 mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
                 NSError *mocError;

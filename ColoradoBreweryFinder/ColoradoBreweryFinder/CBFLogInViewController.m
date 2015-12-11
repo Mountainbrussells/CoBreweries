@@ -177,7 +177,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"LogInSuccessful"]) {
         
-        ViewController *mainView = segue.destinationViewController;
+        UINavigationController *navController = segue.destinationViewController;
+        ViewController *mainView = navController.viewControllers[0];
         mainView.user = self.user;
         mainView.persistenceController = self.persistenceController;
         mainView.serviceController = self.serviceController;
