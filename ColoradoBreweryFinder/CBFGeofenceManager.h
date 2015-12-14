@@ -10,6 +10,8 @@
 
 extern NSString *const CBFLocationWillChangeNotification;
 extern NSString *const CBFLocationDidChangeNotification;
+extern NSString *const CBFLocationDidChangeNotificationLatitudeKey;
+extern NSString *const CBFLocationDidChangeNotificationLongitudekey;
 
 
 

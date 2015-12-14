@@ -1,3 +1,4 @@
+
 //
 //  ViewController.m
 //  ColoradoBreweryFinder
@@ -11,6 +12,7 @@
 #import "CBFBrewery.h"
 #import <CoreLocation/CoreLocation.h>
 #import "CBFGeofenceManager.h"
+#import "CBFBreweryCell.h"
 
 
 
@@ -41,7 +43,7 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+//    [self.collectionView registerClass:[CBFBreweryCell class] forCellWithReuseIdentifier:@"breweryCell"];
     
 }
 
@@ -103,51 +105,17 @@
     return sortedArray;
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (NSString *)getDistanceToBreweyFromCurrentLocation:(CLLocation *)breweryLocation
 {
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
-    }
+    double distance =  [breweryLocation distanceFromLocation:self.location];
+    double distanceInMiles = distance * 0.00062137;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.persistenceController.managedObjectContext];
-    [fetchRequest setEntity:entity];
+    NSString *distanceString = [NSString stringWithFormat:@"%.1f", distanceInMiles];
+    return distanceString;
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    
-    // Edit the sort key as appropriate.
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"location" ascending:YES comparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-//        CLLocation *aLocation = (CLLocation *)obj1;
-//        CLLocation *bLocation = (CLLocation *)obj2;
-//        
-//        double distanceA = [aLocation distanceFromLocation:self.location];
-//        
-//        double distanceB = [bLocation distanceFromLocation:self.location];
-//        
-//        return [@(distanceA) compare:@(distanceB)];
-//    }];
-//    
-//    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.persistenceController.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _fetchedResultsController;
 }
+
+
 
 # pragma mark - UICollectionViewDataSource
 
@@ -158,11 +126,22 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    CBFBreweryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"breweryCell" forIndexPath:indexPath];
+    NSArray *sortedArray = [self sortedBreweryArray];
+    CBFBrewery *brewery = sortedArray[indexPath.row];
+    cell.backgroundColor = [UIColor whiteColor];
+    cell.layer.cornerRadius = 10.0;
+    cell.layer.masksToBounds = YES;
+    cell.breweryName.text = brewery.name;
+    NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
+    cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
+    
+    
     
     return cell;
     
 }
+
 
 
 @end

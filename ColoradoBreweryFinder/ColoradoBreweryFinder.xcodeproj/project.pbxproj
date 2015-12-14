@@ -31,6 +31,7 @@
 		C9F5CAF61C160FD800618F50 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F5CAF51C160FD800618F50 /* Security.framework */; };
 		C9FBBD5E1C1783E00008D7A6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FBBD5D1C1783E00008D7A6 /* CoreLocation.framework */; };
 		C9FBBD641C19D3820008D7A6 /* CBFGeofenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBBD631C19D3820008D7A6 /* CBFGeofenceManager.m */; };
+		C9FBBD6A1C1B7A9A0008D7A6 /* CBFBreweryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBBD691C1B7A9A0008D7A6 /* CBFBreweryCell.m */; };
 		C9FBC3BD1BFE80E00055E01B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BC1BFE80E00055E01B /* main.m */; };
 		C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */; };
 		C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FBC3C21BFE80E00055E01B /* ViewController.m */; };
@@ -96,6 +97,8 @@
 		C9FBBD5D1C1783E00008D7A6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C9FBBD621C19D3820008D7A6 /* CBFGeofenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFGeofenceManager.h; sourceTree = "<group>"; };
 		C9FBBD631C19D3820008D7A6 /* CBFGeofenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFGeofenceManager.m; sourceTree = "<group>"; };
+		C9FBBD681C1B7A9A0008D7A6 /* CBFBreweryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryCell.h; sourceTree = "<group>"; };
+		C9FBBD691C1B7A9A0008D7A6 /* CBFBreweryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryCell.m; sourceTree = "<group>"; };
 		C9FBC3B81BFE80E00055E01B /* ColoradoBreweryFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColoradoBreweryFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FBC3BC1BFE80E00055E01B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C9FBC3BE1BFE80E00055E01B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -233,6 +236,8 @@
 				C9FBC3BF1BFE80E00055E01B /* AppDelegate.m */,
 				C9FBC3C11BFE80E00055E01B /* ViewController.h */,
 				C9FBC3C21BFE80E00055E01B /* ViewController.m */,
+				C9FBBD681C1B7A9A0008D7A6 /* CBFBreweryCell.h */,
+				C9FBBD691C1B7A9A0008D7A6 /* CBFBreweryCell.m */,
 				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
 				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
 				C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */,
@@ -484,6 +489,7 @@
 				C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */,
 				C9FBC3F31BFF78430055E01B /* BRPersistenceController.m in Sources */,
 				C9FBC4381BFFD46B0055E01B /* _CBFBreweryRating.m in Sources */,
+				C9FBBD6A1C1B7A9A0008D7A6 /* CBFBreweryCell.m in Sources */,
 				C9FBC3C91BFE80E00055E01B /* ColoradoBreweryFinder.xcdatamodeld in Sources */,
 				C9FBC4301BFFD46B0055E01B /* CBFBeer.m in Sources */,
 				C9FBC3C01BFE80E00055E01B /* AppDelegate.m in Sources */,

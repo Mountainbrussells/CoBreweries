@@ -14,6 +14,8 @@ static double const kCLLocationMinimumDistanceFromlastLocation = 804;
 
 NSString *const CBFLocationWillChangeNotification = @"LocationWillChange";
 NSString *const CBFLocationDidChangeNotification = @"LocationDidChange";
+NSString *const CBFLocationDidChangeNotificationLatitudeKey = @"latitude";
+NSString *const CBFLocationDidChangeNotificationLongitudekey = @"longitude";
 
 
 @interface CBFGeofenceManager () <CLLocationManagerDelegate>
@@ -82,7 +84,7 @@ NSString *const CBFLocationDidChangeNotification = @"LocationDidChange";
                 double lat = lastlocation.coordinate
                 .latitude;
                 double lon = lastlocation.coordinate.longitude;
-                NSDictionary *latLonDict = @{@"latitude": [NSNumber numberWithDouble:lat], @"longitude":[NSNumber numberWithDouble:lon]};
+                NSDictionary *latLonDict = @{CBFLocationDidChangeNotificationLatitudeKey: [NSNumber numberWithDouble:lat], CBFLocationDidChangeNotificationLongitudekey:[NSNumber numberWithDouble:lon]};
                 [self setCurrentState:CBFGeofenceManagerLocationLocated];
                 [defaultCenter postNotificationName:CBFLocationDidChangeNotification object:self userInfo:latLonDict];
             }
