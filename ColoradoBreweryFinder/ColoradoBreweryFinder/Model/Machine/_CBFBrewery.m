@@ -10,6 +10,7 @@ const struct CBFBreweryAttributes CBFBreweryAttributes = {
 	.lattitude = @"lattitude",
 	.location = @"location",
 	.logo = @"logo",
+	.logoURL = @"logoURL",
 	.longitude = @"longitude",
 	.name = @"name",
 	.phoneNumber = @"phoneNumber",
@@ -90,6 +91,8 @@ const struct CBFBreweryRelationships CBFBreweryRelationships = {
 @dynamic location;
 
 @dynamic logo;
+
+@dynamic logoURL;
 
 @dynamic longitude;
 

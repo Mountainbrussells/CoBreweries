@@ -10,6 +10,7 @@ extern const struct CBFBreweryAttributes {
 	__unsafe_unretained NSString *lattitude;
 	__unsafe_unretained NSString *location;
 	__unsafe_unretained NSString *logo;
+	__unsafe_unretained NSString *logoURL;
 	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *phoneNumber;
@@ -62,6 +63,10 @@ extern const struct CBFBreweryRelationships {
 @property (nonatomic, strong) NSData* logo;
 
 //- (BOOL)validateLogo:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* logoURL;
+
+//- (BOOL)validateLogoURL:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* longitude;
 
@@ -131,6 +136,9 @@ extern const struct CBFBreweryRelationships {
 
 - (NSData*)primitiveLogo;
 - (void)setPrimitiveLogo:(NSData*)value;
+
+- (NSString*)primitiveLogoURL;
+- (void)setPrimitiveLogoURL:(NSString*)value;
 
 - (NSNumber*)primitiveLongitude;
 - (void)setPrimitiveLongitude:(NSNumber*)value;

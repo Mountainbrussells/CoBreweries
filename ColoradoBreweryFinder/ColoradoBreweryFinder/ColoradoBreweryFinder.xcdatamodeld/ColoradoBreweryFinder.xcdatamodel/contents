@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Automatic">
     <entity name="Beer" representedClassName="CBFBeer" syncable="YES">
         <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
@@ -23,6 +23,7 @@
         <attribute name="lattitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="logo" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="logoURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
@@ -51,7 +52,7 @@
     <elements>
         <element name="Beer" positionX="-189" positionY="111" width="128" height="133"/>
         <element name="BeerRating" positionX="9" positionY="162" width="128" height="133"/>
-        <element name="Brewery" positionX="-441" positionY="54" width="128" height="225"/>
+        <element name="Brewery" positionX="-441" positionY="54" width="128" height="240"/>
         <element name="BreweryRating" positionX="-243" positionY="-96" width="128" height="118"/>
         <element name="User" positionX="-2" positionY="-207" width="128" height="178"/>
     </elements>

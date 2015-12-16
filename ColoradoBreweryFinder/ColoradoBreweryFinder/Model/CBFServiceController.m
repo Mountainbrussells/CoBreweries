@@ -1,4 +1,4 @@
-char//
+//
 //  CBFServiceController.m
 //  ColoradoBreweryFinder
 //
@@ -327,9 +327,10 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                 mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
                 NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
                 NSString *urlString = [photoDictionary objectForKey:@"url"];
-                NSURL *photoURL = [NSURL URLWithString:urlString];
-                NSData *data = [NSData dataWithContentsOfURL:photoURL];
-                mocBrewery.logo = data;
+                mocBrewery.logoURL = urlString;
+//                NSURL *photoURL = [NSURL URLWithString:urlString];
+//                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+//                mocBrewery.logo = data;
                 
                 NSError *mocError;
                 [moc save:&mocError];

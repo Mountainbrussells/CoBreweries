@@ -13,6 +13,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "CBFGeofenceManager.h"
 #import "CBFBreweryCell.h"
+#import "CBFBreweryDetailController.h"
 
 
 
@@ -25,6 +26,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSMutableDictionary *cachedImages;
 
 @end
 
@@ -43,7 +45,8 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-//    [self.collectionView registerClass:[CBFBreweryCell class] forCellWithReuseIdentifier:@"breweryCell"];
+    self.cachedImages = [[NSMutableDictionary alloc] init];
+    
     
 }
 
@@ -62,8 +65,8 @@
 {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==========================");
-//    NSArray *sortedBreweryArray = [self sortedBreweryArray];
-//    NSLog(@"Sorted Brewery Array: %@", sortedBreweryArray);
+    //    NSArray *sortedBreweryArray = [self sortedBreweryArray];
+    //    NSLog(@"Sorted Brewery Array: %@", sortedBreweryArray);
     NSDictionary *latLonDict = notification.userInfo;
     double latitude = [[latLonDict valueForKey:@"latitude"] doubleValue];
     double longitude = [[latLonDict valueForKey:@"longitude"] doubleValue];
@@ -133,8 +136,34 @@
     cell.layer.cornerRadius = 10.0;
     cell.layer.masksToBounds = YES;
     cell.breweryName.text = brewery.name;
+    
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
     cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
+    
+    NSString *identifier = [NSString stringWithFormat:@"Cell%d", indexPath.row];
+    
+    if ([self.cachedImages objectForKey:identifier] != nil) {
+        cell.logoImageView.image = [self.cachedImages objectForKey:identifier];
+    } else {
+        
+        //    UIImage *logoImage = [UIImage imageWithData:brewery.logo];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            NSString *urlString = brewery.logoURL;
+            NSURL *photoURL = [NSURL URLWithString:urlString];
+            NSData *data = [NSData dataWithContentsOfURL:photoURL];
+            UIImage *image = [[UIImage alloc] initWithData:data];
+            if (image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.logoImageView.image = image;
+                    [self.cachedImages setValue:image forKey:identifier];
+                    [cell setNeedsLayout];
+                });
+            }
+            
+        });
+        
+    }
+    //    cell.logoImageView.image = logoImage;
     
     
     
@@ -142,6 +171,31 @@
     
 }
 
+
+
+
+#pragma mark - Segue Preperations
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"showBreweryDetailView"]) {
+        NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+        
+        CBFBreweryDetailController *detailVC = [segue destinationViewController];
+        NSArray *sortedArray = [self sortedBreweryArray];
+        CBFBrewery *brewery = sortedArray[indexPath.row];
+        // TODO:  detailVC.breweryObjectId is comming back as an unrecognized selector
+        detailVC.brewery = brewery;
+        detailVC.user = self.user;
+        detailVC.coreDataController = self.coreDataController;
+        
+        
+    }
+    
+    
+    
+}
 
 
 @end
