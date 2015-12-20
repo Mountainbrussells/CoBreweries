@@ -14,8 +14,11 @@
 
 @interface CBFBreweryDetailController : UITableViewController
 
-@property (strong, nonatomic) CBFUser *user;
-@property (strong, nonatomic) CBFBrewery *brewery;
+
+@property (strong, nonatomic) NSManagedObjectID *userdObjectId;
+@property (strong, nonatomic) NSManagedObjectID *breweryObjectId;
+
 @property (strong, nonatomic) CBFCoreDataController *coreDataController;
+@property (strong, nonatomic) UIImage *logoImage;
 
 @end

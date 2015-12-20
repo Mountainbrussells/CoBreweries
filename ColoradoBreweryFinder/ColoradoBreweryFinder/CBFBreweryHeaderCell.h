@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface CBFBreweryHeaderCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIView *breweryNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *logoImageView;
-@property (weak, nonatomic) IBOutlet UIView *distancelabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *breweryNameLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 @property (strong, nonatomic)NSString *address;
 @property (strong, nonatomic)NSString *phoneNumber;

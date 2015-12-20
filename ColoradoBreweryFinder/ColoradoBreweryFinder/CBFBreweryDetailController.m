@@ -14,10 +14,17 @@
 @interface CBFBreweryDetailController ()
 
 @property (strong, nonatomic) NSArray *beersArray;
+@property (strong, nonatomic) CBFBrewery *brewery;
+@property (strong, nonatomic) CBFUser *user;
 
 @end
 
 @implementation CBFBreweryDetailController
+- (void)viewDidLoad
+{
+    self.brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:self.breweryObjectId];
+    self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -31,13 +38,30 @@
     } else if (section == 2) {
         return self.beersArray.count;
     } else {
-        return 0;
+        return 4;
     }
 }
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    
+    if ( indexPath.section == 0) {
+        CBFBreweryHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"breweryHeaderCell"];
+        cell.breweryNameLabel.text = self.brewery.name;
+        cell.logoImageView.image = self.logoImage;
+        return cell;
+    }
+    
+    if (indexPath.section == 1) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+        cell.textLabel.text = @"Beer";
+        return cell;
+    } else {
+        return nil;
+    }
+    
+
+}
 
 @end

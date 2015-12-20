@@ -43,6 +43,20 @@
     return user;
 }
 
+- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId
+{
+    CBFBrewery *brewery;
+    NSError *error;
+    brewery = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!brewery) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return brewery;
+}
+
 - (NSArray *)fetchBreweries
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

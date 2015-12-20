@@ -140,7 +140,7 @@
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
     cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
     
-    NSString *identifier = [NSString stringWithFormat:@"Cell%d", indexPath.row];
+    NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
     
     if ([self.cachedImages objectForKey:identifier] != nil) {
         cell.logoImageView.image = [self.cachedImages objectForKey:identifier];
@@ -152,11 +152,14 @@
             NSURL *photoURL = [NSURL URLWithString:urlString];
             NSData *data = [NSData dataWithContentsOfURL:photoURL];
             UIImage *image = [[UIImage alloc] initWithData:data];
+            [self.cachedImages setValue:image forKey:identifier];
+            __weak typeof(self) weakSelf = self;
             if (image) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.logoImageView.image = image;
-                    [self.cachedImages setValue:image forKey:identifier];
-                    [cell setNeedsLayout];
+                    cell.logoImageView.image = [strongSelf.cachedImages objectForKey:identifier];
+                    //[cell setNeedsLayout];
                 });
             }
             
@@ -185,9 +188,10 @@
         CBFBreweryDetailController *detailVC = [segue destinationViewController];
         NSArray *sortedArray = [self sortedBreweryArray];
         CBFBrewery *brewery = sortedArray[indexPath.row];
-        // TODO:  detailVC.breweryObjectId is comming back as an unrecognized selector
-        detailVC.brewery = brewery;
-        detailVC.user = self.user;
+        detailVC.breweryObjectId = brewery.objectID;
+        detailVC.userdObjectId = self.user.objectID;
+        NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
+        detailVC.logoImage = [self.cachedImages objectForKey:identifier];
         detailVC.coreDataController = self.coreDataController;
         
         
