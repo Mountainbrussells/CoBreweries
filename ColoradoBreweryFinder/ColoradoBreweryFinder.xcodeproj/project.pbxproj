@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		C9429C9A1C2067B400C9D844 /* CBFBreweryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429C991C2067B400C9D844 /* CBFBreweryDetailController.m */; };
 		C9429C9D1C209C8700C9D844 /* CBFBreweryHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429C9C1C209C8700C9D844 /* CBFBreweryHeaderCell.m */; };
+		C9429C9F1C27142B00C9D844 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9429C9E1C27142B00C9D844 /* MapKit.framework */; };
+		C9429CA21C2718F500C9D844 /* CBFBreweryMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */; };
 		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
 		C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */; };
 		C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE31C109EC900618F50 /* CBFServiceController.m */; };
@@ -86,6 +88,9 @@
 		C9429C991C2067B400C9D844 /* CBFBreweryDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryDetailController.m; sourceTree = "<group>"; };
 		C9429C9B1C209C8700C9D844 /* CBFBreweryHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryHeaderCell.h; sourceTree = "<group>"; };
 		C9429C9C1C209C8700C9D844 /* CBFBreweryHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryHeaderCell.m; sourceTree = "<group>"; };
+		C9429C9E1C27142B00C9D844 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C9429CA01C2718F500C9D844 /* CBFBreweryMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryMapViewController.h; sourceTree = "<group>"; };
+		C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryMapViewController.m; sourceTree = "<group>"; };
 		C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFLogInViewController.h; sourceTree = "<group>"; };
 		C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFLogInViewController.m; sourceTree = "<group>"; };
 		C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceControllerTests.m; sourceTree = "<group>"; };
@@ -152,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9429C9F1C27142B00C9D844 /* MapKit.framework in Frameworks */,
 				C9FBBD5E1C1783E00008D7A6 /* CoreLocation.framework in Frameworks */,
 				C9F5CAF61C160FD800618F50 /* Security.framework in Frameworks */,
 			);
@@ -208,6 +214,7 @@
 		C9FBC3AF1BFE80E00055E01B = {
 			isa = PBXGroup;
 			children = (
+				C9429C9E1C27142B00C9D844 /* MapKit.framework */,
 				C9FBBD5D1C1783E00008D7A6 /* CoreLocation.framework */,
 				C9F5CAF51C160FD800618F50 /* Security.framework */,
 				C9FBC3F11BFF78430055E01B /* BRPersistenceController.h */,
@@ -252,6 +259,8 @@
 				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
 				C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */,
 				C9F5CAE61C10A5ED00618F50 /* CBFSignUpViewController.m */,
+				C9429CA01C2718F500C9D844 /* CBFBreweryMapViewController.h */,
+				C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */,
 				C9FBC3C41BFE80E00055E01B /* Main.storyboard */,
 				C9FBC3CA1BFE80E00055E01B /* Assets.xcassets */,
 				C9FBC3CC1BFE80E00055E01B /* LaunchScreen.storyboard */,
@@ -490,6 +499,7 @@
 				C9FBC4341BFFD46B0055E01B /* CBFUser.m in Sources */,
 				C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */,
 				C9F5CAEE1C11F9FD00618F50 /* CBFCoreDataController.m in Sources */,
+				C9429CA21C2718F500C9D844 /* CBFBreweryMapViewController.m in Sources */,
 				C9FBC4361BFFD46B0055E01B /* _CBFBeerRating.m in Sources */,
 				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
 				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,
