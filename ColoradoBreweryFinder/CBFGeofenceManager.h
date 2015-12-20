@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 extern NSString *const CBFLocationWillChangeNotification;
 extern NSString *const CBFLocationDidChangeNotification;
@@ -26,5 +27,6 @@ CBFGeofenceManagerLocationOutOfArea = 3,
 };
 
 @property enum CBFGeofenceManagerLocationResultsChangeType currentState;
+@property (strong, readonly) CLLocation *location;
 
 @end

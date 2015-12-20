@@ -7,7 +7,7 @@
 //
 
 #import "CBFGeofenceManager.h"
-#import <CoreLocation/CoreLocation.h>
+
 
 static double const kCLLocationHorizontalAccuracyDistance = 20;
 static double const kCLLocationMinimumDistanceFromlastLocation = 804;
@@ -21,7 +21,8 @@ NSString *const CBFLocationDidChangeNotificationLongitudekey = @"longitude";
 @interface CBFGeofenceManager () <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CLLocation *location;
+@property (strong, readwrite) CLLocation *location;
+
 
 @end
 
