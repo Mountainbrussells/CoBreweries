@@ -49,7 +49,18 @@
     if ( indexPath.section == 0) {
         CBFBreweryHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"breweryHeaderCell"];
         cell.breweryNameLabel.text = self.brewery.name;
-        cell.logoImageView.image = self.logoImage;
+        if (!self.logoImage) {
+            NSString *urlString = self.brewery.logoURL;
+            NSURL *photoURL = [NSURL URLWithString:urlString];
+            NSData *data = [NSData dataWithContentsOfURL:photoURL];
+            UIImage *image = [[UIImage alloc] initWithData:data];
+            cell.logoImageView.image = image;
+            
+
+            
+        } else {
+            cell.logoImageView.image = self.logoImage;
+        }
         return cell;
     }
     
@@ -61,7 +72,7 @@
         return nil;
     }
     
-
+    
 }
 
 @end
