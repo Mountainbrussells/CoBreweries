@@ -231,11 +231,12 @@
                     </view>
                     <connections>
                         <outlet property="breweryMapView" destination="3cJ-fS-q1k" id="ONa-Va-jPD"/>
+                        <segue destination="nn7-Nn-BPA" kind="show" identifier="ShowDetailsFromMapSegue" id="mEz-5X-10T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xx6-Q9-gdT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2122" y="-391"/>
+            <point key="canvasLocation" x="2500" y="-435"/>
         </scene>
         <!--Brewery Detail Controller-->
         <scene sceneID="WPH-BS-EwX">
@@ -462,5 +463,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="kCy-7r-hhV"/>
+        <segue reference="mEz-5X-10T"/>
     </inferredMetricsTieBreakers>
 </document>

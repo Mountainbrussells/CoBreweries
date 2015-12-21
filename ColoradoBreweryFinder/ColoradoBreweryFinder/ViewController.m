@@ -14,6 +14,7 @@
 #import "CBFGeofenceManager.h"
 #import "CBFBreweryCell.h"
 #import "CBFBreweryDetailController.h"
+#import "CBFBreweryMapViewController.h"
 
 
 
@@ -195,6 +196,13 @@
         detailVC.coreDataController = self.coreDataController;
         
         
+    }
+    if ([[segue identifier] isEqualToString:@"showMapViewSegue"]) {
+        CBFBreweryMapViewController *mapVC = [segue destinationViewController];
+        mapVC.coreDataController = self.coreDataController;
+        mapVC.persistenceController = self.persistenceController;
+        mapVC.serviceController = self.serviceController;
+        mapVC.userObjectId = self.user.objectID;
     }
     
     
