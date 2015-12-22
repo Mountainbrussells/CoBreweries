@@ -29,12 +29,22 @@
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
+    
+    NSString *url = @"telprompt://";
+    NSString *phoneUrlString = [url stringByAppendingString:self.phoneNumber];
+    NSURL *phoneURL = [NSURL URLWithString:phoneUrlString];
+    
+    [[UIApplication sharedApplication] openURL:phoneURL];
 }
 
 - (IBAction)websiteButton:(id)sender {
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
+    NSString *url = @"http://";
+    NSString *websiteURLString = [url stringByAppendingString:self.websiteURL];
+    NSURL *websiteURL = [NSURL URLWithString:websiteURLString];
+    [[UIApplication sharedApplication] openURL:websiteURL];
 }
 
 - (MKMapItem*)mapItem {
