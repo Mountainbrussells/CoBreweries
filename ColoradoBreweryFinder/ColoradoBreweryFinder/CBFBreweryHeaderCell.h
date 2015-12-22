@@ -18,5 +18,7 @@
 @property (strong, nonatomic)NSString *address;
 @property (strong, nonatomic)NSString *phoneNumber;
 @property (strong, nonatomic)NSString *websiteURL;
+@property (assign, nonatomic)double lattitude;
+@property (assign, nonatomic)double longitude;
 
 @end

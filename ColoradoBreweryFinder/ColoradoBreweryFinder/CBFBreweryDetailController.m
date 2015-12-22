@@ -11,6 +11,7 @@
 
 
 
+
 @interface CBFBreweryDetailController ()
 
 @property (strong, nonatomic) NSArray *beersArray;
@@ -49,7 +50,17 @@
     if ( indexPath.section == 0) {
         CBFBreweryHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"breweryHeaderCell"];
         cell.breweryNameLabel.text = self.brewery.name;
+        cell.address = self.brewery.address;
+        cell.phoneNumber = self.brewery.phoneNumber;
+        cell.websiteURL = self.brewery.websiteURL;
+        double longintude = [self.brewery.longitude doubleValue];
+        cell.longitude = longintude;
+        double lattitude = [self.brewery.lattitude doubleValue];
+        cell.lattitude = lattitude;
+        
         if (!self.logoImage) {
+            
+            // TODO: Dispatch Asynch
             NSString *urlString = self.brewery.logoURL;
             NSURL *photoURL = [NSURL URLWithString:urlString];
             NSData *data = [NSData dataWithContentsOfURL:photoURL];

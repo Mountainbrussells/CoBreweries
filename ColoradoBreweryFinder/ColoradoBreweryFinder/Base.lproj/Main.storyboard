@@ -247,11 +247,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="breweryHeaderCell" rowHeight="312" id="L9R-N0-6sw" customClass="CBFBreweryHeaderCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="breweryHeaderCell" rowHeight="312" id="L9R-N0-6sw" customClass="CBFBreweryHeaderCell">
                                 <rect key="frame" x="0.0" y="92" width="600" height="312"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L9R-N0-6sw" id="OZX-rA-Opy">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="312"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="311.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Brewery Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQS-wk-tcJ">
