@@ -27,7 +27,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSMutableDictionary *cachedImages;
+@property (strong, nonatomic) NSCache *photoCache;
 
 @end
 
@@ -46,7 +46,7 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.cachedImages = [[NSMutableDictionary alloc] init];
+    self.photoCache = [[NSCache alloc] init];
     
     
 }
@@ -141,10 +141,10 @@
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
     cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
     
-    NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
+    NSString *identifier = [NSString stringWithFormat:@"Cell%@", brewery.name];
     
-    if ([self.cachedImages objectForKey:identifier] != nil) {
-        cell.logoImageView.image = [self.cachedImages objectForKey:identifier];
+    if ([self.photoCache objectForKey:identifier] != nil) {
+        cell.logoImageView.image = [self.photoCache objectForKey:identifier];
     } else {
         
         //    UIImage *logoImage = [UIImage imageWithData:brewery.logo];
@@ -153,13 +153,13 @@
             NSURL *photoURL = [NSURL URLWithString:urlString];
             NSData *data = [NSData dataWithContentsOfURL:photoURL];
             UIImage *image = [[UIImage alloc] initWithData:data];
-            [self.cachedImages setValue:image forKey:identifier];
+            [self.photoCache setObject:image forKey:identifier];
             __weak typeof(self) weakSelf = self;
             if (image) {
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.logoImageView.image = [strongSelf.cachedImages objectForKey:identifier];
+                    cell.logoImageView.image = [strongSelf.photoCache objectForKey:identifier];
                     //[cell setNeedsLayout];
                 });
             }
@@ -192,7 +192,7 @@
         detailVC.breweryObjectId = brewery.objectID;
         detailVC.userdObjectId = self.user.objectID;
         NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
-        detailVC.logoImage = [self.cachedImages objectForKey:identifier];
+        detailVC.logoImage = [self.photoCache objectForKey:identifier];
         detailVC.coreDataController = self.coreDataController;
         
         
