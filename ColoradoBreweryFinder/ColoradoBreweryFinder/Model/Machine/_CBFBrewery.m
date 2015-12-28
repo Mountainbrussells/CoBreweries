@@ -8,7 +8,9 @@ const struct CBFBreweryAttributes CBFBreweryAttributes = {
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
 	.lattitude = @"lattitude",
+	.location = @"location",
 	.logo = @"logo",
+	.logoURL = @"logoURL",
 	.longitude = @"longitude",
 	.name = @"name",
 	.phoneNumber = @"phoneNumber",
@@ -86,7 +88,11 @@ const struct CBFBreweryRelationships CBFBreweryRelationships = {
 	[self setPrimitiveLattitude:[NSNumber numberWithDouble:value_]];
 }
 
+@dynamic location;
+
 @dynamic logo;
+
+@dynamic logoURL;
 
 @dynamic longitude;
 

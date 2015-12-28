@@ -23,5 +23,7 @@
 
 - (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error))completion;
 
+- (void)requestBreweriesWithCompletion:(void (^)(NSError *error))completion;
+
 
 @end

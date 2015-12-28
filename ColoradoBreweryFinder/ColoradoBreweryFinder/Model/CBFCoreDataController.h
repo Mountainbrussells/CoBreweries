@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "CBFUser.h"
+#import "CBFBrewery.h"
 #import "BRPersistenceController.h"
 
 
@@ -18,5 +19,9 @@
 - (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
 
 - (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
+
+- (NSArray *)fetchBreweries;
+
+- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
 @end

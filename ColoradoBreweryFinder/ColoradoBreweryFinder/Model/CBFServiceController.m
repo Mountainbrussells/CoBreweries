@@ -1,3 +1,4 @@
+
 //
 //  CBFServiceController.m
 //  ColoradoBreweryFinder
@@ -9,10 +10,14 @@
 #import "CBFServiceController.h"
 #import "CBFUser.h"
 #import "NSString+NSString_EscapedString.h"
+#import "CBFBrewery.h"
+#import <CoreLocation/CoreLocation.h>
+
 
 static NSString *const kBaseParseAPIURL = @"https://api.parse.com";
 static NSString *const kParseUserVenue = @"/1/users";
 static NSString *const kParseLoginVenue = @"/1/login";
+static NSString *const kParseBreweryClassVenue = @"/1/classes/Brewery";
 static NSString *const kPARSE_APPLICATION_ID = @"Ly0UjZGre3fILHVIHX9Hk19lb9v5Dev2nUSOynkF";
 static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVLo";
 
@@ -33,6 +38,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     return self;
 }
 
+
+#pragma mark - User Calls
 - (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *, NSString *, NSError *))completion
 {
     
@@ -276,11 +283,76 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
     [task resume];
     
+}
+
+#pragma mark - Brewery Calls
+
+- (void)requestBreweriesWithCompletion:(void (^)(NSError *error))completion
+{
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
     
+    NSURL *parseURL = [NSURL URLWithString:urlString];
     
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     
+    NSURLSession *session = [NSURLSession sharedSession];
     
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"responseDicionary:%@", responseDictionary);
+            NSError *dataError;
+            NSDictionary *breweryData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
+            
+            NSArray *breweries = [breweryData valueForKey:@"results"];
+            
+            for (id brewery in breweries) {
+                CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:moc];
+                mocBrewery.name = [brewery objectForKey:@"name"];
+                mocBrewery.address = [brewery objectForKey:@"address"];
+                NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                
+                CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
+                mocBrewery.location = location;
+                
+                
+                mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                NSString *urlString = [photoDictionary objectForKey:@"url"];
+                mocBrewery.logoURL = urlString;
+//                NSURL *photoURL = [NSURL URLWithString:urlString];
+//                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+//                mocBrewery.logo = data;
+                
+                NSError *mocError;
+                [moc save:&mocError];
+                
+            }
+            
+            if (completion) {
+                completion(nil);
+            }
+        }
+        
+        if (response) {
+             NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
+    
+    [task resume];
 }
 
 

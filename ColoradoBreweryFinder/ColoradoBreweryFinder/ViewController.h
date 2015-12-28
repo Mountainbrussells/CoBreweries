@@ -13,7 +13,8 @@
 #import "CBFUser.h"
 
 
-@interface ViewController : UIViewController
+
+@interface ViewController : UIViewController 
 
 @property (strong, nonatomic) BRPersistenceController *persistenceController;
 @property (strong, nonatomic) CBFServiceController *serviceController;

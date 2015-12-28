@@ -11,6 +11,7 @@
 @interface CBFCoreDataController ()
 
 @property (strong, nonatomic) BRPersistenceController *persistencController;
+@property (strong, nonatomic) NSManagedObjectContext *moc;
 
 @end
 
@@ -20,16 +21,17 @@
 {
     self = [super init];
     self.persistencController = persistenceController;
+    self.moc = self.persistencController.managedObjectContext;
     return self;
 }
 
 - (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId
 {
     // MOC is passed from AppDelegate when CoreDataController is initialized
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
     CBFUser *user;
     NSError *error;
-    user = [moc existingObjectWithID:ManagedObjectId error:&error];
+    user = [self.moc existingObjectWithID:ManagedObjectId error:&error];
     
     
     if (!user) {
@@ -39,6 +41,32 @@
     
     
     return user;
+}
+
+- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId
+{
+    CBFBrewery *brewery;
+    NSError *error;
+    brewery = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!brewery) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return brewery;
+}
+
+- (NSArray *)fetchBreweries
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.moc];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBreweries = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBreweries;
+    
 }
 
 
