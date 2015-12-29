@@ -468,6 +468,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 {
     CBFUser *user = self.user;
     CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryId];
+    long intRating = [rating longLongValue];
+    NSNumber *breweryRating = [NSNumber numberWithLong:intRating];
     
     
     NSString *urlString = kBaseParseAPIURL;
@@ -485,7 +487,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     NSDictionary *breweryDict = @{@"__type": @"Pointer", @"className": @"Brewery", @"objectId": breweryId};
     NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
     
-    NSDictionary *postDictionary = @{@"rating": rating, @"brewery": breweryDict, @"user": userDict};
+    NSDictionary *postDictionary = @{@"rating": breweryRating, @"brewery": breweryDict, @"user": userDict};
     
     NSError *error;
     NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];

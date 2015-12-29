@@ -25,7 +25,16 @@
 {
     self.brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:self.breweryObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
+    [self.tableView reloadData];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
+    
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -54,6 +63,9 @@
         cell.phoneNumber = self.brewery.phoneNumber;
         cell.websiteURL = self.brewery.websiteURL;
         cell.rateBreweryView.hidden = true;
+        cell.serviceController = self.serviceController;
+        //needs to be managedObjectId
+        cell.brewery = self.brewery;
         double longintude = [self.brewery.longitude doubleValue];
         cell.longitude = longintude;
         double lattitude = [self.brewery.lattitude doubleValue];

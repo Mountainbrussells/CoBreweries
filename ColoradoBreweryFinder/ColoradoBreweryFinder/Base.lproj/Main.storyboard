@@ -327,19 +327,31 @@
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MaO-MM-0ZG">
                                                             <rect key="frame" x="0.0" y="21" width="83" height="30"/>
-                                                            <state key="normal" title="Button"/>
+                                                            <state key="normal" title="1"/>
+                                                            <connections>
+                                                                <action selector="rateBrewery1:" destination="L9R-N0-6sw" eventType="touchUpInside" id="AUZ-t2-kpY"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hj-xt-QiF">
                                                             <rect key="frame" x="83" y="21" width="83" height="30"/>
-                                                            <state key="normal" title="Button"/>
+                                                            <state key="normal" title="2"/>
+                                                            <connections>
+                                                                <action selector="rateBreweryTwo:" destination="L9R-N0-6sw" eventType="touchUpInside" id="Ccf-JO-ejg"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWN-cI-H0D">
                                                             <rect key="frame" x="166" y="21" width="83" height="30"/>
-                                                            <state key="normal" title="Button"/>
+                                                            <state key="normal" title="3"/>
+                                                            <connections>
+                                                                <action selector="rateBrewery3:" destination="L9R-N0-6sw" eventType="touchUpInside" id="msG-4I-vFf"/>
+                                                            </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ML-6J-5KZ">
                                                             <rect key="frame" x="249" y="21" width="83" height="30"/>
-                                                            <state key="normal" title="Button"/>
+                                                            <state key="normal" title="4"/>
+                                                            <connections>
+                                                                <action selector="rateBrewey4:" destination="L9R-N0-6sw" eventType="touchUpInside" id="zXg-rt-6gb"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>

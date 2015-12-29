@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBFServiceController.h"
+
+@class CBFBrewery;
 
 @interface CBFBreweryHeaderCell : UITableViewCell
 
@@ -23,4 +26,6 @@
 @property (assign, nonatomic)double lattitude;
 @property (assign, nonatomic)double longitude;
 
+@property (strong, nonatomic)CBFServiceController *serviceController;
+@property (strong, nonatomic)CBFBrewery *brewery;
 @end

@@ -9,6 +9,7 @@
 #import "CBFBreweryHeaderCell.h"
 #import <MapKit/MapKit.h>
 #import <AddressBook/AddressBook.h>
+#import "CBFBreweryCell.h"
 
 @implementation CBFBreweryHeaderCell
 
@@ -18,6 +19,7 @@
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
+    self.rateBreweryView.hidden = false;
 }
 
 - (IBAction)directionsButton:(id)sender {
@@ -49,6 +51,34 @@
     NSURL *websiteURL = [NSURL URLWithString:websiteURLString];
     [[UIApplication sharedApplication] openURL:websiteURL];
 }
+- (IBAction)rateBrewery1:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 1];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];
+    
+}
+
+- (IBAction)rateBreweryTwo:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 2];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
+
+- (IBAction)rateBrewery3:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 3];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
+- (IBAction)rateBrewey4:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 4];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
 
 - (MKMapItem*)mapItem {
     // TODO: Refactor kABPersonAddressStreetKey

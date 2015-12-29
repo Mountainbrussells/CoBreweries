@@ -208,6 +208,7 @@
         NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
         detailVC.logoImage = [self.photoCache objectForKey:identifier];
         detailVC.coreDataController = self.coreDataController;
+        detailVC.serviceController = self.serviceController;
         
         
     }
