@@ -11,6 +11,9 @@
 #import <AddressBook/AddressBook.h>
 
 @implementation CBFBreweryHeaderCell
+
+
+
 - (IBAction)rateBrewery:(id)sender {
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);

@@ -7,6 +7,7 @@ extern const struct CBFBreweryRatingAttributes {
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *rating;
+	__unsafe_unretained NSString *uid;
 } CBFBreweryRatingAttributes;
 
 extern const struct CBFBreweryRatingRelationships {
@@ -42,6 +43,10 @@ extern const struct CBFBreweryRatingRelationships {
 
 //- (BOOL)validateRating:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* uid;
+
+//- (BOOL)validateUid:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) CBFBrewery *brewery;
 
 //- (BOOL)validateBrewery:(id*)value_ error:(NSError**)error_;
@@ -65,6 +70,9 @@ extern const struct CBFBreweryRatingRelationships {
 
 - (float)primitiveRatingValue;
 - (void)setPrimitiveRatingValue:(float)value_;
+
+- (NSString*)primitiveUid;
+- (void)setPrimitiveUid:(NSString*)value;
 
 - (CBFBrewery*)primitiveBrewery;
 - (void)setPrimitiveBrewery:(CBFBrewery*)value;

@@ -26,6 +26,7 @@
 		C9429C9F1C27142B00C9D844 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9429C9E1C27142B00C9D844 /* MapKit.framework */; };
 		C9429CA21C2718F500C9D844 /* CBFBreweryMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */; };
 		C9429CA51C287AF100C9D844 /* CBFBreweryLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA41C287AF100C9D844 /* CBFBreweryLocation.m */; };
+		C9429CA81C31DE6800C9D844 /* NSString+MD5String.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */; };
 		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
 		C9F5CAE11C109E2800618F50 /* ServiceControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */; };
 		C9F5CAE41C109EC900618F50 /* CBFServiceController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CAE31C109EC900618F50 /* CBFServiceController.m */; };
@@ -94,6 +95,8 @@
 		C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryMapViewController.m; sourceTree = "<group>"; };
 		C9429CA31C287AF100C9D844 /* CBFBreweryLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryLocation.h; sourceTree = "<group>"; };
 		C9429CA41C287AF100C9D844 /* CBFBreweryLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryLocation.m; sourceTree = "<group>"; };
+		C9429CA61C31DE6800C9D844 /* NSString+MD5String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5String.h"; sourceTree = "<group>"; };
+		C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5String.m"; sourceTree = "<group>"; };
 		C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFLogInViewController.h; sourceTree = "<group>"; };
 		C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFLogInViewController.m; sourceTree = "<group>"; };
 		C9F5CAE01C109E2800618F50 /* ServiceControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceControllerTests.m; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 			children = (
 				C9F5CAE91C110D4200618F50 /* NSString+NSString_EscapedString.h */,
 				C9F5CAEA1C110D4200618F50 /* NSString+NSString_EscapedString.m */,
+				C9429CA61C31DE6800C9D844 /* NSString+MD5String.h */,
+				C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */,
 			);
 			name = Catagories;
 			path = Model;
@@ -505,6 +510,7 @@
 				C9FBC3C31BFE80E00055E01B /* ViewController.m in Sources */,
 				C9F5CAEE1C11F9FD00618F50 /* CBFCoreDataController.m in Sources */,
 				C9429CA21C2718F500C9D844 /* CBFBreweryMapViewController.m in Sources */,
+				C9429CA81C31DE6800C9D844 /* NSString+MD5String.m in Sources */,
 				C9FBC4361BFFD46B0055E01B /* _CBFBeerRating.m in Sources */,
 				C9FBC4371BFFD46B0055E01B /* _CBFBrewery.m in Sources */,
 				C9FBC4321BFFD46B0055E01B /* CBFBrewery.m in Sources */,

@@ -7,6 +7,7 @@ const struct CBFBreweryRatingAttributes CBFBreweryRatingAttributes = {
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
 	.rating = @"rating",
+	.uid = @"uid",
 };
 
 const struct CBFBreweryRatingRelationships CBFBreweryRatingRelationships = {
@@ -72,6 +73,8 @@ const struct CBFBreweryRatingRelationships CBFBreweryRatingRelationships = {
 - (void)setPrimitiveRatingValue:(float)value_ {
 	[self setPrimitiveRating:[NSNumber numberWithFloat:value_]];
 }
+
+@dynamic uid;
 
 @dynamic brewery;
 

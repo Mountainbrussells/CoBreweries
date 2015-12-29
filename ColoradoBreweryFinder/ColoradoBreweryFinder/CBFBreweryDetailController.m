@@ -53,6 +53,7 @@
         cell.address = self.brewery.address;
         cell.phoneNumber = self.brewery.phoneNumber;
         cell.websiteURL = self.brewery.websiteURL;
+        cell.rateBreweryView.hidden = true;
         double longintude = [self.brewery.longitude doubleValue];
         cell.longitude = longintude;
         double lattitude = [self.brewery.lattitude doubleValue];

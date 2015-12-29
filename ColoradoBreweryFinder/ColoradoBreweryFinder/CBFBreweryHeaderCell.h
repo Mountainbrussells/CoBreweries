@@ -11,9 +11,11 @@
 @interface CBFBreweryHeaderCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *breweryNameLabel;
+@property (weak, nonatomic) IBOutlet UIView *rateBreweryView;
 
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
+
 
 @property (strong, nonatomic)NSString *address;
 @property (strong, nonatomic)NSString *phoneNumber;

@@ -20,8 +20,14 @@
 
 - (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
 
+- (CBFUser *)fetchUserWithUID:(NSString *)uid;
+
 - (NSArray *)fetchBreweries;
 
 - (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+
+- (CBFBrewery *)fetchBreweryWithUID:(NSString *)uid;
+
+
 
 @end
