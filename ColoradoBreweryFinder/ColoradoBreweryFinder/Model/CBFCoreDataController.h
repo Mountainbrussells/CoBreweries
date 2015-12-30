@@ -32,6 +32,8 @@
 
 - (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
 
+- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery;
+
 
 
 @end

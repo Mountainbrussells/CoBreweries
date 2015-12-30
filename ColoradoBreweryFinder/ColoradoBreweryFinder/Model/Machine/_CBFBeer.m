@@ -4,9 +4,12 @@
 #import "_CBFBeer.h"
 
 const struct CBFBeerAttributes CBFBeerAttributes = {
+	.abv = @"abv",
 	.dateCreated = @"dateCreated",
 	.dateUpdated = @"dateUpdated",
+	.ibus = @"ibus",
 	.name = @"name",
+	.style = @"style",
 };
 
 const struct CBFBeerRelationships CBFBeerRelationships = {
@@ -44,11 +47,17 @@ const struct CBFBeerRelationships CBFBeerRelationships = {
 	return keyPaths;
 }
 
+@dynamic abv;
+
 @dynamic dateCreated;
 
 @dynamic dateUpdated;
 
+@dynamic ibus;
+
 @dynamic name;
+
+@dynamic style;
 
 @dynamic brewery;
 

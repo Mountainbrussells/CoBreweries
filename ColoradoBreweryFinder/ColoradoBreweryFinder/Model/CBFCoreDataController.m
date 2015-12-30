@@ -127,5 +127,18 @@
     return fetchedBreweryRatings;
 }
 
+- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"brewery = %@", brewery];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Beer" inManagedObjectContext:self.moc];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBeers = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBeers;
+}
+
 
 @end

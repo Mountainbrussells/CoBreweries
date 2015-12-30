@@ -38,6 +38,8 @@
 
 - (void)requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
 
+- (void) requestBeersWithCompletion:(void (^)(NSError *error))completion;
+
 
 
 @end

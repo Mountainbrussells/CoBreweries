@@ -4,9 +4,12 @@
 #import <CoreData/CoreData.h>
 
 extern const struct CBFBeerAttributes {
+	__unsafe_unretained NSString *abv;
 	__unsafe_unretained NSString *dateCreated;
 	__unsafe_unretained NSString *dateUpdated;
+	__unsafe_unretained NSString *ibus;
 	__unsafe_unretained NSString *name;
+	__unsafe_unretained NSString *style;
 } CBFBeerAttributes;
 
 extern const struct CBFBeerRelationships {
@@ -28,6 +31,10 @@ extern const struct CBFBeerRelationships {
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CBFBeerID* objectID;
 
+@property (nonatomic, strong) NSString* abv;
+
+//- (BOOL)validateAbv:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSDate* dateCreated;
 
 //- (BOOL)validateDateCreated:(id*)value_ error:(NSError**)error_;
@@ -36,9 +43,17 @@ extern const struct CBFBeerRelationships {
 
 //- (BOOL)validateDateUpdated:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* ibus;
+
+//- (BOOL)validateIbus:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* name;
 
 //- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* style;
+
+//- (BOOL)validateStyle:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) CBFBrewery *brewery;
 
@@ -64,14 +79,23 @@ extern const struct CBFBeerRelationships {
 
 @interface _CBFBeer (CoreDataGeneratedPrimitiveAccessors)
 
+- (NSString*)primitiveAbv;
+- (void)setPrimitiveAbv:(NSString*)value;
+
 - (NSDate*)primitiveDateCreated;
 - (void)setPrimitiveDateCreated:(NSDate*)value;
 
 - (NSDate*)primitiveDateUpdated;
 - (void)setPrimitiveDateUpdated:(NSDate*)value;
 
+- (NSString*)primitiveIbus;
+- (void)setPrimitiveIbus:(NSString*)value;
+
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
+
+- (NSString*)primitiveStyle;
+- (void)setPrimitiveStyle:(NSString*)value;
 
 - (CBFBrewery*)primitiveBrewery;
 - (void)setPrimitiveBrewery:(CBFBrewery*)value;

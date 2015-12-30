@@ -27,7 +27,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSCache *photoCache;
+
 
 @end
 
@@ -38,7 +38,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.breweries = [self.coreDataController fetchBreweries];
-    NSLog(@"Breweries for main VC:%@", self.breweries);
     self.geofenceManager = [CBFGeofenceManager sharedManager];
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
@@ -46,7 +45,6 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.photoCache = [[NSCache alloc] init];
     
     
 }
@@ -76,9 +74,6 @@
     
     self.location = currentLocation;
     
-    NSArray *sortedArray = [self sortedBreweryArray];
-    
-    NSLog(@"sortedArray: %@", sortedArray);
     [self.collectionView reloadData];
 }
 
@@ -183,8 +178,6 @@
         CBFBrewery *brewery = sortedArray[indexPath.row];
         detailVC.breweryObjectId = brewery.objectID;
         detailVC.userdObjectId = self.user.objectID;
-        NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
-        detailVC.logoImage = [self.photoCache objectForKey:identifier];
         detailVC.coreDataController = self.coreDataController;
         detailVC.serviceController = self.serviceController;
         

@@ -12,6 +12,7 @@
 #import "NSString+MD5String.h"
 #import "CBFBrewery.h"
 #import "CBFBreweryRating.h"
+#import "CBFBeer.h"
 #import <CoreLocation/CoreLocation.h>
 
 
@@ -22,6 +23,7 @@ static NSString *const kParseUserVenue = @"/1/users";
 static NSString *const kParseLoginVenue = @"/1/login";
 static NSString *const kParseBreweryClassVenue = @"/1/classes/Brewery";
 static NSString *const kPArseBreweryRatingVenue = @"/1/classes/BreweryRating";
+static NSString *const kParseBeerClassVenue = @"/1/classes/Beer";
 static NSString *const kPARSE_APPLICATION_ID = @"Ly0UjZGre3fILHVIHX9Hk19lb9v5Dev2nUSOynkF";
 static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVLo";
 
@@ -306,7 +308,6 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"responseDicionary:%@", responseDictionary);
             NSError *dataError;
             NSDictionary *breweryData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
@@ -619,6 +620,80 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     }];
     
     [task resume];
+}
+
+#pragma mark - Beer Calls
+
+- (void)requestBeersWithCompletion:(void (^)(NSError *))completion
+{
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBeerClassVenue];
+    
+    NSURL *parseURL = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"responseDicionary:%@", responseDictionary);
+            NSError *dataError;
+            NSDictionary *beersData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
+            
+            NSArray *beers = [beersData valueForKey:@"results"];
+            
+            for (id beer in beers) {
+                
+                
+                CBFBeer *mocBeer = [CBFBeer insertInManagedObjectContext:moc];
+                mocBeer.name = [beer objectForKey:@"name"];
+                mocBeer.style = [beer objectForKey:@"style"];
+                mocBeer.abv = [beer objectForKey:@"abv"];
+                mocBeer.ibus = [beer objectForKey:@"ibus"];
+                
+                NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
+                NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
+                CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                mocBeer.brewery = brewery;
+                
+                NSDictionary *userDict = [beer objectForKey:@"user"];
+                NSString *userUID = [userDict objectForKey:@"objectId"];
+                CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                
+                if ([user.uid isEqualToString:self.user.uid]) {
+                    mocBeer.user = user;
+                } else {
+                    mocBeer.user = nil;
+                }
+                
+                NSError *mocError;
+                [moc save:&mocError];
+                
+            }
+            
+            if (completion) {
+                completion(nil);
+            }
+        }
+        
+        if (response) {
+            NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
+    
+    [task resume];
+
 }
 
     
