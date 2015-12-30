@@ -137,43 +137,21 @@
     cell.layer.cornerRadius = 10.0;
     cell.layer.masksToBounds = YES;
     cell.breweryName.text = brewery.name;
+    if (brewery.ratings.count > 0) {
+        float breweryRating = [brewery calculateAverageRating];
+        
+        NSString *breweryRatingString = [NSString stringWithFormat:@"%0.0f", breweryRating];
+        NSString *fullRatingLabelString = [NSString stringWithFormat:@"Rating:%@", breweryRatingString];
+        cell.ratingLabel.text = fullRatingLabelString;
+    } else {
+        NSString *noRatingText = @"No Rating";
+        cell.ratingLabel.text = noRatingText;
+    }
+    
+    
     
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
-    
-    //    NSString *identifier = [NSString stringWithFormat:@"Cell%@", brewery.name];
-    //
-    //    if ([self.photoCache objectForKey:identifier] != nil) {
-    //        cell.logoImageView.image = [self.photoCache objectForKey:identifier];
-    //    } else {
-    //
-    //        //    UIImage *logoImage = [UIImage imageWithData:brewery.logo];
-    //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    //            NSString *urlString = brewery.logoURL;
-    //            NSURL *photoURL = [NSURL URLWithString:urlString];
-    //            NSData *data = [NSData dataWithContentsOfURL:photoURL];
-    //            UIImage *image = [[UIImage alloc] initWithData:data];
-    //            [self.photoCache setObject:image forKey:identifier];
-    //            __weak typeof(self) weakSelf = self;
-    //            if (image) {
-    //                __strong typeof(weakSelf) strongSelf = weakSelf;
-    //
-    //                dispatch_async(dispatch_get_main_queue(), ^{
-    //                    cell.logoImageView.image = [strongSelf.photoCache objectForKey:identifier];
-    //                    //[cell setNeedsLayout];
-    //                });
-    //            }
-    //
-    //        });
-    //
-    //    }
-    //    cell.logoImageView.image = logoImage;
-    
-//    [self.serviceController getImageForBrewery:brewery completion:^(UIImage *image, NSError *error) {
-//            cell.logoImageView.image = image;
-//            [cell setNeedsLayout];
-//        
-//    }];
+    cell.distanceLabel.text = [NSString stringWithFormat:@"%@ mi", distance];
     
     UIImage *logoImage = [self.serviceController getImageWithURL:brewery.logoURL];
     

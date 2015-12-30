@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *breweryName;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
 
 @end

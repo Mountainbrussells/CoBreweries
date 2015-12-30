@@ -131,9 +131,20 @@
                                                     </variation>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wx-31-U68">
-                                                    <rect key="frame" x="35" y="145" width="110" height="21"/>
+                                                    <rect key="frame" x="8" y="146" width="75" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="110" id="qHt-j9-ri0"/>
+                                                        <constraint firstAttribute="width" constant="75" id="7w4-Ei-vzi"/>
+                                                        <constraint firstAttribute="height" constant="21" id="aoP-2q-bfg"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KBS-cH-eua">
+                                                    <rect key="frame" x="96" y="146" width="70" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="70" id="OCo-9e-QVU"/>
+                                                        <constraint firstAttribute="height" constant="21" id="ivd-SB-1eb"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -146,12 +157,15 @@
                                         <constraints>
                                             <constraint firstItem="I0V-vV-IzI" firstAttribute="width" secondItem="XHb-d7-sXO" secondAttribute="height" multiplier="5:9" id="1eO-bi-JiM"/>
                                             <constraint firstItem="qgu-wS-Tpc" firstAttribute="top" secondItem="XHb-d7-sXO" secondAttribute="topMargin" id="5eX-gN-cXd"/>
-                                            <constraint firstItem="1wx-31-U68" firstAttribute="centerX" secondItem="XHb-d7-sXO" secondAttribute="centerX" id="BOD-Ix-peE"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="KBS-cH-eua" secondAttribute="trailing" constant="6" id="CXS-iu-BTw"/>
                                             <constraint firstItem="I0V-vV-IzI" firstAttribute="centerX" secondItem="XHb-d7-sXO" secondAttribute="centerX" id="E9M-sd-UuE"/>
                                             <constraint firstItem="1wx-31-U68" firstAttribute="top" secondItem="I0V-vV-IzI" secondAttribute="bottom" constant="6" id="FDd-da-fdN"/>
                                             <constraint firstItem="I0V-vV-IzI" firstAttribute="width" secondItem="XHb-d7-sXO" secondAttribute="height" multiplier="5:9" id="FiC-kk-XT4"/>
                                             <constraint firstItem="qgu-wS-Tpc" firstAttribute="leading" secondItem="XHb-d7-sXO" secondAttribute="leadingMargin" id="O80-JP-VCK"/>
+                                            <constraint firstItem="KBS-cH-eua" firstAttribute="top" secondItem="I0V-vV-IzI" secondAttribute="bottom" constant="6" id="PLQ-RS-Xa2"/>
+                                            <constraint firstItem="1wx-31-U68" firstAttribute="leading" secondItem="XHb-d7-sXO" secondAttribute="leadingMargin" id="Rkd-nA-gLr"/>
                                             <constraint firstAttribute="bottom" secondItem="I0V-vV-IzI" secondAttribute="bottom" constant="8" id="Tpn-WF-28t"/>
+                                            <constraint firstItem="1wx-31-U68" firstAttribute="centerY" secondItem="XHb-d7-sXO" secondAttribute="centerY" id="Tzq-qq-86D"/>
                                             <constraint firstItem="qgu-wS-Tpc" firstAttribute="trailing" secondItem="XHb-d7-sXO" secondAttribute="trailingMargin" id="VkG-oa-SOQ"/>
                                             <constraint firstAttribute="trailing" secondItem="I0V-vV-IzI" secondAttribute="trailing" constant="8" id="Ytw-XM-0M7"/>
                                             <constraint firstItem="I0V-vV-IzI" firstAttribute="top" secondItem="qgu-wS-Tpc" secondAttribute="bottom" constant="4" id="Zj1-Xl-JUl"/>
@@ -166,12 +180,14 @@
                                                 <exclude reference="Ytw-XM-0M7"/>
                                                 <exclude reference="fry-tA-AkT"/>
                                                 <exclude reference="w0T-P4-t4J"/>
+                                                <exclude reference="Tzq-qq-86D"/>
                                             </mask>
                                         </variation>
                                         <connections>
                                             <outlet property="breweryName" destination="qgu-wS-Tpc" id="iFU-6T-BvW"/>
                                             <outlet property="distanceLabel" destination="1wx-31-U68" id="SIE-qa-XWK"/>
                                             <outlet property="logoImageView" destination="I0V-vV-IzI" id="wvC-TX-eGq"/>
+                                            <outlet property="ratingLabel" destination="KBS-cH-eua" id="ZSN-mt-4WT"/>
                                             <segue destination="nn7-Nn-BPA" kind="show" identifier="showBreweryDetailView" id="M3N-mI-L1w"/>
                                         </connections>
                                     </collectionViewCell>
@@ -524,7 +540,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mEz-5X-10T"/>
         <segue reference="Okh-Bh-4sf"/>
+        <segue reference="M3N-mI-L1w"/>
     </inferredMetricsTieBreakers>
 </document>

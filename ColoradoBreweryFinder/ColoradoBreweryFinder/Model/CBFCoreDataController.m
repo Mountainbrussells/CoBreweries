@@ -103,5 +103,16 @@
     
 }
 
+- (NSArray *)fetchBreweryRatings
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBreweryRatings = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBreweryRatings;
+}
+
 
 @end

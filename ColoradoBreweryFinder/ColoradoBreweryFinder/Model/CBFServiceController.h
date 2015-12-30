@@ -36,6 +36,8 @@
 
 - (void)createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 
+- (void)requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
+
 
 
 @end

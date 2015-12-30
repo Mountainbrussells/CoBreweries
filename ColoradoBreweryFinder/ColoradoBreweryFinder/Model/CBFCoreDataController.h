@@ -28,6 +28,8 @@
 
 - (CBFBrewery *)fetchBreweryWithUID:(NSString *)uid;
 
+- (NSArray *)fetchBreweryRatings;
+
 
 
 @end

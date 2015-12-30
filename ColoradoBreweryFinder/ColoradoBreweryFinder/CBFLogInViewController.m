@@ -66,6 +66,7 @@
                                                    
                                                    [spinner stopAnimating];
                                                    if (strongSelf.user) {
+                                                       
                                                        // Need to persist User between launches
                                                        NSError *keychainError;
                                                        if (![STKeychain storeUsername:strongSelf.user.userName andPassword:strongSelf.user.password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {
@@ -108,6 +109,8 @@
     
     
     
+    
+    
     if (self.userNameTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -130,11 +133,18 @@
                                        completion:^(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error) {
                                            __strong typeof(weakSelf) strongSelf = weakSelf;
                                            if (objectId) {
+                                               
                                                strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
+                                               if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
+                                                   [self.serviceController requestBreweryRatingsWithCompletion:nil];
+                                                   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
+                                               }
                                                
                                                
                                                [spinner stopAnimating];
                                                if (strongSelf.user) {
+                                                   
+
                                                    // Need to persist User between launches
                                                    NSError *keychainError;
                                                    NSString *user = strongSelf.user.userName;
