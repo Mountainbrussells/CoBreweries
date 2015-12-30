@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CBFServiceController.h"
+#import "CBFCoreDataController.h"
+#import "CBFUser.h"
 
 @class CBFBrewery;
 
@@ -27,5 +29,7 @@
 @property (assign, nonatomic)double longitude;
 
 @property (strong, nonatomic)CBFServiceController *serviceController;
+@property (strong, nonatomic)CBFCoreDataController *coreDataController;
 @property (strong, nonatomic)CBFBrewery *brewery;
+@property (strong, nonatomic)CBFUser *user;
 @end

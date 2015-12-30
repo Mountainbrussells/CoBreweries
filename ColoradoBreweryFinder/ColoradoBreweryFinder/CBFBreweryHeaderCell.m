@@ -10,6 +10,12 @@
 #import <MapKit/MapKit.h>
 #import <AddressBook/AddressBook.h>
 #import "CBFBreweryCell.h"
+#import "CBFBreweryRating.h"
+
+@interface CBFBreweryHeaderCell ()
+@property (weak, nonatomic) IBOutlet UILabel *rateBreweryViewHeaderLabel;
+
+@end
 
 @implementation CBFBreweryHeaderCell
 
@@ -19,7 +25,17 @@
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
+    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
+    for (CBFBreweryRating *rating in ratingsArray) {
+        if (rating.user == self.user) {
+            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
+        }
+    }
+    
     self.rateBreweryView.hidden = false;
+}
+- (IBAction)cancelRating:(id)sender {
+    self.rateBreweryView.hidden = true;
 }
 
 - (IBAction)directionsButton:(id)sender {

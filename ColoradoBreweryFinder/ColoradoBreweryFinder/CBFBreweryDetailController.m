@@ -70,7 +70,9 @@
         cell.longitude = longintude;
         double lattitude = [self.brewery.lattitude doubleValue];
         cell.lattitude = lattitude;
-        
+        cell.user = self.user;
+        cell.coreDataController = self.coreDataController;
+    
         if (!self.logoImage) {
             
             // TODO: Dispatch Asynch
