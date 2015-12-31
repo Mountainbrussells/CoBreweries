@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		C90F6D9F1C34823A001E1726 /* CBFFlipSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C90F6D9E1C34823A001E1726 /* CBFFlipSegue.m */; };
+		C90F6DA51C35C446001E1726 /* CBFBeerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C90F6DA41C35C446001E1726 /* CBFBeerDetailViewController.m */; };
+		C90F6DA81C35C4FF001E1726 /* CBFBeerHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C90F6DA71C35C4FF001E1726 /* CBFBeerHeaderCell.m */; };
 		C9429C9A1C2067B400C9D844 /* CBFBreweryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429C991C2067B400C9D844 /* CBFBreweryDetailController.m */; };
 		C9429C9D1C209C8700C9D844 /* CBFBreweryHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429C9C1C209C8700C9D844 /* CBFBreweryHeaderCell.m */; };
 		C9429C9F1C27142B00C9D844 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9429C9E1C27142B00C9D844 /* MapKit.framework */; };
@@ -90,6 +92,10 @@
 /* Begin PBXFileReference section */
 		C90F6D9D1C34823A001E1726 /* CBFFlipSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBFFlipSegue.h; path = ../CBFFlipSegue.h; sourceTree = "<group>"; };
 		C90F6D9E1C34823A001E1726 /* CBFFlipSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBFFlipSegue.m; path = ../CBFFlipSegue.m; sourceTree = "<group>"; };
+		C90F6DA31C35C446001E1726 /* CBFBeerDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeerDetailViewController.h; sourceTree = "<group>"; };
+		C90F6DA41C35C446001E1726 /* CBFBeerDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeerDetailViewController.m; sourceTree = "<group>"; };
+		C90F6DA61C35C4FF001E1726 /* CBFBeerHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeerHeaderCell.h; sourceTree = "<group>"; };
+		C90F6DA71C35C4FF001E1726 /* CBFBeerHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeerHeaderCell.m; sourceTree = "<group>"; };
 		C9429C981C2067B400C9D844 /* CBFBreweryDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryDetailController.h; sourceTree = "<group>"; };
 		C9429C991C2067B400C9D844 /* CBFBreweryDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryDetailController.m; sourceTree = "<group>"; };
 		C9429C9B1C209C8700C9D844 /* CBFBreweryHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBreweryHeaderCell.h; sourceTree = "<group>"; };
@@ -273,6 +279,10 @@
 				C9429C9C1C209C8700C9D844 /* CBFBreweryHeaderCell.m */,
 				C9D7D6A91C344F9500294690 /* CBFBeerCell.h */,
 				C9D7D6AA1C344F9500294690 /* CBFBeerCell.m */,
+				C90F6DA31C35C446001E1726 /* CBFBeerDetailViewController.h */,
+				C90F6DA41C35C446001E1726 /* CBFBeerDetailViewController.m */,
+				C90F6DA61C35C4FF001E1726 /* CBFBeerHeaderCell.h */,
+				C90F6DA71C35C4FF001E1726 /* CBFBeerHeaderCell.m */,
 				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
 				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
 				C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */,
@@ -513,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C90F6DA81C35C4FF001E1726 /* CBFBeerHeaderCell.m in Sources */,
 				C9FBC4311BFFD46B0055E01B /* CBFBeerRating.m in Sources */,
 				C9429C9A1C2067B400C9D844 /* CBFBreweryDetailController.m in Sources */,
 				C9FBC4331BFFD46B0055E01B /* CBFBreweryRating.m in Sources */,
@@ -542,6 +553,7 @@
 				C9F5CAE71C10A5ED00618F50 /* CBFSignUpViewController.m in Sources */,
 				C9FBC3BD1BFE80E00055E01B /* main.m in Sources */,
 				C9F5CAF31C16057700618F50 /* STKeychain.m in Sources */,
+				C90F6DA51C35C446001E1726 /* CBFBeerDetailViewController.m in Sources */,
 				C9429CA51C287AF100C9D844 /* CBFBreweryLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

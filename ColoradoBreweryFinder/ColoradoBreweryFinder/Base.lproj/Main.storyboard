@@ -585,20 +585,20 @@
             </objects>
             <point key="canvasLocation" x="2500" y="330"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Beer Detail View Controller-->
         <scene sceneID="c4K-Wy-bJP">
             <objects>
-                <tableViewController id="jRB-Pm-La7" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
+                <tableViewController id="jRB-Pm-La7" customClass="CBFBeerDetailViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="225" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fK2-wm-pYu">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="225" id="fK2-wm-pYu">
+                                <rect key="frame" x="0.0" y="92" width="600" height="225"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fK2-wm-pYu" id="IVb-HM-fVd">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="225"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -724,6 +724,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="kCy-7r-hhV"/>
-        <segue reference="mEz-5X-10T"/>
+        <segue reference="M3N-mI-L1w"/>
     </inferredMetricsTieBreakers>
 </document>

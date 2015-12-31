@@ -12,6 +12,11 @@
 #import "CBFBreweryLocation.h"
 #import "CBFBreweryDetailController.h"
 
+static CLLocationDegrees const kCenterOfMapLattitude = 39.0000;
+static CLLocationDegrees const kCenterOfMapLongitude = -105.782067;
+static double const kDefaultMapWidth = 500000;
+static double const kDefaultMapHieght = 500000;
+
 @interface CBFBreweryMapViewController () <MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *breweryMapView;
@@ -34,8 +39,8 @@
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(kCenterOfMapLattitude, kCenterOfMapLongitude);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, kDefaultMapHieght, kDefaultMapWidth);
         [self.breweryMapView setRegion:region animated:YES];
         self.mapCenteredOnUser = YES;
     }
@@ -114,8 +119,8 @@
         CLLocationCoordinate2D location = [userLocation.location coordinate];
 
         if (location.latitude > 41 || location.latitude < 37 || location.longitude > 108 || location.longitude < 102) {
-            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
+            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(kCenterOfMapLattitude, kCenterOfMapLongitude);
+            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, kDefaultMapHieght, kDefaultMapWidth);
             [self.breweryMapView setRegion:region animated:YES];
             self.mapCenteredOnUser = YES;
         } else {
