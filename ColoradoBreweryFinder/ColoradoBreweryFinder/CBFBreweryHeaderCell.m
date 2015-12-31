@@ -9,12 +9,33 @@
 #import "CBFBreweryHeaderCell.h"
 #import <MapKit/MapKit.h>
 #import <AddressBook/AddressBook.h>
+#import "CBFBreweryCell.h"
+#import "CBFBreweryRating.h"
+
+@interface CBFBreweryHeaderCell ()
+@property (weak, nonatomic) IBOutlet UILabel *rateBreweryViewHeaderLabel;
+
+@end
 
 @implementation CBFBreweryHeaderCell
+
+
+
 - (IBAction)rateBrewery:(id)sender {
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
+    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
+    for (CBFBreweryRating *rating in ratingsArray) {
+        if (rating.user == self.user) {
+            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
+        }
+    }
+    
+    self.rateBreweryView.hidden = false;
+}
+- (IBAction)cancelRating:(id)sender {
+    self.rateBreweryView.hidden = true;
 }
 
 - (IBAction)directionsButton:(id)sender {
@@ -46,6 +67,34 @@
     NSURL *websiteURL = [NSURL URLWithString:websiteURLString];
     [[UIApplication sharedApplication] openURL:websiteURL];
 }
+- (IBAction)rateBrewery1:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 1];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];
+    
+}
+
+- (IBAction)rateBreweryTwo:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 2];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
+
+- (IBAction)rateBrewery3:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 3];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
+- (IBAction)rateBrewey4:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 4];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
 
 - (MKMapItem*)mapItem {
     // TODO: Refactor kABPersonAddressStreetKey

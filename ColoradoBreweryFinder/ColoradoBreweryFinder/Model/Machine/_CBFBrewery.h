@@ -14,6 +14,7 @@ extern const struct CBFBreweryAttributes {
 	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *phoneNumber;
+	__unsafe_unretained NSString *uid;
 	__unsafe_unretained NSString *websiteURL;
 } CBFBreweryAttributes;
 
@@ -84,6 +85,10 @@ extern const struct CBFBreweryRelationships {
 
 //- (BOOL)validatePhoneNumber:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* uid;
+
+//- (BOOL)validateUid:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSString* websiteURL;
 
 //- (BOOL)validateWebsiteURL:(id*)value_ error:(NSError**)error_;
@@ -151,6 +156,9 @@ extern const struct CBFBreweryRelationships {
 
 - (NSString*)primitivePhoneNumber;
 - (void)setPrimitivePhoneNumber:(NSString*)value;
+
+- (NSString*)primitiveUid;
+- (void)setPrimitiveUid:(NSString*)value;
 
 - (NSString*)primitiveWebsiteURL;
 - (void)setPrimitiveWebsiteURL:(NSString*)value;

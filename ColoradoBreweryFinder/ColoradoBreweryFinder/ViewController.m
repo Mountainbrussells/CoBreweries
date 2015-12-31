@@ -15,6 +15,7 @@
 #import "CBFBreweryCell.h"
 #import "CBFBreweryDetailController.h"
 #import "CBFBreweryMapViewController.h"
+#import "CBFFlipSegue.h"
 
 
 
@@ -27,7 +28,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSCache *photoCache;
+
 
 @end
 
@@ -38,7 +39,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.breweries = [self.coreDataController fetchBreweries];
-    NSLog(@"Breweries for main VC:%@", self.breweries);
     self.geofenceManager = [CBFGeofenceManager sharedManager];
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
@@ -46,7 +46,6 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.photoCache = [[NSCache alloc] init];
     
     
 }
@@ -76,9 +75,10 @@
     
     self.location = currentLocation;
     
-    NSArray *sortedArray = [self sortedBreweryArray];
-    
-    NSLog(@"sortedArray: %@", sortedArray);
+    self.breweries = [self sortedBreweryArray];
+//    [self.collectionView performBatchUpdates:^{
+//        [self.collectionView reloadData];
+//    } completion:nil];
     [self.collectionView reloadData];
 }
 
@@ -102,8 +102,15 @@
         double distanceA = [aLocation distanceFromLocation:self.location];
         
         double distanceB = [bLocation distanceFromLocation:self.location];
+        NSComparisonResult result;
         
-        return [@(distanceA) compare:@(distanceB)];
+        if(distanceA < distanceB) {
+            result = NSOrderedAscending;
+        } else {
+            result = NSOrderedDescending;
+        }
+        
+        return result;
     }];
     
     return sortedArray;
@@ -131,43 +138,39 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CBFBreweryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"breweryCell" forIndexPath:indexPath];
-    NSArray *sortedArray = [self sortedBreweryArray];
-    CBFBrewery *brewery = sortedArray[indexPath.row];
+//    NSArray *sortedArray = [self sortedBreweryArray];
+    CBFBrewery *brewery = self.breweries[indexPath.row];
+    cell.brewery = brewery;
     cell.backgroundColor = [UIColor whiteColor];
     cell.layer.cornerRadius = 10.0;
     cell.layer.masksToBounds = YES;
     cell.breweryName.text = brewery.name;
+    if (brewery.ratings.count > 0) {
+        float breweryRating = [brewery calculateAverageRating];
+        
+        NSString *breweryRatingString = [NSString stringWithFormat:@"%0.0f", breweryRating];
+        NSString *fullRatingLabelString = [NSString stringWithFormat:@"Rating:%@", breweryRatingString];
+        cell.ratingLabel.text = fullRatingLabelString;
+    } else {
+        NSString *noRatingText = @"No Rating";
+        cell.ratingLabel.text = noRatingText;
+    }
+    
+    
     
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
-    cell.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", distance];
+    cell.distanceLabel.text = [NSString stringWithFormat:@"%@ mi", distance];
     
-    NSString *identifier = [NSString stringWithFormat:@"Cell%@", brewery.name];
+    UIImage *logoImage = [self.serviceController getImageWithURL:brewery.logoURL completion:^(UIImage *image) {
+        NSLog(@"--\nSetting image for cell with brewery name: %@\nIndex Path: %@\n--", brewery.name, indexPath);
+        if(cell.brewery == brewery) {
+            cell.logoImageView.image = image;
+        }
+    }];
     
-    if ([self.photoCache objectForKey:identifier] != nil) {
-        cell.logoImageView.image = [self.photoCache objectForKey:identifier];
-    } else {
-        
-        //    UIImage *logoImage = [UIImage imageWithData:brewery.logo];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            NSString *urlString = brewery.logoURL;
-            NSURL *photoURL = [NSURL URLWithString:urlString];
-            NSData *data = [NSData dataWithContentsOfURL:photoURL];
-            UIImage *image = [[UIImage alloc] initWithData:data];
-            [self.photoCache setObject:image forKey:identifier];
-            __weak typeof(self) weakSelf = self;
-            if (image) {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.logoImageView.image = [strongSelf.photoCache objectForKey:identifier];
-                    //[cell setNeedsLayout];
-                });
-            }
-            
-        });
-        
+    if (logoImage) {
+        cell.logoImageView.image = logoImage;
     }
-    //    cell.logoImageView.image = logoImage;
     
     
     
@@ -191,9 +194,8 @@
         CBFBrewery *brewery = sortedArray[indexPath.row];
         detailVC.breweryObjectId = brewery.objectID;
         detailVC.userdObjectId = self.user.objectID;
-        NSString *identifier = [NSString stringWithFormat:@"Cell%ld", (long)indexPath.row];
-        detailVC.logoImage = [self.photoCache objectForKey:identifier];
         detailVC.coreDataController = self.coreDataController;
+        detailVC.serviceController = self.serviceController;
         
         
     }
@@ -211,6 +213,8 @@
 
 -(IBAction)prepareForUnwindFromMapView:(UIStoryboardSegue *)segue {
 }
+
+
 
 
 @end

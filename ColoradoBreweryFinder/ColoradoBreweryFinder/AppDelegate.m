@@ -36,6 +36,7 @@
     }]];
     self.serviceController = [[CBFServiceController alloc] initWithPersistenceController:self.persistenceController];
     self.coreDataController = [[CBFCoreDataController alloc] initWithPersistenceController:self.persistenceController];
+    self.serviceController.coreDataController = self.coreDataController;
     
     
     

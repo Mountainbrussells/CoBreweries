@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "CBFCoreDataController.h"
+#import "CBFServiceController.h"
 #import "CBFBrewery.h"
 #import "CBFUser.h"
 
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) NSManagedObjectID *breweryObjectId;
 
 @property (strong, nonatomic) CBFCoreDataController *coreDataController;
+@property (strong, nonatomic) CBFServiceController *serviceController;
 @property (strong, nonatomic) UIImage *logoImage;
 
 @end

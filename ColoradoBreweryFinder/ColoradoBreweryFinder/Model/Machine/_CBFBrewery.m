@@ -14,6 +14,7 @@ const struct CBFBreweryAttributes CBFBreweryAttributes = {
 	.longitude = @"longitude",
 	.name = @"name",
 	.phoneNumber = @"phoneNumber",
+	.uid = @"uid",
 	.websiteURL = @"websiteURL",
 };
 
@@ -117,6 +118,8 @@ const struct CBFBreweryRelationships CBFBreweryRelationships = {
 @dynamic name;
 
 @dynamic phoneNumber;
+
+@dynamic uid;
 
 @dynamic websiteURL;
 

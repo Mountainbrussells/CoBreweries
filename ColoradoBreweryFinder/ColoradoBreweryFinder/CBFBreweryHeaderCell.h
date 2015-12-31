@@ -7,13 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CBFServiceController.h"
+#import "CBFCoreDataController.h"
+#import "CBFUser.h"
+
+@class CBFBrewery;
 
 @interface CBFBreweryHeaderCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *breweryNameLabel;
+@property (weak, nonatomic) IBOutlet UIView *rateBreweryView;
 
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
+
 
 @property (strong, nonatomic)NSString *address;
 @property (strong, nonatomic)NSString *phoneNumber;
@@ -21,4 +28,8 @@
 @property (assign, nonatomic)double lattitude;
 @property (assign, nonatomic)double longitude;
 
+@property (strong, nonatomic)CBFServiceController *serviceController;
+@property (strong, nonatomic)CBFCoreDataController *coreDataController;
+@property (strong, nonatomic)CBFBrewery *brewery;
+@property (strong, nonatomic)CBFUser *user;
 @end

@@ -43,6 +43,23 @@
     return user;
 }
 
+- (CBFUser *)fetchUserWithUID:(NSString *)uid
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.moc];
+    [request setPredicate:predicate];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    if (fetchResults.count > 0) {
+        CBFUser *user = fetchResults[0];
+        return user;
+    } else {
+        return nil;
+    }
+}
+
 - (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId
 {
     CBFBrewery *brewery;
@@ -57,6 +74,23 @@
     return brewery;
 }
 
+- (CBFBrewery *)fetchBreweryWithUID:(NSString *)uid
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.moc];
+    [request setPredicate:predicate];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    if (fetchResults.count > 0) {
+        CBFBrewery *brewery = fetchResults[0];
+        return brewery;
+    } else {
+        return nil;
+    }
+}
+
 - (NSArray *)fetchBreweries
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -67,6 +101,43 @@
     
     return fetchedBreweries;
     
+}
+
+- (NSArray *)fetchBreweryRatings
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBreweryRatings = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBreweryRatings;
+}
+
+- (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"brewery = %@", brewery];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBreweryRatings = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBreweryRatings;
+}
+
+- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"brewery = %@", brewery];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Beer" inManagedObjectContext:self.moc];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBeers = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBeers;
 }
 
 

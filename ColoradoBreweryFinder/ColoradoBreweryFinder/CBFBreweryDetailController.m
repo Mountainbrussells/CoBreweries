@@ -8,15 +8,18 @@
 
 #import "CBFBreweryDetailController.h"
 #import "CBFBreweryHeaderCell.h"
+#import "CBFBeerCell.h"
+#import "CBFBeer.h"
 
 
 
 
 @interface CBFBreweryDetailController ()
 
-@property (strong, nonatomic) NSArray *beersArray;
+
 @property (strong, nonatomic) CBFBrewery *brewery;
 @property (strong, nonatomic) CBFUser *user;
+@property (strong, nonatomic) NSArray *beers;
 
 @end
 
@@ -25,7 +28,17 @@
 {
     self.brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:self.breweryObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
+    self.beers = [self.coreDataController fetchBeersForBrewery:self.brewery];
+    [self.tableView reloadData];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
+    
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -36,10 +49,10 @@
 {
     if (section == 0) {
         return 1;
-    } else if (section == 2) {
-        return self.beersArray.count;
+    } else if (section == 1) {
+        return self.beers.count;
     } else {
-        return 4;
+        return 0;
     }
 }
 
@@ -53,21 +66,30 @@
         cell.address = self.brewery.address;
         cell.phoneNumber = self.brewery.phoneNumber;
         cell.websiteURL = self.brewery.websiteURL;
+        cell.rateBreweryView.hidden = true;
+        cell.serviceController = self.serviceController;
+        //needs to be managedObjectId
+        cell.brewery = self.brewery;
         double longintude = [self.brewery.longitude doubleValue];
         cell.longitude = longintude;
         double lattitude = [self.brewery.lattitude doubleValue];
         cell.lattitude = lattitude;
+        cell.user = self.user;
+        cell.coreDataController = self.coreDataController;
         
         if (!self.logoImage) {
             
             // TODO: Dispatch Asynch
-            NSString *urlString = self.brewery.logoURL;
-            NSURL *photoURL = [NSURL URLWithString:urlString];
-            NSData *data = [NSData dataWithContentsOfURL:photoURL];
-            UIImage *image = [[UIImage alloc] initWithData:data];
+//            NSString *urlString = self.brewery.logoURL;
+//            NSURL *photoURL = [NSURL URLWithString:urlString];
+//            NSData *data = [NSData dataWithContentsOfURL:photoURL];
+//            UIImage *image = [[UIImage alloc] initWithData:data];
+            UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL completion:^(UIImage *image) {
+                cell.logoImageView.image = image;
+            }];
             cell.logoImageView.image = image;
             
-
+            
             
         } else {
             cell.logoImageView.image = self.logoImage;
@@ -76,8 +98,13 @@
     }
     
     if (indexPath.section == 1) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-        cell.textLabel.text = @"Beer";
+        CBFBeerCell *cell = [tableView dequeueReusableCellWithIdentifier:@"beerCell"];
+        CBFBeer *beer = self.beers[indexPath.row];
+        cell.beerNameLabel.text = beer.name;
+        cell.beerStyleLabel.text = beer.style;
+        cell.beerABVLabel.text = [NSString stringWithFormat:@"ABV: %@%%", beer.abv];
+        cell.beerIBULabel.text = [NSString stringWithFormat:@"IBUs: %@", beer.ibus];
+        
         return cell;
     } else {
         return nil;
@@ -90,6 +117,36 @@
 {
     if (indexPath.section == 0) {
         return 312;
+    } else {
+        return 80;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    
+    if (section == 1){
+        CGFloat width = self.view.frame.size.width;
+        
+        UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 80)];
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, width - 20, 40)];
+        headerLabel.text = [NSString stringWithFormat:@"%@'s Beers", self.brewery.name];
+        headerLabel.font = [UIFont boldSystemFontOfSize:15];
+        headerLabel.backgroundColor = [UIColor lightGrayColor];
+        [headerLabel setTextAlignment:NSTextAlignmentCenter];
+        [containerView addSubview:headerLabel];
+        
+        return containerView;
+    } else {
+        return nil;
+    }
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 0;
     } else {
         return 80;
     }
