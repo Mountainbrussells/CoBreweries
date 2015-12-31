@@ -33,6 +33,13 @@
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
     
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+        CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
+        [self.breweryMapView setRegion:region animated:YES];
+        self.mapCenteredOnUser = YES;
+    }
+    
     self.breweryMapView.showsUserLocation = YES;
 
     self.breweryMapView.delegate = self;
@@ -105,11 +112,19 @@
     
     if (!self.mapCenteredOnUser) {
         CLLocationCoordinate2D location = [userLocation.location coordinate];
+//
+//        if (location.latitude > 41 || location.latitude < 37 || location.longitude > 108 || location.longitude < 102) {
+//            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
+//            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
+//            [self.breweryMapView setRegion:region animated:YES];
+//            self.mapCenteredOnUser = YES;
+//        } else {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 4000, 4000);
         [self.breweryMapView setRegion:region animated:YES];
         self.mapCenteredOnUser = YES;
-    }
-    
+        }
+//    }
+
     
 }
 
@@ -143,7 +158,7 @@
 #pragma mark - Segues
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier  isEqual:@"showBreweryDetailView"]) {
+    if ([segue.identifier  isEqual:@"ShowDetailsFromMapSegue"]) {
     CBFBrewery *selectedBrewery;
     NSArray *selectedAnnotations = self.breweryMapView.selectedAnnotations;
     if (selectedAnnotations.count > 0) {
