@@ -112,18 +112,18 @@
     
     if (!self.mapCenteredOnUser) {
         CLLocationCoordinate2D location = [userLocation.location coordinate];
-//
-//        if (location.latitude > 41 || location.latitude < 37 || location.longitude > 108 || location.longitude < 102) {
-//            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
-//            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
-//            [self.breweryMapView setRegion:region animated:YES];
-//            self.mapCenteredOnUser = YES;
-//        } else {
+
+        if (location.latitude > 41 || location.latitude < 37 || location.longitude > 108 || location.longitude < 102) {
+            CLLocationCoordinate2D location = CLLocationCoordinate2DMake(39.0000, -105.782067);
+            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 500000, 500000);
+            [self.breweryMapView setRegion:region animated:YES];
+            self.mapCenteredOnUser = YES;
+        } else {
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, 4000, 4000);
         [self.breweryMapView setRegion:region animated:YES];
         self.mapCenteredOnUser = YES;
         }
-//    }
+    }
 
     
 }
