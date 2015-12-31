@@ -411,48 +411,38 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
 }
 
-- (UIImage *)getImageWithURL:(NSString *)imageURLString
+- (UIImage *)getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion
 {
-    __block UIImage *returnImage;
+    UIImage *returnImage = nil;
     
     NSString *breweryLogoURL = imageURLString;
     
     NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
     
-    if ([self.photoCache objectForKey:identifier] != nil) {
-        returnImage = [self.photoCache objectForKey:identifier];
-        return returnImage;
-    } else {
-        
-        //    UIImage *logoImage = [UIImage imageWithData:brewery.logo];
-        
+    returnImage = [self.photoCache objectForKey:identifier];
+    if (!returnImage) {
         NSString *urlString = breweryLogoURL;
         
         NSURL *photoURL = [NSURL URLWithString:urlString];
         NSURLSession *session = [NSURLSession sharedSession];
         NSURLRequest *logoRequest = [NSURLRequest requestWithURL:photoURL];
+        
+        __weak typeof(self) weakSelf = self;
         NSURLSessionTask *task = [session dataTaskWithRequest:logoRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             
             UIImage *image = [[UIImage alloc] initWithData:data];
-            [self.photoCache setObject:image forKey:identifier];
-            __weak typeof(self) weakSelf = self;
-            if (image) {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                
+            [weakSelf.photoCache setObject:image forKey:identifier];
+            if (completion) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    returnImage = [strongSelf.photoCache objectForKey:identifier];
+                    completion(image);
                 });
             }
         }];
         
         [task resume];
-        if (returnImage) {
-            return returnImage;
-        } else {
-            return nil;
-        }
-        
     }
+    
+    return returnImage;
 }
 
 #pragma mark - BreweryRating calls

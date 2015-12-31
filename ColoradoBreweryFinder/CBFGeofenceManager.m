@@ -58,7 +58,7 @@ NSString *const CBFLocationDidChangeNotificationLongitudekey = @"longitude";
 {
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
-    NSLog(@"Current Location: %@", [locations lastObject]);
+//    NSLog(@"Current Location: %@", [locations lastObject]);
     CLLocation *lastlocation = [locations lastObject];
     BOOL accuracyGood = lastlocation.horizontalAccuracy < kCLLocationHorizontalAccuracyDistance;
     if (!self.location) {

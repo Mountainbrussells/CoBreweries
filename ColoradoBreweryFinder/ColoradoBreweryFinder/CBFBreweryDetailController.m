@@ -84,7 +84,9 @@
 //            NSURL *photoURL = [NSURL URLWithString:urlString];
 //            NSData *data = [NSData dataWithContentsOfURL:photoURL];
 //            UIImage *image = [[UIImage alloc] initWithData:data];
-            UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL];
+            UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL completion:^(UIImage *image) {
+                cell.logoImageView.image = image;
+            }];
             cell.logoImageView.image = image;
             
             

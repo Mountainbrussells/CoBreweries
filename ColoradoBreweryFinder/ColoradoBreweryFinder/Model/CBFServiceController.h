@@ -32,7 +32,7 @@
 
 - (void)getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *image, NSError *error))completion;
 
-- (UIImage *)getImageWithURL:(NSString *)imageURLString;
+- (UIImage *)getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
 
 - (void)createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 

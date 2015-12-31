@@ -143,6 +143,7 @@
 #pragma mark - Segues
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([segue.identifier  isEqual:@"showBreweryDetailView"]) {
     CBFBrewery *selectedBrewery;
     NSArray *selectedAnnotations = self.breweryMapView.selectedAnnotations;
     if (selectedAnnotations.count > 0) {
@@ -160,6 +161,7 @@
     detailVC.breweryObjectId = selectedBrewery.objectID;
     detailVC.coreDataController = self.coreDataController;
     detailVC.userdObjectId = self.userObjectId;
+    }
     
 }
 

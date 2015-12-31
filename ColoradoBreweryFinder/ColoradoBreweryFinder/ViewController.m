@@ -15,6 +15,7 @@
 #import "CBFBreweryCell.h"
 #import "CBFBreweryDetailController.h"
 #import "CBFBreweryMapViewController.h"
+#import "CBFFlipSegue.h"
 
 
 
@@ -74,6 +75,10 @@
     
     self.location = currentLocation;
     
+    self.breweries = [self sortedBreweryArray];
+//    [self.collectionView performBatchUpdates:^{
+//        [self.collectionView reloadData];
+//    } completion:nil];
     [self.collectionView reloadData];
 }
 
@@ -97,8 +102,15 @@
         double distanceA = [aLocation distanceFromLocation:self.location];
         
         double distanceB = [bLocation distanceFromLocation:self.location];
+        NSComparisonResult result;
         
-        return [@(distanceA) compare:@(distanceB)];
+        if(distanceA < distanceB) {
+            result = NSOrderedAscending;
+        } else {
+            result = NSOrderedDescending;
+        }
+        
+        return result;
     }];
     
     return sortedArray;
@@ -126,8 +138,9 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CBFBreweryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"breweryCell" forIndexPath:indexPath];
-    NSArray *sortedArray = [self sortedBreweryArray];
-    CBFBrewery *brewery = sortedArray[indexPath.row];
+//    NSArray *sortedArray = [self sortedBreweryArray];
+    CBFBrewery *brewery = self.breweries[indexPath.row];
+    cell.brewery = brewery;
     cell.backgroundColor = [UIColor whiteColor];
     cell.layer.cornerRadius = 10.0;
     cell.layer.masksToBounds = YES;
@@ -148,12 +161,15 @@
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
     cell.distanceLabel.text = [NSString stringWithFormat:@"%@ mi", distance];
     
-    UIImage *logoImage = [self.serviceController getImageWithURL:brewery.logoURL];
+    UIImage *logoImage = [self.serviceController getImageWithURL:brewery.logoURL completion:^(UIImage *image) {
+        NSLog(@"--\nSetting image for cell with brewery name: %@\nIndex Path: %@\n--", brewery.name, indexPath);
+        if(cell.brewery == brewery) {
+            cell.logoImageView.image = image;
+        }
+    }];
     
     if (logoImage) {
         cell.logoImageView.image = logoImage;
-    } else {
-        NSLog(@"The logo image failed for %@", brewery.name);
     }
     
     
@@ -197,6 +213,8 @@
 
 -(IBAction)prepareForUnwindFromMapView:(UIStoryboardSegue *)segue {
 }
+
+
 
 
 @end
