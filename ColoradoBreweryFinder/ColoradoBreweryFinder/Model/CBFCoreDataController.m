@@ -140,5 +140,19 @@
     return fetchedBeers;
 }
 
+- (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId
+{
+    CBFBeer *beer;
+    NSError *error;
+    beer = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beer) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beer;
+}
+
 
 @end

@@ -10,8 +10,7 @@
 #import "CBFBreweryHeaderCell.h"
 #import "CBFBeerCell.h"
 #import "CBFBeer.h"
-
-
+#import "CBFBeerDetailViewController.h"
 
 
 @interface CBFBreweryDetailController ()
@@ -151,5 +150,22 @@
         return 80;
     }
 }
+
+
+# pragma mark - segue preperations
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showBeerDetailSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        CBFBeerDetailViewController *destinationVC = [segue destinationViewController];
+        CBFBeer *selectedBeer = self.beers[indexPath.row];
+        destinationVC.userObjectId = self.userdObjectId;
+        destinationVC.beerObjectId = selectedBeer.objectID;
+        destinationVC.coreDataController = self.coreDataController;
+        destinationVC.serviceController = self.serviceController;
+    }
+}
+
 
 @end

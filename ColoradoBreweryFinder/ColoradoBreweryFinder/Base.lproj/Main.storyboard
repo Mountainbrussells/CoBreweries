@@ -223,7 +223,7 @@
         <!--Map View-->
         <scene sceneID="ck3-HC-lAb">
             <objects>
-                <viewController id="AtW-E0-ArB" customClass="CBFBreweryMapViewController" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="flipHorizontal" id="AtW-E0-ArB" customClass="CBFBreweryMapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KQS-eI-hhg"/>
                         <viewControllerLayoutGuide type="bottom" id="ukQ-Gh-9OR"/>
@@ -248,7 +248,7 @@
                     <navigationItem key="navigationItem" title="Map View" id="AXJ-IJ-Ur0">
                         <barButtonItem key="leftBarButtonItem" title="List View" id="UiE-yW-rTn">
                             <connections>
-                                <segue destination="gfm-21-hic" kind="unwind" unwindAction="prepareForUnwindFromMapView:" id="dT7-iC-NQa"/>
+                                <segue destination="gfm-21-hic" kind="unwind" customClass="CBFFlipSegue" unwindAction="prepareForUnwindFromMapView:" id="dT7-iC-NQa"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -569,7 +569,7 @@
                                     <outlet property="beerNameLabel" destination="Fn1-a2-FJH" id="4cc-Iy-zPj"/>
                                     <outlet property="beerStyleLabel" destination="lwI-YK-u7Q" id="VgF-8J-tRa"/>
                                     <outlet property="ratingLabel" destination="1l3-eD-Myj" id="c2G-sE-1yc"/>
-                                    <segue destination="jRB-Pm-La7" kind="show" id="Ykh-WU-9ae"/>
+                                    <segue destination="jRB-Pm-La7" kind="show" identifier="showBeerDetailSegue" id="Ykh-WU-9ae"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -589,18 +589,57 @@
         <scene sceneID="c4K-Wy-bJP">
             <objects>
                 <tableViewController id="jRB-Pm-La7" customClass="CBFBeerDetailViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="225" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="183" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="225" id="fK2-wm-pYu">
-                                <rect key="frame" x="0.0" y="92" width="600" height="225"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="beerHeaderCell" rowHeight="183" id="fK2-wm-pYu" customClass="CBFBeerHeaderCell">
+                                <rect key="frame" x="0.0" y="92" width="600" height="183"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fK2-wm-pYu" id="IVb-HM-fVd">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="225"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="183"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="center" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gEk-NY-t16">
+                                            <rect key="frame" x="16" y="16" width="568" height="151"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beer Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCi-Hr-72c">
+                                                    <rect key="frame" x="225" y="0.0" width="119" height="55"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avg. Rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zt-S0-Hct">
+                                                    <rect key="frame" x="241" y="55" width="87" height="56"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Eg-ae-2qL">
+                                                    <rect key="frame" x="268" y="111" width="32" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="YGM-rh-j2X"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Rate"/>
+                                                    <connections>
+                                                        <action selector="rateBeerButton:" destination="fK2-wm-pYu" eventType="touchUpInside" id="DfC-Vl-Klw"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="gEk-NY-t16" secondAttribute="trailing" constant="8" id="GZY-B2-HX1"/>
+                                        <constraint firstItem="gEk-NY-t16" firstAttribute="leading" secondItem="IVb-HM-fVd" secondAttribute="leadingMargin" constant="8" id="Vez-ZW-WKI"/>
+                                        <constraint firstItem="gEk-NY-t16" firstAttribute="top" secondItem="IVb-HM-fVd" secondAttribute="topMargin" constant="8" id="xDt-ek-Gwq"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="gEk-NY-t16" secondAttribute="bottom" constant="8" id="xGH-6i-Uxv"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="averageRatingLabel" destination="0zt-S0-Hct" id="Rn3-2e-IHy"/>
+                                    <outlet property="beerNameLabel" destination="cCi-Hr-72c" id="AuH-6u-DR7"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
