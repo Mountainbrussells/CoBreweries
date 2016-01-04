@@ -37,6 +37,10 @@
 
 - (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
+- (CBFBeer *)fetchBeerWithUID:(NSString *)uid;
+
+- (NSArray *)fetchBeerReviewsForBeer:(CBFBeer *)beer;
+
 
 
 

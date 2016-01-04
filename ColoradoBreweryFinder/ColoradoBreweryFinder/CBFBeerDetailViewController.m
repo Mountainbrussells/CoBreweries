@@ -10,6 +10,8 @@
 #import "CBFBeer.h"
 #import "CBFUser.h"
 #import "CBFBeerHeaderCell.h"
+#import "CBFBeerReviewCell.h"
+#import "CBFBeerRating.h"
 
 @interface CBFBeerDetailViewController ()
 
@@ -25,7 +27,7 @@
 {
     self.beer = [self.coreDataController fetchBeerWithManagedObjectId:self.beerObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userObjectId];
-    
+    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -63,7 +65,18 @@
     }
     
     if (indexPath.section == 1) {
-        return nil;
+        CBFBeerReviewCell  *cell = [tableView dequeueReusableCellWithIdentifier:@"beerReviewCell"];
+        CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
+        
+        NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
+            cell.userNameLabel.text = userName;
+        }];
+        cell.userNameLabel.text = userName;
+        float ratingValue = [rating.rating floatValue];
+        NSString *ratingValueString = [NSString stringWithFormat:@"Rating: %0.0f", ratingValue];
+        cell.ratingLabel.text = ratingValueString;
+        cell.notesTextView.text = rating.review;
+        return cell;
         
     } else {
         return nil;

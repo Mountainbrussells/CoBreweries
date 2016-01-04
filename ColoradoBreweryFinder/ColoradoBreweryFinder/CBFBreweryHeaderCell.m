@@ -25,12 +25,16 @@
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
-    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
-    for (CBFBreweryRating *rating in ratingsArray) {
-        if (rating.user == self.user) {
-            
-            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
-        }
+//    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
+//    for (CBFBreweryRating *rating in ratingsArray) {
+//        if (rating.user == self.user) {
+//            
+//            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
+//        }
+//    }
+    
+    if ([self alreadyRated]) {
+        self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
     }
     
     self.rateBreweryView.hidden = false;
@@ -69,33 +73,61 @@
     [[UIApplication sharedApplication] openURL:websiteURL];
 }
 - (IBAction)rateBrewery1:(id)sender {
+    
     NSString *breweryId = self.brewery.uid;
     NSString *rating = [NSString stringWithFormat:@"%i", 1];
+    CBFBreweryRating *existingRating = [self alreadyRated];
+    if (existingRating) {
+        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
+        self.rateBreweryView.hidden = true;
+    } else {
     [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
         self.rateBreweryView.hidden = true;
     }];
+    }
     
 }
 
 - (IBAction)rateBreweryTwo:(id)sender {
     NSString *breweryId = self.brewery.uid;
     NSString *rating = [NSString stringWithFormat:@"%i", 2];
-    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+    CBFBreweryRating *existingRating = [self alreadyRated];
+    if (existingRating) {
+        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
         self.rateBreweryView.hidden = true;
-    }];}
+    } else {
+        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+            self.rateBreweryView.hidden = true;
+        }];
+    }
+}
 
 - (IBAction)rateBrewery3:(id)sender {
     NSString *breweryId = self.brewery.uid;
     NSString *rating = [NSString stringWithFormat:@"%i", 3];
-    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+    CBFBreweryRating *existingRating = [self alreadyRated];
+    if (existingRating) {
+        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
         self.rateBreweryView.hidden = true;
-    }];}
+    } else {
+        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+            self.rateBreweryView.hidden = true;
+        }];
+    }
+}
 - (IBAction)rateBrewey4:(id)sender {
     NSString *breweryId = self.brewery.uid;
     NSString *rating = [NSString stringWithFormat:@"%i", 4];
-    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+    CBFBreweryRating *existingRating = [self alreadyRated];
+    if (existingRating) {
+        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
         self.rateBreweryView.hidden = true;
-    }];}
+    } else {
+        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+            self.rateBreweryView.hidden = true;
+        }];
+    }
+}
 
 - (MKMapItem*)mapItem {
     // TODO: Refactor kABPersonAddressStreetKey
@@ -113,6 +145,18 @@
     mapItem.name = self.breweryNameLabel.text;
     
     return mapItem;
+}
+
+- (CBFBreweryRating *)alreadyRated
+{
+    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
+    for (CBFBreweryRating *rating in ratingsArray) {
+        if (rating.user == self.user) {
+            
+            return rating;
+        }
+    }
+    return nil;
 }
 
 @end

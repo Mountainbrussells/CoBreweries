@@ -136,8 +136,11 @@
                                                
                                                strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
                                                if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
-                                                   [self.serviceController requestBreweryRatingsWithCompletion:nil];
-                                                   [self.serviceController requestBeersWithCompletion:nil];
+                                                   [strongSelf.serviceController requestBreweryRatingsWithCompletion:nil];
+                                                   [strongSelf.serviceController requestBeersWithCompletion:^(NSError *error) {
+                                                       [strongSelf.serviceController requestBeerReviewsWithCompletion:nil];
+                                                   }];
+                                                   
                                                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
                                                }
                                                
