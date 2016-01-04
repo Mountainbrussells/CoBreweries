@@ -28,6 +28,7 @@
     NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
     for (CBFBreweryRating *rating in ratingsArray) {
         if (rating.user == self.user) {
+            
             self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
         }
     }
