@@ -10,8 +10,4 @@
 
 @implementation CBFBeerHeaderCell
 
-
-- (IBAction)rateBeerButton:(id)sender {
-}
-
 @end
