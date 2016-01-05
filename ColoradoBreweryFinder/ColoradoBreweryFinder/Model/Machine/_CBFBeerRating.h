@@ -8,6 +8,8 @@ extern const struct CBFBeerRatingAttributes {
 	__unsafe_unretained NSString *dateUpdated;
 	__unsafe_unretained NSString *rating;
 	__unsafe_unretained NSString *review;
+	__unsafe_unretained NSString *uid;
+	__unsafe_unretained NSString *userUID;
 } CBFBeerRatingAttributes;
 
 extern const struct CBFBeerRatingRelationships {
@@ -47,6 +49,14 @@ extern const struct CBFBeerRatingRelationships {
 
 //- (BOOL)validateReview:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* uid;
+
+//- (BOOL)validateUid:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSString* userUID;
+
+//- (BOOL)validateUserUID:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) CBFBeer *beer;
 
 //- (BOOL)validateBeer:(id*)value_ error:(NSError**)error_;
@@ -73,6 +83,12 @@ extern const struct CBFBeerRatingRelationships {
 
 - (NSString*)primitiveReview;
 - (void)setPrimitiveReview:(NSString*)value;
+
+- (NSString*)primitiveUid;
+- (void)setPrimitiveUid:(NSString*)value;
+
+- (NSString*)primitiveUserUID;
+- (void)setPrimitiveUserUID:(NSString*)value;
 
 - (CBFBeer*)primitiveBeer;
 - (void)setPrimitiveBeer:(CBFBeer*)value;

@@ -14,6 +14,7 @@
 
 @class CBFUser;
 @class CBFBrewery;
+@class CBFBreweryRating;
 
 @interface CBFServiceController : NSObject
 
@@ -34,11 +35,18 @@
 
 - (UIImage *)getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
 
-- (void)createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
+- (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
+
+- (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion;
 
 - (void)requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
 
 - (void) requestBeersWithCompletion:(void (^)(NSError *error))completion;
+
+- (void)requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
+
+- (NSString *)getUserNameWithUID:(NSString *)uid completion:(void (^)(NSString *userName))completion;
+
 
 
 

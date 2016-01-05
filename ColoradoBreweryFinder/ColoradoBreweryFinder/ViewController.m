@@ -190,8 +190,8 @@
         NSIndexPath *indexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
         
         CBFBreweryDetailController *detailVC = [segue destinationViewController];
-        NSArray *sortedArray = [self sortedBreweryArray];
-        CBFBrewery *brewery = sortedArray[indexPath.row];
+//        NSArray *sortedArray = self.breweries;
+        CBFBrewery *brewery = self.breweries[indexPath.row];
         detailVC.breweryObjectId = brewery.objectID;
         detailVC.userdObjectId = self.user.objectID;
         detailVC.coreDataController = self.coreDataController;
