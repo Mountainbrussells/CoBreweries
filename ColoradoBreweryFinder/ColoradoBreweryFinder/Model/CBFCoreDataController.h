@@ -10,8 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "CBFUser.h"
 #import "CBFBrewery.h"
-#import "BRPersistenceController.h"
 #import "CBFBeer.h"
+#import "BRPersistenceController.h"
 
 
 
@@ -19,30 +19,25 @@
 
 - (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
 
-- (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
+- (CBFUser *) fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
 
-- (CBFUser *)fetchUserWithUID:(NSString *)uid;
+- (CBFUser *) fetchUserWithUID:(NSString *)uid;
 
-- (NSArray *)fetchBreweries;
+- (NSArray *) fetchBreweries;
 
-- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
-
-- (CBFBrewery *)fetchBreweryWithUID:(NSString *)uid;
-
-- (NSArray *)fetchBreweryRatings;
-
-- (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
-
-- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery;
-
+- (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 - (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
-- (CBFBeer *)fetchBeerWithUID:(NSString *)uid;
+- (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid;
 
+- (NSArray *) fetchBreweryRatings;
 - (NSArray *)fetchBeerReviewsForBeer:(CBFBeer *)beer;
 
+- (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
 
+- (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
 
+- (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
 
 
 @end

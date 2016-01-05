@@ -154,7 +154,7 @@
     return beer;
 }
 
-- (CBFBeer *)fetchBeerWithUID:(NSString *)uid
+- (CBFBeer *) fetchBeerWithUID:(NSString *)uid
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
