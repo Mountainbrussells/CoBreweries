@@ -14,10 +14,6 @@
 
 @interface CBFBreweryHeaderCell ()
 @property (weak, nonatomic) IBOutlet UILabel *rateBreweryViewHeaderLabel;
-@property (weak, nonatomic) IBOutlet UIButton *rateButtonOne;
-@property (weak, nonatomic) IBOutlet UIButton *rateButtonTwo;
-@property (weak, nonatomic) IBOutlet UIButton *rateButtonThree;
-@property (weak, nonatomic) IBOutlet UIButton *rateButtonFour;
 
 @end
 
@@ -29,16 +25,11 @@
     NSLog(@"==============================");
     NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"==============================");
-//    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
-//    for (CBFBreweryRating *rating in ratingsArray) {
-//        if (rating.user == self.user) {
-//            
-//            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
-//        }
-//    }
-    
-    if ([self alreadyRated]) {
-        self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
+    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
+    for (CBFBreweryRating *rating in ratingsArray) {
+        if (rating.user == self.user) {
+            self.rateBreweryViewHeaderLabel.text = @"Rate Brewery Again";
+        }
     }
     
     self.rateBreweryView.hidden = false;
@@ -76,23 +67,34 @@
     NSURL *websiteURL = [NSURL URLWithString:websiteURLString];
     [[UIApplication sharedApplication] openURL:websiteURL];
 }
-
-
-
-- (IBAction)rateBreweryWithRating:(id)sender {
+- (IBAction)rateBrewery1:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 1];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];
     
-    NSNumber *rating = nil;
-    UIButton *sendingButton = (UIButton *)sender;
-    NSString *senderNumber = sendingButton.titleLabel.text;
-    NSNumberFormatter *formattedNumber = [[NSNumberFormatter alloc] init];
-    rating = [formattedNumber numberFromString:senderNumber];
-    
-    [[UIApplication sharedApplication] sendAction:@selector(rateBrewery:) to:nil from:rating forEvent:nil];
-    self.rateBreweryView.hidden = true;
- 
 }
 
+- (IBAction)rateBreweryTwo:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 2];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
 
+- (IBAction)rateBrewery3:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 3];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
+- (IBAction)rateBrewey4:(id)sender {
+    NSString *breweryId = self.brewery.uid;
+    NSString *rating = [NSString stringWithFormat:@"%i", 4];
+    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+        self.rateBreweryView.hidden = true;
+    }];}
 
 - (MKMapItem*)mapItem {
     // TODO: Refactor kABPersonAddressStreetKey
@@ -110,18 +112,6 @@
     mapItem.name = self.breweryNameLabel.text;
     
     return mapItem;
-}
-
-- (CBFBreweryRating *)alreadyRated
-{
-    NSArray *ratingsArray = [self.coreDataController fetchBreweryRatingsForBrewery:self.brewery];
-    for (CBFBreweryRating *rating in ratingsArray) {
-        if (rating.user == self.user) {
-            
-            return rating;
-        }
-    }
-    return nil;
 }
 
 @end

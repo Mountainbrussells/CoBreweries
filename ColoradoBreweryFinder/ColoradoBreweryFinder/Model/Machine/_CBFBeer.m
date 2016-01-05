@@ -10,7 +10,6 @@ const struct CBFBeerAttributes CBFBeerAttributes = {
 	.ibus = @"ibus",
 	.name = @"name",
 	.style = @"style",
-	.uid = @"uid",
 };
 
 const struct CBFBeerRelationships CBFBeerRelationships = {
@@ -59,8 +58,6 @@ const struct CBFBeerRelationships CBFBeerRelationships = {
 @dynamic name;
 
 @dynamic style;
-
-@dynamic uid;
 
 @dynamic brewery;
 

@@ -10,7 +10,6 @@ extern const struct CBFBeerAttributes {
 	__unsafe_unretained NSString *ibus;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *style;
-	__unsafe_unretained NSString *uid;
 } CBFBeerAttributes;
 
 extern const struct CBFBeerRelationships {
@@ -56,10 +55,6 @@ extern const struct CBFBeerRelationships {
 
 //- (BOOL)validateStyle:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSString* uid;
-
-//- (BOOL)validateUid:(id*)value_ error:(NSError**)error_;
-
 @property (nonatomic, strong) CBFBrewery *brewery;
 
 //- (BOOL)validateBrewery:(id*)value_ error:(NSError**)error_;
@@ -101,9 +96,6 @@ extern const struct CBFBeerRelationships {
 
 - (NSString*)primitiveStyle;
 - (void)setPrimitiveStyle:(NSString*)value;
-
-- (NSString*)primitiveUid;
-- (void)setPrimitiveUid:(NSString*)value;
 
 - (CBFBrewery*)primitiveBrewery;
 - (void)setPrimitiveBrewery:(CBFBrewery*)value;
