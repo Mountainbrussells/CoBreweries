@@ -171,10 +171,8 @@
     }];
     if (existingRating) {
         [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:nil];
-//        self.rateBreweryView.hidden = true;
     } else {
-    [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-//        self.rateBreweryView.hidden = true;
+        [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
     }];
     }
 }

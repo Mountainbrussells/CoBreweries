@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "ColoradoBreweryFinder": {
+      "applicationId": "Ly0UjZGre3fILHVIHX9Hk19lb9v5Dev2nUSOynkF"
+    },
+    "_default": {
+      "link": "ColoradoBreweryFinder"
+    }
+  }
+}
