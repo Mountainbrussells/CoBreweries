@@ -8,6 +8,7 @@ const struct CBFBeerRatingAttributes CBFBeerRatingAttributes = {
 	.dateUpdated = @"dateUpdated",
 	.rating = @"rating",
 	.review = @"review",
+	.uid = @"uid",
 };
 
 const struct CBFBeerRatingRelationships CBFBeerRatingRelationships = {
@@ -75,6 +76,8 @@ const struct CBFBeerRatingRelationships CBFBeerRatingRelationships = {
 }
 
 @dynamic review;
+
+@dynamic uid;
 
 @dynamic beer;
 
