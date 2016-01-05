@@ -69,7 +69,7 @@
         CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
         
         NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
-            cell.userNameLabel.text = userName;
+            cell.userNameLabel.text = [NSString stringWithFormat:@"User: %@", userName];
         }];
         cell.userNameLabel.text = userName;
         float ratingValue = [rating.rating floatValue];
@@ -90,7 +90,7 @@
     if (indexPath.section == 0) {
         return 150;
     } else {
-        return 80;
+        return 100;
     }
 }
 

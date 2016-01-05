@@ -14,6 +14,10 @@
 
 @interface CBFBreweryHeaderCell ()
 @property (weak, nonatomic) IBOutlet UILabel *rateBreweryViewHeaderLabel;
+@property (weak, nonatomic) IBOutlet UIButton *rateButtonOne;
+@property (weak, nonatomic) IBOutlet UIButton *rateButtonTwo;
+@property (weak, nonatomic) IBOutlet UIButton *rateButtonThree;
+@property (weak, nonatomic) IBOutlet UIButton *rateButtonFour;
 
 @end
 
@@ -72,62 +76,23 @@
     NSURL *websiteURL = [NSURL URLWithString:websiteURLString];
     [[UIApplication sharedApplication] openURL:websiteURL];
 }
-- (IBAction)rateBrewery1:(id)sender {
+
+
+
+- (IBAction)rateBreweryWithRating:(id)sender {
     
-    NSString *breweryId = self.brewery.uid;
-    NSString *rating = [NSString stringWithFormat:@"%i", 1];
-    CBFBreweryRating *existingRating = [self alreadyRated];
-    if (existingRating) {
-        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
-        self.rateBreweryView.hidden = true;
-    } else {
-    [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-        self.rateBreweryView.hidden = true;
-    }];
-    }
+    NSNumber *rating = nil;
+    UIButton *sendingButton = (UIButton *)sender;
+    NSString *senderNumber = sendingButton.titleLabel.text;
+    NSNumberFormatter *formattedNumber = [[NSNumberFormatter alloc] init];
+    rating = [formattedNumber numberFromString:senderNumber];
     
+    [[UIApplication sharedApplication] sendAction:@selector(rateBrewery:) to:nil from:rating forEvent:nil];
+    self.rateBreweryView.hidden = true;
+ 
 }
 
-- (IBAction)rateBreweryTwo:(id)sender {
-    NSString *breweryId = self.brewery.uid;
-    NSString *rating = [NSString stringWithFormat:@"%i", 2];
-    CBFBreweryRating *existingRating = [self alreadyRated];
-    if (existingRating) {
-        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
-        self.rateBreweryView.hidden = true;
-    } else {
-        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-            self.rateBreweryView.hidden = true;
-        }];
-    }
-}
 
-- (IBAction)rateBrewery3:(id)sender {
-    NSString *breweryId = self.brewery.uid;
-    NSString *rating = [NSString stringWithFormat:@"%i", 3];
-    CBFBreweryRating *existingRating = [self alreadyRated];
-    if (existingRating) {
-        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
-        self.rateBreweryView.hidden = true;
-    } else {
-        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-            self.rateBreweryView.hidden = true;
-        }];
-    }
-}
-- (IBAction)rateBrewey4:(id)sender {
-    NSString *breweryId = self.brewery.uid;
-    NSString *rating = [NSString stringWithFormat:@"%i", 4];
-    CBFBreweryRating *existingRating = [self alreadyRated];
-    if (existingRating) {
-        [self.serviceController updateBreweryRating:[self alreadyRated] withValue:rating completion:nil];
-        self.rateBreweryView.hidden = true;
-    } else {
-        [self.serviceController createBreweryRating:rating breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-            self.rateBreweryView.hidden = true;
-        }];
-    }
-}
 
 - (MKMapItem*)mapItem {
     // TODO: Refactor kABPersonAddressStreetKey

@@ -449,12 +449,11 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 
 #pragma mark - BreweryRating calls
 
-- (void)createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
+- (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
 {
     CBFUser *user = self.user;
     CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryId];
-    long intRating = [rating longLongValue];
-    NSNumber *breweryRating = [NSNumber numberWithLong:intRating];
+    NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
@@ -544,10 +543,9 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     
 }
 
-- (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSString *)newRating completion:(void (^)(NSError *error))completion
+- (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion
 {
-    long intRating = [newRating longLongValue];
-    NSNumber *breweryRating = [NSNumber numberWithLong:intRating];
+    NSNumber *breweryRating = [NSNumber numberWithInteger:newRating];
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
@@ -563,7 +561,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    NSDictionary *postDictionary = @{@"rating": newRating};
+    NSDictionary *postDictionary = @{@"rating": @(newRating)};
     
     NSError *error;
     NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
@@ -579,9 +577,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (response) {
             NSLog(@"Request Response:%@", response);
-            NSNumberFormatter *ratingNumberValue = [[NSNumberFormatter alloc] init];
-            
-            rating.rating = [ratingNumberValue numberFromString:newRating];
+            rating.rating = breweryRating;
             [moc save:nil];
             
         }
