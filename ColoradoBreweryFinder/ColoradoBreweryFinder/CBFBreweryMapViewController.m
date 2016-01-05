@@ -116,9 +116,11 @@ static double const kDefaultMapHieght = 500000;
     NSLog(@"%s", __PRETTY_FUNCTION__);
     
     if (!self.mapCenteredOnUser) {
+        
+        // WHY DOESN"T THIS WORK? location.latitude returns a hex instead of the latitude.
         CLLocationCoordinate2D location = [userLocation.location coordinate];
 
-        if (location.latitude > 41 || location.latitude < 37 || location.longitude > 108 || location.longitude < 102) {
+        if (location.latitude > 41 || location.latitude < 37 || location.longitude < -108 || location.longitude > -102) {
             CLLocationCoordinate2D location = CLLocationCoordinate2DMake(kCenterOfMapLattitude, kCenterOfMapLongitude);
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location, kDefaultMapHieght, kDefaultMapWidth);
             [self.breweryMapView setRegion:region animated:YES];

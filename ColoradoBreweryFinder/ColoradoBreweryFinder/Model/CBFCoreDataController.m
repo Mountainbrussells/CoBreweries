@@ -140,6 +140,20 @@
     return fetchedBeers;
 }
 
+- (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId
+{
+    CBFBeer *beer;
+    NSError *error;
+    beer = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beer) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beer;
+}
+
 - (CBFBeer *) fetchBeerWithUID:(NSString *)uid
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -156,5 +170,19 @@
         return nil;
     }
 }
+
+- (NSArray *)fetchBeerReviewsForBeer:(CBFBeer *)beer
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"beer = %@", beer];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BeerRating" inManagedObjectContext:self.moc];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBeerReviews = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBeerReviews;
+}
+
 
 @end

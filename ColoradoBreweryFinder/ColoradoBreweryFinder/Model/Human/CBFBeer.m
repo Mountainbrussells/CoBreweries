@@ -71,16 +71,20 @@
 
     NSNumber *ratingsCount = [NSNumber numberWithLong:self.ratings.count];
 
+    if (ratingsSum) {
+        // Add 0.5 in order to round the int up
+        average = [NSNumber numberWithInt:([ratingsSum floatValue]/[ratingsCount floatValue] + 0.5)];
+        
+        float floatAverage = [average floatValue];
+        
+        //  Possible KVC situation as an easier way to get the average.  Need to play with it.
+        //    float floatAverage = [[self.ratings valueForKeyPath:@"@avg.rating.rating"] floatValue];
+        
+        return floatAverage;
+    } else {
+        return 0;
+    }
     
-    // Add 0.5 in order to round the int up
-    average = [NSNumber numberWithInt:([ratingsSum floatValue]/[ratingsCount floatValue] + 0.5)];
-
-    float floatAverage = [average floatValue];
-    
-    //  Possible KVC situation as an easier way to get the average.  Need to play with it.
-    //    float floatAverage = [[self.ratings valueForKeyPath:@"@avg.rating.rating"] floatValue];
-    
-    return floatAverage;
     
 }
 

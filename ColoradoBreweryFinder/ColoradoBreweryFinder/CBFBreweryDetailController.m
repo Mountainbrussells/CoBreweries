@@ -10,8 +10,9 @@
 #import "CBFBreweryHeaderCell.h"
 #import "CBFBeerCell.h"
 #import "CBFBeer.h"
-
-
+#import "CBFBeerDetailViewController.h"
+#import "CBFBrewery.h"
+#import "CBFBreweryRating.h"
 
 
 @interface CBFBreweryDetailController ()
@@ -30,6 +31,12 @@
     self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
     self.beers = [self.coreDataController fetchBeersForBrewery:self.brewery];
     [self.tableView reloadData];
+    
+    [self becomeFirstResponder];
+}
+
+- (BOOL) canBecomeFirstResponder {
+    return YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -151,5 +158,42 @@
         return 80;
     }
 }
+
+- (void) rateBrewery:(NSNumber *) rating {
+    NSString *breweryId = self.brewery.uid;
+
+    __block CBFBreweryRating *existingRating = nil;
+    [self.user.breweryRatings enumerateObjectsUsingBlock:^(CBFBreweryRating *breweryRating, BOOL * _Nonnull stop) {
+        if([[[breweryRating brewery] uid] isEqualToString:breweryId]) {
+            existingRating = breweryRating;
+            *stop = YES;
+        }
+    }];
+    if (existingRating) {
+        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:nil];
+//        self.rateBreweryView.hidden = true;
+    } else {
+    [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+//        self.rateBreweryView.hidden = true;
+    }];
+    }
+}
+
+
+# pragma mark - segue preperations
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showBeerDetailSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        CBFBeerDetailViewController *destinationVC = [segue destinationViewController];
+        CBFBeer *selectedBeer = self.beers[indexPath.row];
+        destinationVC.userObjectId = self.userdObjectId;
+        destinationVC.beerObjectId = selectedBeer.objectID;
+        destinationVC.coreDataController = self.coreDataController;
+        destinationVC.serviceController = self.serviceController;
+    }
+}
+
 
 @end
