@@ -140,5 +140,21 @@
     return fetchedBeers;
 }
 
+- (CBFBeer *) fetchBeerWithUID:(NSString *)uid
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Beer" inManagedObjectContext:self.moc];
+    [request setPredicate:predicate];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    if (fetchResults.count > 0) {
+        CBFBeer *beer = fetchResults[0];
+        return beer;
+    } else {
+        return nil;
+    }
+}
 
 @end

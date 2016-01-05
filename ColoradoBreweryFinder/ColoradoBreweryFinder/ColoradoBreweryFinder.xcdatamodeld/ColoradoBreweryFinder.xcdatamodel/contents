@@ -16,6 +16,7 @@
         <attribute name="dateUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="review" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="beer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Beer" inverseName="ratings" inverseEntity="Beer" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="beerRatings" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -56,7 +57,7 @@
     </entity>
     <elements>
         <element name="Beer" positionX="-189" positionY="111" width="128" height="180"/>
-        <element name="BeerRating" positionX="9" positionY="162" width="128" height="133"/>
+        <element name="BeerRating" positionX="9" positionY="162" width="128" height="150"/>
         <element name="Brewery" positionX="-441" positionY="54" width="128" height="255"/>
         <element name="BreweryRating" positionX="-243" positionY="-96" width="128" height="135"/>
         <element name="User" positionX="-2" positionY="-207" width="128" height="178"/>

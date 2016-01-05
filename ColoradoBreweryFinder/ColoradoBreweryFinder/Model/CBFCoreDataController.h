@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "CBFUser.h"
 #import "CBFBrewery.h"
+#import "CBFBeer.h"
 #import "BRPersistenceController.h"
 
 
@@ -34,8 +35,7 @@
 
 - (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
 
-
-
+- (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
 
 
 @end
