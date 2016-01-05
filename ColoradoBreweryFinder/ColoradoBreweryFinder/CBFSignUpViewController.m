@@ -61,6 +61,15 @@
                     NSLog(@"objectId: %@", objectId);
                     strongSelf.user = [strongSelf.coreDataController fetchUserWithId:objectId];
                     
+                    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
+                        [strongSelf.serviceController requestBreweryRatingsWithCompletion:nil];
+                        [strongSelf.serviceController requestBeersWithCompletion:^(NSError *error) {
+                            [strongSelf.serviceController requestBeerReviewsWithCompletion:nil];
+                        }];
+                        
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
+                    }
+                    
                     [spinner stopAnimating];
                     if (strongSelf.user) {
                         // Need to persist User between launches

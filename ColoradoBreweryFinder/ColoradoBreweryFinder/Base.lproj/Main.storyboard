@@ -223,7 +223,7 @@
         <!--Map View-->
         <scene sceneID="ck3-HC-lAb">
             <objects>
-                <viewController id="AtW-E0-ArB" customClass="CBFBreweryMapViewController" sceneMemberID="viewController">
+                <viewController modalTransitionStyle="flipHorizontal" id="AtW-E0-ArB" customClass="CBFBreweryMapViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KQS-eI-hhg"/>
                         <viewControllerLayoutGuide type="bottom" id="ukQ-Gh-9OR"/>
@@ -248,7 +248,7 @@
                     <navigationItem key="navigationItem" title="Map View" id="AXJ-IJ-Ur0">
                         <barButtonItem key="leftBarButtonItem" title="List View" id="UiE-yW-rTn">
                             <connections>
-                                <segue destination="gfm-21-hic" kind="unwind" unwindAction="prepareForUnwindFromMapView:" id="dT7-iC-NQa"/>
+                                <segue destination="gfm-21-hic" kind="unwind" customClass="CBFFlipSegue" unwindAction="prepareForUnwindFromMapView:" id="dT7-iC-NQa"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -276,7 +276,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="312"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L9R-N0-6sw" id="OZX-rA-Opy">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="312"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="311.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQS-wk-tcJ">
@@ -389,28 +389,28 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="83" height="30"/>
                                                             <state key="normal" title="1"/>
                                                             <connections>
-                                                                <action selector="rateBrewery1:" destination="L9R-N0-6sw" eventType="touchUpInside" id="AUZ-t2-kpY"/>
+                                                                <action selector="rateBreweryWithRating:" destination="L9R-N0-6sw" eventType="touchUpInside" id="Xws-ZU-p0Y"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hj-xt-QiF">
                                                             <rect key="frame" x="83" y="0.0" width="83" height="30"/>
                                                             <state key="normal" title="2"/>
                                                             <connections>
-                                                                <action selector="rateBreweryTwo:" destination="L9R-N0-6sw" eventType="touchUpInside" id="Ccf-JO-ejg"/>
+                                                                <action selector="rateBreweryWithRating:" destination="L9R-N0-6sw" eventType="touchUpInside" id="oeB-sw-Kqa"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWN-cI-H0D">
                                                             <rect key="frame" x="166" y="0.0" width="83" height="30"/>
                                                             <state key="normal" title="3"/>
                                                             <connections>
-                                                                <action selector="rateBrewery3:" destination="L9R-N0-6sw" eventType="touchUpInside" id="msG-4I-vFf"/>
+                                                                <action selector="rateBreweryWithRating:" destination="L9R-N0-6sw" eventType="touchUpInside" id="tfi-qd-v9U"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ML-6J-5KZ">
                                                             <rect key="frame" x="249" y="0.0" width="83" height="30"/>
                                                             <state key="normal" title="4"/>
                                                             <connections>
-                                                                <action selector="rateBrewey4:" destination="L9R-N0-6sw" eventType="touchUpInside" id="zXg-rt-6gb"/>
+                                                                <action selector="rateBreweryWithRating:" destination="L9R-N0-6sw" eventType="touchUpInside" id="KCU-sk-tR5"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -496,13 +496,17 @@
                                     <outlet property="logoImageView" destination="1jm-0Q-xhF" id="NbM-SU-P0o"/>
                                     <outlet property="rateBreweryView" destination="ZWb-RO-mIf" id="MFI-35-lvD"/>
                                     <outlet property="rateBreweryViewHeaderLabel" destination="1eT-rq-Ghb" id="ZXm-NJ-NQi"/>
+                                    <outlet property="rateButtonFour" destination="1ML-6J-5KZ" id="BOX-TN-UNM"/>
+                                    <outlet property="rateButtonOne" destination="MaO-MM-0ZG" id="OOb-Jk-T4Z"/>
+                                    <outlet property="rateButtonThree" destination="oWN-cI-H0D" id="cgh-lX-8gL"/>
+                                    <outlet property="rateButtonTwo" destination="9Hj-xt-QiF" id="ZPy-EK-Xol"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="beerCell" rowHeight="80" id="Jy1-CD-GIi" customClass="CBFBeerCell">
                                 <rect key="frame" x="0.0" y="404" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jy1-CD-GIi" id="2Qd-vs-g1J">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zPK-ga-Xav">
@@ -569,7 +573,7 @@
                                     <outlet property="beerNameLabel" destination="Fn1-a2-FJH" id="4cc-Iy-zPj"/>
                                     <outlet property="beerStyleLabel" destination="lwI-YK-u7Q" id="VgF-8J-tRa"/>
                                     <outlet property="ratingLabel" destination="1l3-eD-Myj" id="c2G-sE-1yc"/>
-                                    <segue destination="jRB-Pm-La7" kind="show" id="Ykh-WU-9ae"/>
+                                    <segue destination="jRB-Pm-La7" kind="show" identifier="showBeerDetailSegue" id="Ykh-WU-9ae"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -674,13 +678,13 @@
         <scene sceneID="c4K-Wy-bJP">
             <objects>
                 <tableViewController id="jRB-Pm-La7" customClass="CBFBeerDetailViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="225" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="183" sectionHeaderHeight="28" sectionFooterHeight="28" id="U0R-Bk-ogP">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="225" id="fK2-wm-pYu">
-                                <rect key="frame" x="0.0" y="92" width="600" height="225"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="beerHeaderCell" rowHeight="183" id="fK2-wm-pYu" customClass="CBFBeerHeaderCell">
+                                <rect key="frame" x="0.0" y="92" width="600" height="183"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fK2-wm-pYu" id="IVb-HM-fVd">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="183"/>
@@ -782,6 +786,11 @@
                                         <constraint firstItem="31l-ix-Czo" firstAttribute="top" secondItem="PD1-eh-QID" secondAttribute="topMargin" id="y4x-am-9OC"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="notesTextView" destination="WIV-FJ-65F" id="WG3-3s-NXQ"/>
+                                    <outlet property="ratingLabel" destination="7Oi-WA-mmy" id="ewS-yi-oqZ"/>
+                                    <outlet property="userNameLabel" destination="i5i-Ub-P57" id="Qgf-bm-ACd"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
