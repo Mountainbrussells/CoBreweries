@@ -10,9 +10,4 @@
 
 @interface CBFBeerHeaderCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *averageRatingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *beerNameLabel;
-
-
-
 @end
