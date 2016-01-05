@@ -18,21 +18,23 @@
 
 - (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
 
-- (CBFUser *)fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
+- (CBFUser *) fetchUserWithId:(NSManagedObjectID *)ManagedObjectId;
 
-- (CBFUser *)fetchUserWithUID:(NSString *)uid;
+- (CBFUser *) fetchUserWithUID:(NSString *)uid;
 
-- (NSArray *)fetchBreweries;
+- (NSArray *) fetchBreweries;
 
-- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+- (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
-- (CBFBrewery *)fetchBreweryWithUID:(NSString *)uid;
+- (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid;
 
-- (NSArray *)fetchBreweryRatings;
+- (NSArray *) fetchBreweryRatings;
 
-- (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
+- (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
 
-- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery;
+- (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
+
+
 
 
 

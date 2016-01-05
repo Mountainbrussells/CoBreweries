@@ -21,24 +21,26 @@
 
 @property (strong, nonatomic) CBFCoreDataController *coreDataController;
 
-- (id)initWithPersistenceController:(BRPersistenceController *)persistenceController;
+- (id) initWithPersistenceController:(BRPersistenceController *)persistenceController;
 
-- (void)createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken,  NSError *error))completion;
+- (void) createUserWithUserName:(NSString *)name password:(NSString *)password email:(NSString *)email completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken,  NSError *error))completion;
 
 
-- (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error))completion;
+- (void) logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *objectId, NSString *sessionToken, NSError *error))completion;
 
-- (void)requestBreweriesWithCompletion:(void (^)(NSError *error))completion;
+- (void) requestBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
-- (void)getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *image, NSError *error))completion;
+- (void) getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *image, NSError *error))completion;
 
-- (UIImage *)getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
+- (UIImage *) getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
 
-- (void)createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
+- (void) createBreweryRating:(NSString *)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 
-- (void)requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
+- (void) requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
 
 - (void) requestBeersWithCompletion:(void (^)(NSError *error))completion;
+
+- (void) createBeerRating:(NSString *)rating withNote:(NSString *)note beerId:(NSString *)beerId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 
 
 
