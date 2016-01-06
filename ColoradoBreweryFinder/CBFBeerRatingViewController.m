@@ -17,11 +17,13 @@
 @property (strong, nonatomic) CBFBeer *beer;
 @property (strong, nonatomic) CBFBeerRating *rating;
 @property (assign) BOOL alreadyRatedBeer;
+@property (strong, nonatomic) NSArray *ratingButtonsArray;
 @property (weak, nonatomic) IBOutlet UITextView *noteTextView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonOne;
 @property (weak, nonatomic) IBOutlet UIButton *buttonTwo;
 @property (weak, nonatomic) IBOutlet UIButton *buttonThree;
 @property (weak, nonatomic) IBOutlet UIButton *buttonFour;
+@property (strong, nonatomic) NSString *ratingString;
 
 @end
 
@@ -40,7 +42,9 @@
     } else {
         self.noteTextView.text = @"Make notes here";
     }
-
+    
+    self.ratingButtonsArray = [NSArray arrayWithObjects:self.buttonOne, self.buttonTwo, self.buttonThree, self.buttonFour, nil];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,10 +53,42 @@
 }
 - (IBAction)saveButton:(id)sender {
     if (self.alreadyRatedBeer) {
-        [self.serviceController updateBeerRating:self.rating withValue:1 andNote:self.noteTextView.text completion:nil];
+        NSInteger ratingInt = [self.ratingString integerValue];
+        [self.serviceController updateBeerRating:self.rating withValue:ratingInt andNote:self.noteTextView.text completion:nil];
     } else {
-        [self.serviceController createBeerRating:@"1" withNote:self.noteTextView.text beerId:self.beer.uid completion:nil];
+        [self.serviceController createBeerRating:self.ratingString withNote:self.noteTextView.text beerId:self.beer.uid completion:nil];
     }
+}
+
+- (IBAction)buttonOne:(id)sender {
+    self.buttonOne.backgroundColor = [UIColor lightGrayColor];
+    self.buttonTwo.backgroundColor = [UIColor clearColor];
+    self.buttonThree.backgroundColor = [UIColor clearColor];
+    self.buttonFour.backgroundColor = [UIColor clearColor];
+    self.ratingString = @"1";
+    
+}
+- (IBAction)buttonTwo:(id)sender {
+    self.buttonOne.backgroundColor = [UIColor clearColor];
+    self.buttonTwo.backgroundColor = [UIColor lightGrayColor];
+    self.buttonThree.backgroundColor = [UIColor clearColor];
+    self.buttonFour.backgroundColor = [UIColor clearColor];
+    self.ratingString = @"2";
+}
+
+- (IBAction)buttonThree:(id)sender {
+    self.buttonOne.backgroundColor = [UIColor clearColor];
+    self.buttonTwo.backgroundColor = [UIColor clearColor];
+    self.buttonThree.backgroundColor = [UIColor lightGrayColor];
+    self.buttonFour.backgroundColor = [UIColor clearColor];
+    self.ratingString = @"3";
+}
+- (IBAction)buttonFour:(id)sender {
+    self.buttonOne.backgroundColor = [UIColor clearColor];
+    self.buttonTwo.backgroundColor = [UIColor clearColor];
+    self.buttonThree.backgroundColor = [UIColor clearColor];
+    self.buttonFour.backgroundColor = [UIColor lightGrayColor];
+    self.ratingString = @"4";
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -66,13 +102,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

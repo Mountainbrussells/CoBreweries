@@ -26,9 +26,10 @@ static NSString *const kParseBreweryClassVenue = @"/1/classes/Brewery";
 static NSString *const kPArseBreweryRatingVenue = @"/1/classes/BreweryRating";
 static NSString *const kParseBeerClassVenue = @"/1/classes/Beer";
 static NSString *const kParseBeerRatingClassVenue = @"/1/classes/BeerRating";
-static NSString *const kParseBeerReviewClassVenue = @"/1/classes/BeerRating";
 static NSString *const kPARSE_APPLICATION_ID = @"Ly0UjZGre3fILHVIHX9Hk19lb9v5Dev2nUSOynkF";
 static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVLo";
+
+static NSString *authSessionToken = @"";
 
 @interface CBFServiceController ()
 
@@ -95,7 +96,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
             NSLog(@"Data: %@", responseDictionary);
             NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
             NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
-            
+            authSessionToken = sessionToken;
             if (objectIDNumber) {
                 // if task is successful create CD user object
                 CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
@@ -188,7 +189,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
             NSLog(@"Data: %@", responseDictionary);
             NSString *objectID = [responseDictionary valueForKey:@"objectId"];
             NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
-            
+            authSessionToken = sessionToken;
             
             
             
@@ -757,7 +758,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
     NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseBeerReviewClassVenue];
+    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
     
     NSURL *parseURL = [NSURL URLWithString:urlString];
     
@@ -894,11 +895,12 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
     [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
     
-    NSDictionary *breweryDict = @{@"__type": @"Pointer", @"className": @"Brewery", @"objectId": beerId};
+    NSDictionary *beerdict = @{@"__type": @"Pointer", @"className": @"Beer", @"objectId": beerId};
     NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
     
-    NSDictionary *postDictionary = @{@"rating": beerRating, @"brewery": breweryDict, @"user": userDict, @"review": note};
+    NSDictionary *postDictionary = @{@"rating": beerRating, @"beer": beerdict, @"user": userDict, @"review": note};
     
     NSError *error;
     NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
@@ -934,7 +936,8 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
                 NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
                 NSError *objectIdError;
                 [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
-                
+                NSError *mocError;
+                [moc save:&mocError];
                 managedObjectId = rating.objectID;
                 
                 if (completion) {
@@ -989,6 +992,7 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
     [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
     [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
     [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
     
     NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
     

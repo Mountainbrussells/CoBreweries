@@ -613,18 +613,30 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iy-hN-TjP">
                                         <rect key="frame" x="0.0" y="0.0" width="63" height="38"/>
                                         <state key="normal" title="1"/>
+                                        <connections>
+                                            <action selector="buttonOne:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="nBs-Fz-O7p"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAK-i1-E89">
                                         <rect key="frame" x="63" y="0.0" width="62" height="38"/>
                                         <state key="normal" title="2"/>
+                                        <connections>
+                                            <action selector="buttonTwo:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="SAP-Sa-EIy"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFl-71-OF4">
                                         <rect key="frame" x="125" y="0.0" width="63" height="38"/>
                                         <state key="normal" title="3"/>
+                                        <connections>
+                                            <action selector="buttonThree:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="swI-i6-Nob"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHq-hc-EVs">
                                         <rect key="frame" x="188" y="0.0" width="62" height="38"/>
                                         <state key="normal" title="4"/>
+                                        <connections>
+                                            <action selector="buttonFour:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="tFy-KI-wTM"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
