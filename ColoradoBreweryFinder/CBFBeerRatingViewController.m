@@ -9,11 +9,14 @@
 #import "CBFBeerRatingViewController.h"
 #import "CBFUser.h"
 #import "CBFBeer.h"
+#import "CBFBeerRating.h"
 
 @interface CBFBeerRatingViewController ()<UITextViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) CBFUser *user;
-@property (strong, nonatomic)CBFBeer *beer;
+@property (strong, nonatomic) CBFBeer *beer;
+@property (strong, nonatomic) CBFBeerRating *rating;
+@property (assign) BOOL alreadyRatedBeer;
 @property (weak, nonatomic) IBOutlet UITextView *noteTextView;
 @property (weak, nonatomic) IBOutlet UIButton *buttonOne;
 @property (weak, nonatomic) IBOutlet UIButton *buttonTwo;
@@ -29,6 +32,14 @@
     self.beer = [self.coredataController fetchBeerWithManagedObjectId:self.beerManagedObjectId];
     self.user = [self.coredataController fetchUserWithId:self.userManagedObjectId];
     self.noteTextView.delegate = self;
+    
+    self.rating = [self.coredataController fetchBeerRatingForBeer:self.beer andUser:self.user];
+    if (self.rating) {
+        self.noteTextView.text = self.rating.review;
+        self.alreadyRatedBeer = true;
+    } else {
+        self.noteTextView.text = @"Make notes here";
+    }
 
 }
 
@@ -37,6 +48,11 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)saveButton:(id)sender {
+    if (self.alreadyRatedBeer) {
+        [self.serviceController updateBeerRating:self.rating withValue:1 andNote:self.noteTextView.text completion:nil];
+    } else {
+        
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
