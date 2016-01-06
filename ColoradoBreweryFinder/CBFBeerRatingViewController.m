@@ -7,8 +7,18 @@
 //
 
 #import "CBFBeerRatingViewController.h"
+#import "CBFUser.h"
+#import "CBFBeer.h"
 
 @interface CBFBeerRatingViewController ()
+
+@property (strong, nonatomic) CBFUser *user;
+@property (strong, nonatomic)CBFBeer *beer;
+@property (weak, nonatomic) IBOutlet UITextView *noteTextView;
+@property (weak, nonatomic) IBOutlet UIButton *buttonOne;
+@property (weak, nonatomic) IBOutlet UIButton *buttonTwo;
+@property (weak, nonatomic) IBOutlet UIButton *buttonThree;
+@property (weak, nonatomic) IBOutlet UIButton *buttonFour;
 
 @end
 
@@ -16,12 +26,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.beer = [self.coredataController fetchBeerWithManagedObjectId:self.beerManagedObjectId];
+    self.user = [self.coredataController fetchUserWithId:self.userManagedObjectId];
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)saveButton:(id)sender {
 }
 
 /*

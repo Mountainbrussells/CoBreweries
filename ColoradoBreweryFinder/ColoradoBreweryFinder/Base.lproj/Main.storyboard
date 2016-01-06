@@ -643,6 +643,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="235" id="rWN-rA-WGL"/>
+                                    <constraint firstAttribute="width" constant="560" id="uIq-ad-X6S"/>
                                 </constraints>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -651,6 +652,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-Qi-OIW">
                                 <rect key="frame" x="283" y="424" width="34" height="30"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="DL8-em-e5I"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -669,6 +673,13 @@
                             <constraint firstItem="CCo-Qi-OIW" firstAttribute="centerX" secondItem="4SA-W1-BQf" secondAttribute="centerX" id="wQr-T1-S2T"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="buttonFour" destination="tHq-hc-EVs" id="0Kr-tz-EH6"/>
+                        <outlet property="buttonOne" destination="9iy-hN-TjP" id="zUr-EC-JUS"/>
+                        <outlet property="buttonThree" destination="fFl-71-OF4" id="YGU-wv-67E"/>
+                        <outlet property="buttonTwo" destination="nAK-i1-E89" id="Hcz-KX-Et8"/>
+                        <outlet property="noteTextView" destination="n91-QJ-R4K" id="QAN-54-HD2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ka1-54-dSC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

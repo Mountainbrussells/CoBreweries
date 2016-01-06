@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CBFServiceController.h"
 #import "CBFCoreDataController.h"
-#import "CBFUser.h"
-#import "CBFBeer.h"
+
 #import <CoreData/CoreData.h>
 
 @interface CBFBeerRatingViewController : UIViewController
