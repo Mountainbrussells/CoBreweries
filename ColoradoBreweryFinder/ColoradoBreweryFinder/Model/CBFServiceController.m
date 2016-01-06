@@ -974,7 +974,64 @@ static NSString *const kREST_API_KEY = @"fsJHCngQ3lfeZQSCm8Yz8Xe6hDVdOCWoBaNkAVL
 
 - (void)updateBeerRating:(CBFBeerRating *)rating withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
 {
+    NSNumber *beerRating = [NSNumber numberWithInteger:newRating];
     
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
+    NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
+    urlString = [urlString stringByAppendingString:ratingIdString];
+    
+    
+    NSURL *parseURL = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"PUT"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
+    
+    NSError *error;
+    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+    if (postBody != nil) {
+        [parseRequest setHTTPBody:postBody];
+    }
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (response) {
+            NSLog(@"Request Response:%@", response);
+            rating.rating = beerRating;
+            rating.review = note;
+            [moc save:nil];
+            
+        }
+        
+        
+        
+        if (data) {
+            
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+            
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(error);
+                });
+            }
+        }
+        
+    }];
+    
+    [task resume];
+
 }
 
 @end
