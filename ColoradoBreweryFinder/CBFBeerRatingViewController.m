@@ -51,7 +51,7 @@
     if (self.alreadyRatedBeer) {
         [self.serviceController updateBeerRating:self.rating withValue:1 andNote:self.noteTextView.text completion:nil];
     } else {
-        
+        [self.serviceController createBeerRating:@"1" withNote:self.noteTextView.text beerId:self.beer.uid completion:nil];
     }
 }
 
