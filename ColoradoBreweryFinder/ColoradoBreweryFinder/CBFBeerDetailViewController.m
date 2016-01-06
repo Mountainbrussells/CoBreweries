@@ -12,6 +12,7 @@
 #import "CBFBeerHeaderCell.h"
 #import "CBFBeerReviewCell.h"
 #import "CBFBeerRating.h"
+#import "CBFBeerRatingViewController.h"
 
 @interface CBFBeerDetailViewController ()
 
@@ -121,6 +122,20 @@
         return 0;
     } else {
         return 80;
+    }
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showRateBeerVC"]) {
+        
+        CBFBeerRatingViewController *destinationVC = [segue destinationViewController];
+        destinationVC.userManagedObjectId = self.user.objectID;
+        destinationVC.beerManagedObjectId = self.beer.objectID;
+        destinationVC.serviceController = self.serviceController;
+        destinationVC.coredataController = self.coreDataController;
     }
 }
 @end

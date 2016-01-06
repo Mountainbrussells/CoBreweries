@@ -713,7 +713,7 @@
                                                     <state key="normal" title="Rate"/>
                                                     <connections>
                                                         <action selector="rateBeerButton:" destination="fK2-wm-pYu" eventType="touchUpInside" id="DfC-Vl-Klw"/>
-                                                        <segue destination="bAj-Qh-5u3" kind="show" id="3w8-i6-cS5"/>
+                                                        <segue destination="bAj-Qh-5u3" kind="show" identifier="showRateBeerVC" id="3w8-i6-cS5"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
