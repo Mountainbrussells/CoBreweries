@@ -30,6 +30,7 @@
 		C9429CA21C2718F500C9D844 /* CBFBreweryMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA11C2718F500C9D844 /* CBFBreweryMapViewController.m */; };
 		C9429CA51C287AF100C9D844 /* CBFBreweryLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA41C287AF100C9D844 /* CBFBreweryLocation.m */; };
 		C9429CA81C31DE6800C9D844 /* NSString+MD5String.m in Sources */ = {isa = PBXBuildFile; fileRef = C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */; };
+		C97A19A11C3D854800C95DA6 /* CBFBeerRatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C97A19A01C3D854800C95DA6 /* CBFBeerRatingViewController.m */; };
 		C9D7D6AB1C344F9500294690 /* CBFBeerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D7D6AA1C344F9500294690 /* CBFBeerCell.m */; };
 		C9F4A8231C3AF99E001E674F /* CBFBeerReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F4A8221C3AF99E001E674F /* CBFBeerReviewCell.m */; };
 		C9F5CADC1C0FB83C00618F50 /* CBFLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */; };
@@ -108,6 +109,8 @@
 		C9429CA41C287AF100C9D844 /* CBFBreweryLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryLocation.m; sourceTree = "<group>"; };
 		C9429CA61C31DE6800C9D844 /* NSString+MD5String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5String.h"; sourceTree = "<group>"; };
 		C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5String.m"; sourceTree = "<group>"; };
+		C97A199F1C3D854800C95DA6 /* CBFBeerRatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBFBeerRatingViewController.h; path = ../CBFBeerRatingViewController.h; sourceTree = "<group>"; };
+		C97A19A01C3D854800C95DA6 /* CBFBeerRatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBFBeerRatingViewController.m; path = ../CBFBeerRatingViewController.m; sourceTree = "<group>"; };
 		C9D7D6A91C344F9500294690 /* CBFBeerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeerCell.h; sourceTree = "<group>"; };
 		C9D7D6AA1C344F9500294690 /* CBFBeerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBeerCell.m; sourceTree = "<group>"; };
 		C9F4A8201C35E16E001E674F /* Denver.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Denver.gpx; sourceTree = "<group>"; };
@@ -289,6 +292,8 @@
 				C90F6DA71C35C4FF001E1726 /* CBFBeerHeaderCell.m */,
 				C9F4A8211C3AF99E001E674F /* CBFBeerReviewCell.h */,
 				C9F4A8221C3AF99E001E674F /* CBFBeerReviewCell.m */,
+				C97A199F1C3D854800C95DA6 /* CBFBeerRatingViewController.h */,
+				C97A19A01C3D854800C95DA6 /* CBFBeerRatingViewController.m */,
 				C9F5CADA1C0FB83C00618F50 /* CBFLogInViewController.h */,
 				C9F5CADB1C0FB83C00618F50 /* CBFLogInViewController.m */,
 				C9F5CAE51C10A5ED00618F50 /* CBFSignUpViewController.h */,
@@ -563,6 +568,7 @@
 				C9F5CAF31C16057700618F50 /* STKeychain.m in Sources */,
 				C90F6DA51C35C446001E1726 /* CBFBeerDetailViewController.m in Sources */,
 				C9429CA51C287AF100C9D844 /* CBFBreweryLocation.m in Sources */,
+				C97A19A11C3D854800C95DA6 /* CBFBeerRatingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
