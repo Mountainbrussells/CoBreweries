@@ -204,4 +204,18 @@
     return nil;
 }
 
+- (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId
+{
+    CBFBeerRating *beerRating;
+    NSError *error;
+    beerRating = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beerRating) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beerRating;
+}
+
 @end

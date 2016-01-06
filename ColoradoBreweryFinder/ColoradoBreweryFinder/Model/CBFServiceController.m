@@ -509,6 +509,7 @@ static NSString *authSessionToken = @"";
                 [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
             
                 managedObjectId = rating.objectID;
+                [self.persistencController save];
                 
                 if (completion) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -580,6 +581,7 @@ static NSString *authSessionToken = @"";
         if (response) {
             NSLog(@"Request Response:%@", response);
             rating.rating = breweryRating;
+            [self.persistencController save];
             [moc save:nil];
             
         }
@@ -930,6 +932,7 @@ static NSString *authSessionToken = @"";
                 
                 rating.beer = beer;
                 rating.user = user;
+                rating.rating = beerRating;
                 rating.review = note;
                 rating.uid = objectIDNumber;
                 
@@ -939,6 +942,7 @@ static NSString *authSessionToken = @"";
                 NSError *mocError;
                 [moc save:&mocError];
                 managedObjectId = rating.objectID;
+                [self.persistencController save];
                 
                 if (completion) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1013,6 +1017,7 @@ static NSString *authSessionToken = @"";
             rating.rating = beerRating;
             rating.review = note;
             [moc save:nil];
+            [self.persistencController save];
             
         }
         

@@ -56,7 +56,9 @@
         NSInteger ratingInt = [self.ratingString integerValue];
         [self.serviceController updateBeerRating:self.rating withValue:ratingInt andNote:self.noteTextView.text completion:nil];
     } else {
-        [self.serviceController createBeerRating:self.ratingString withNote:self.noteTextView.text beerId:self.beer.uid completion:nil];
+        [self.serviceController createBeerRating:self.ratingString withNote:self.noteTextView.text beerId:self.beer.uid completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+            NSLog(@"===New Rating: %@", [self.coredataController fetchBeerRatingWithNSManagedObjectId:ratingObjectID]);
+        }];
     }
 }
 
