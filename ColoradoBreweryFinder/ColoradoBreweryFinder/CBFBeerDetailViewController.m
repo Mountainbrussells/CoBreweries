@@ -31,6 +31,13 @@
     self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    [self.tableView reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
