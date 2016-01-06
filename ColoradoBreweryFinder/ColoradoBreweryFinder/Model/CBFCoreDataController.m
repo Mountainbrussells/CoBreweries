@@ -184,5 +184,19 @@
     return fetchedBeerReviews;
 }
 
+- (CBFBeerRating *) fetchBeerRatingForBeer:(CBFBeer *)beer andUser:(CBFUser *)user
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"beer = %@ & user = %@", beer, user];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BeerRating" inManagedObjectContext:self.moc];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBeerReviews = [self.moc executeFetchRequest:fetchRequest error:&error];
+    CBFBeerRating *rating = fetchedBeerReviews[0];
+    
+    return rating;
+    
+}
 
 @end

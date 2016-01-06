@@ -11,6 +11,7 @@
 #import "CBFUser.h"
 #import "CBFBrewery.h"
 #import "CBFBeer.h"
+#import "CBFBeerRating.h"
 #import "BRPersistenceController.h"
 
 
@@ -26,18 +27,20 @@
 - (NSArray *) fetchBreweries;
 
 - (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
-- (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+- (CBFBeer *) fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
 - (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid;
 
 - (NSArray *) fetchBreweryRatings;
-- (NSArray *)fetchBeerReviewsForBeer:(CBFBeer *)beer;
+- (NSArray *) fetchBeerReviewsForBeer:(CBFBeer *)beer;
 
 - (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
 
 - (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
 
 - (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
+
+- (CBFBeerRating *) fetchBeerRatingForBeer:(CBFBeer *)beer andUser:(CBFUser *)user;
 
 
 @end
