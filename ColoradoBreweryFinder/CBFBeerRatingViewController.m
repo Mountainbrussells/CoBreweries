@@ -10,7 +10,7 @@
 #import "CBFUser.h"
 #import "CBFBeer.h"
 
-@interface CBFBeerRatingViewController ()
+@interface CBFBeerRatingViewController ()<UITextViewDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) CBFUser *user;
 @property (strong, nonatomic)CBFBeer *beer;
@@ -28,6 +28,7 @@
     [super viewDidLoad];
     self.beer = [self.coredataController fetchBeerWithManagedObjectId:self.beerManagedObjectId];
     self.user = [self.coredataController fetchUserWithId:self.userManagedObjectId];
+    self.noteTextView.delegate = self;
 
 }
 
@@ -36,6 +37,16 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)saveButton:(id)sender {
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    
+    if (![[touch view] isKindOfClass:[UITextField class]]) {
+        [self.noteTextView endEditing:YES];
+    }
+    [super touchesBegan:touches withEvent:event];
 }
 
 /*
