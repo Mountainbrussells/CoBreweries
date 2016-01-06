@@ -138,4 +138,7 @@
         destinationVC.coredataController = self.coreDataController;
     }
 }
+
+-(IBAction)prepareForUnwindFromBeerRating:(UIStoryboardSegue *)segue {
+}
 @end
