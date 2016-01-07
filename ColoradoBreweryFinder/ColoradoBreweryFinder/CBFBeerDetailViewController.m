@@ -31,11 +31,20 @@
     self.beer = [self.coreDataController fetchBeerWithManagedObjectId:self.beerObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userObjectId];
     self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(refreshTableView:) name:@"newReviewAdded" object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    [self.tableView reloadData];
+}
+
+- (void)refreshTableView:(id)sender
+{
     self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
     [self.tableView reloadData];
 }

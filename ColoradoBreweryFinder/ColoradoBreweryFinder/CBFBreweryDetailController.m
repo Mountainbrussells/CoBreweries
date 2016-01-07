@@ -83,6 +83,13 @@
         cell.lattitude = lattitude;
         cell.user = self.user;
         cell.coreDataController = self.coreDataController;
+        if (self.brewery.ratings.count > 0) {
+            float averageRating = [self.brewery calculateAverageRating];
+            NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
+            cell.averageRatingLabel.text = averageRatingString;
+        } else {
+            cell.averageRatingLabel.text = @"NR";
+        }
         
         if (!self.logoImage) {
             
@@ -109,8 +116,8 @@
         float averageRating = [beer calculateAverageRating];
         
         if (beer.ratings.count > 0) {
-        NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
-        cell.ratingLabel.text = averageRatingString;
+            NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
+            cell.ratingLabel.text = averageRatingString;
         } else {
             cell.ratingLabel.text = @"NR";
         }
@@ -164,7 +171,7 @@
 
 - (void) rateBrewery:(NSNumber *) rating {
     NSString *breweryId = self.brewery.uid;
-
+    
     __block CBFBreweryRating *existingRating = nil;
     [self.user.breweryRatings enumerateObjectsUsingBlock:^(CBFBreweryRating *breweryRating, BOOL * _Nonnull stop) {
         if([[[breweryRating brewery] uid] isEqualToString:breweryId]) {
@@ -176,7 +183,7 @@
         [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:nil];
     } else {
         [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-    }];
+        }];
     }
 }
 

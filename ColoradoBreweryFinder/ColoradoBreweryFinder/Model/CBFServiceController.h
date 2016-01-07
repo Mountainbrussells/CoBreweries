@@ -31,6 +31,8 @@
 
 - (void) requestBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
+- (void) updateBreweriesWithCompletion:(void (^)(NSError *error))completion;
+
 - (void) getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *image, NSError *error))completion;
 
 - (UIImage *) getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;

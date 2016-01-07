@@ -40,7 +40,11 @@
         self.noteTextView.text = self.rating.review;
         self.alreadyRatedBeer = true;
     } else {
-        self.noteTextView.text = @"Make notes here";
+        if ([self.noteTextView.text isEqualToString:@""]) {
+            self.noteTextView.text = @"Add note here";
+            self.noteTextView.editable = YES;
+            self.noteTextView.textColor = [UIColor lightGrayColor];
+        }
     }
     
     self.ratingButtonsArray = [NSArray arrayWithObjects:self.buttonOne, self.buttonTwo, self.buttonThree, self.buttonFour, nil];
@@ -52,14 +56,19 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)saveButton:(id)sender {
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     if (self.alreadyRatedBeer) {
         NSInteger ratingInt = [self.ratingString integerValue];
-        [self.serviceController updateBeerRating:self.rating withValue:ratingInt andNote:self.noteTextView.text completion:nil];
+        [self.serviceController updateBeerRating:self.rating withValue:ratingInt andNote:self.noteTextView.text completion:^(NSError *error) {
+            [notificationCenter postNotificationName:@"newReviewAdded" object:nil];
+        }];
     } else {
         [self.serviceController createBeerRating:self.ratingString withNote:self.noteTextView.text beerId:self.beer.uid completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
             NSLog(@"===New Rating: %@", [self.coredataController fetchBeerRatingWithNSManagedObjectId:ratingObjectID]);
+            [notificationCenter postNotificationName:@"newReviewAdded" object:nil];
         }];
     }
+    
 }
 
 - (IBAction)buttonOne:(id)sender {
@@ -101,6 +110,30 @@
         [self.noteTextView endEditing:YES];
     }
     [super touchesBegan:touches withEvent:event];
+}
+
+#pragma mark - Text View Delegates
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([self.noteTextView.text isEqualToString:@"Add note here"]) {
+        self.noteTextView.text = @"";
+        self.noteTextView.textColor = [UIColor blackColor];
+    }
+    [self.noteTextView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([self.noteTextView.text isEqualToString:@""]) {
+        self.noteTextView.text = @"Add note here";
+        self.noteTextView.textColor = [UIColor lightGrayColor];
+    }
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return YES;
 }
 
 /*

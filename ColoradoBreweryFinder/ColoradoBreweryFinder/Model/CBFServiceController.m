@@ -361,6 +361,111 @@ static NSString *authSessionToken = @"";
     [task resume];
 }
 
+- (void) updateBreweriesWithCompletion:(void (^)(NSError *error))completion
+{
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
+    
+    NSURL *parseURL = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSError *dataError;
+            NSDictionary *breweryData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
+            
+            NSArray *breweries = [breweryData valueForKey:@"results"];
+            
+            NSMutableArray *mocBreweryArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweries]];
+            
+            for (id brewery in breweries) {
+                
+                NSString *breweryUID = [brewery objectForKey:@"objectId"];
+                CBFBrewery *existingBrewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                if (existingBrewery) {
+                    
+                    existingBrewery.name = [brewery objectForKey:@"name"];
+                    existingBrewery.address = [brewery objectForKey:@"address"];
+                    NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                    existingBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                    existingBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                    existingBrewery.uid = [brewery objectForKey:@"objectId"];
+                    
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:[existingBrewery.lattitude doubleValue] longitude:[existingBrewery.longitude doubleValue]];
+                    existingBrewery.location = location;
+                    
+                    
+                    existingBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                    existingBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                    NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                    NSString *urlString = [photoDictionary objectForKey:@"url"];
+                    existingBrewery.logoURL = urlString;
+                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
+                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+                    //                mocBrewery.logo = data;
+                    
+                    NSError *mocError;
+                    [moc save:&mocError];
+                    [mocBreweryArray removeObject:existingBrewery];
+                } else {
+                    CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:moc];
+                    mocBrewery.name = [brewery objectForKey:@"name"];
+                    mocBrewery.address = [brewery objectForKey:@"address"];
+                    NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                    mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                    mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                    mocBrewery.uid = [brewery objectForKey:@"objectId"];
+                    
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
+                    mocBrewery.location = location;
+                    
+                    
+                    mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                    mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                    NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                    NSString *urlString = [photoDictionary objectForKey:@"url"];
+                    mocBrewery.logoURL = urlString;
+                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
+                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+                    //                mocBrewery.logo = data;
+                    
+                    NSError *mocError;
+                    [moc save:&mocError];
+                }
+                
+                
+                
+            }
+            
+            for (CBFBrewery *brewery in mocBreweryArray) {
+                [moc deleteObject:brewery];
+            }
+            
+            if (completion) {
+                completion(nil);
+            }
+        }
+        
+        if (response) {
+            NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
+    
+    [task resume];
+}
+
 - (void)getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *, NSError *))completion
 {
     __block UIImage *returnImage;
@@ -507,7 +612,7 @@ static NSString *authSessionToken = @"";
                 NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
                 NSError *objectIdError;
                 [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
-            
+                
                 managedObjectId = rating.objectID;
                 [self.persistencController save];
                 
@@ -530,7 +635,7 @@ static NSString *authSessionToken = @"";
                 }
             }
         }
-
+        
         if (error) {
             NSLog(@"RequestError:%@", error);
             
@@ -543,18 +648,18 @@ static NSString *authSessionToken = @"";
     }];
     
     [task resume];
-
+    
 }
 
 - (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion
 {
     NSNumber *breweryRating = [NSNumber numberWithInteger:newRating];
-
+    
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
     NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
     urlString = [urlString stringByAppendingString:ratingIdString];
-
+    
     
     NSURL *parseURL = [NSURL URLWithString:urlString];
     
@@ -569,9 +674,9 @@ static NSString *authSessionToken = @"";
     NSError *error;
     NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
     if (postBody != nil) {
-            [parseRequest setHTTPBody:postBody];
+        [parseRequest setHTTPBody:postBody];
     }
-
+    
     
     NSURLSession *session = [NSURLSession sharedSession];
     
@@ -677,6 +782,8 @@ static NSString *authSessionToken = @"";
     [task resume];
 }
 
+
+
 #pragma mark - Beer Calls
 
 - (void)requestBeersWithCompletion:(void (^)(NSError *))completion
@@ -750,7 +857,7 @@ static NSString *authSessionToken = @"";
     }];
     
     [task resume];
-
+    
 }
 
 #pragma mark - Beer Review Calls
@@ -798,7 +905,7 @@ static NSString *authSessionToken = @"";
                 NSString *userUID = [userDict objectForKey:@"objectId"];
                 CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
                 mocBeerRating.userUID = userUID;
-               
+                
                 
                 if ([user.uid isEqualToString:self.user.uid]) {
                     mocBeerRating.user = user;
@@ -826,7 +933,7 @@ static NSString *authSessionToken = @"";
     }];
     
     [task resume];
-
+    
 }
 
 
@@ -978,7 +1085,7 @@ static NSString *authSessionToken = @"";
     }];
     
     [task resume];
-
+    
 }
 
 - (void)updateBeerRating:(CBFBeerRating *)rating withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
