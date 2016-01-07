@@ -175,7 +175,10 @@
     }];
     
     if (logoImage) {
-        cell.logoImageView.image = logoImage;
+        if (cell.brewery.logoURL) {
+            cell.logoImageView.image = logoImage;
+        }
+       
     }
     
     

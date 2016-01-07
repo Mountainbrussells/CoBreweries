@@ -526,33 +526,41 @@ static NSString *authSessionToken = @"";
     
     NSString *breweryLogoURL = imageURLString;
     
-//    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
-    NSString *identifier = breweryLogoURL;
+    NSString *identifier;
     
-    returnImage = [self.photoCache objectForKey:identifier];
-    if (!returnImage) {
-        NSString *urlString = breweryLogoURL;
-        
-        NSURL *photoURL = [NSURL URLWithString:urlString];
-        NSURLSession *session = [NSURLSession sharedSession];
-        NSURLRequest *logoRequest = [NSURLRequest requestWithURL:photoURL];
-        
-        __weak typeof(self) weakSelf = self;
-        NSURLSessionTask *task = [session dataTaskWithRequest:logoRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            
-            UIImage *image = [[UIImage alloc] initWithData:data];
-            [weakSelf.photoCache setObject:image forKey:identifier];
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(image);
-                });
-            }
-        }];
-        
-        [task resume];
+    if (breweryLogoURL) {
+        identifier = [NSString CBF_MD5:breweryLogoURL];
     }
     
-    return returnImage;
+//    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
+//    NSString *identifier = breweryLogoURL;
+    if (identifier) {
+        returnImage = [self.photoCache objectForKey:identifier];
+        if (!returnImage) {
+            NSString *urlString = breweryLogoURL;
+            
+            NSURL *photoURL = [NSURL URLWithString:urlString];
+            NSURLSession *session = [NSURLSession sharedSession];
+            NSURLRequest *logoRequest = [NSURLRequest requestWithURL:photoURL];
+            
+            __weak typeof(self) weakSelf = self;
+            NSURLSessionTask *task = [session dataTaskWithRequest:logoRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                
+                UIImage *image = [[UIImage alloc] initWithData:data];
+                [weakSelf.photoCache setObject:image forKey:identifier];
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(image);
+                    });
+                }
+            }];
+            
+            [task resume];
+        }
+        
+        return returnImage;
+    }
+    return nil;
 }
 
 #pragma mark - BreweryRating calls
