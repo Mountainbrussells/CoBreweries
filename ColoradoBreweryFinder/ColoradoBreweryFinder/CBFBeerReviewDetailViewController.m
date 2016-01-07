@@ -19,7 +19,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    CBFBeerRating *rating = [self.coredataController fetchBeerRatingWithNSManagedObjectId:self.beerReviewManagedObjectId];
+    self.beerNameLabel.text = rating.beer.name;
+    self.ratingLabel.text = [NSString stringWithFormat:@"%@", rating.rating];
+    self.reviewTextView.text = rating.review;
 }
 
 - (void)didReceiveMemoryWarning {

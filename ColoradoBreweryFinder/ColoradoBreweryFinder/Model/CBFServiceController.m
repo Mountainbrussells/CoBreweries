@@ -787,6 +787,7 @@ static NSString *authSessionToken = @"";
                 mocBeerRating.rating = [rating objectForKey:@"rating"];
                 mocBeerRating.uid = [rating objectForKey:@"objectId"];
                 mocBeerRating.review =[rating objectForKey:@"review"];
+                mocBeerRating.username = [rating objectForKey:@"username"];
                 
                 NSDictionary *beerDict = [rating objectForKey:@"beer"];
                 NSString *beerUID = [beerDict objectForKey:@"objectId"];
@@ -935,6 +936,7 @@ static NSString *authSessionToken = @"";
                 rating.rating = beerRating;
                 rating.review = note;
                 rating.uid = objectIDNumber;
+                rating.username = self.user.userName;
                 
                 NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
                 NSError *objectIdError;

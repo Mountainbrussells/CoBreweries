@@ -22,7 +22,7 @@
 @property (strong, nonatomic)BRPersistenceController *persistenceController;
 @property (strong, nonatomic)CBFServiceController *serviceController;
 @property (strong, nonatomic)CBFCoreDataController *coreDataController;
-@property (strong, nonatomic)NSManagedObjectID *beerReviewObjectId;
+@property (strong, nonatomic)NSManagedObjectID *userObjectId;
 
 
 

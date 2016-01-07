@@ -78,10 +78,11 @@
         CBFBeerReviewCell  *cell = [tableView dequeueReusableCellWithIdentifier:@"beerReviewCell"];
         CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
         
-        NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
-            cell.userNameLabel.text = [NSString stringWithFormat:@"User: %@", userName];
-        }];
-        cell.userNameLabel.text = userName;
+//        NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
+//            cell.userNameLabel.text = [NSString stringWithFormat:@"User: %@", userName];
+//        }];
+        cell.userNameLabel.text = rating.username;
+//        cell.userNameLabel.text = userName;
         float ratingValue = [rating.rating floatValue];
         NSString *ratingValueString = [NSString stringWithFormat:@"Rating: %0.0f", ratingValue];
         cell.ratingLabel.text = ratingValueString;
@@ -152,6 +153,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
         destinationVC.beerReviewManagedObjectId = rating.objectID;
+        destinationVC.coredataController = self.coreDataController;
     }
 }
 

@@ -86,11 +86,6 @@
         
         if (!self.logoImage) {
             
-            // TODO: Dispatch Asynch
-//            NSString *urlString = self.brewery.logoURL;
-//            NSURL *photoURL = [NSURL URLWithString:urlString];
-//            NSData *data = [NSData dataWithContentsOfURL:photoURL];
-//            UIImage *image = [[UIImage alloc] initWithData:data];
             UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL completion:^(UIImage *image) {
                 cell.logoImageView.image = image;
             }];

@@ -492,6 +492,7 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="averageRatingLabel" destination="Vjq-l7-0bP" id="FQK-nb-4hT"/>
                                     <outlet property="breweryNameLabel" destination="FQS-wk-tcJ" id="UwI-rV-TlL"/>
                                     <outlet property="logoImageView" destination="1jm-0Q-xhF" id="NbM-SU-P0o"/>
                                     <outlet property="rateBreweryView" destination="ZWb-RO-mIf" id="MFI-35-lvD"/>
@@ -850,8 +851,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5IM-BM-krn">
-                                <rect key="frame" x="271" y="157" width="50" height="87"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5IM-BM-krn">
+                                <rect key="frame" x="275" y="157" width="50" height="87"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="87" id="qiN-TG-0g0"/>
                                     <constraint firstAttribute="width" constant="50" id="vFO-XC-RQF"/>
