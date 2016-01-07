@@ -111,6 +111,14 @@
         cell.beerStyleLabel.text = beer.style;
         cell.beerABVLabel.text = [NSString stringWithFormat:@"ABV: %@%%", beer.abv];
         cell.beerIBULabel.text = [NSString stringWithFormat:@"IBUs: %@", beer.ibus];
+        float averageRating = [beer calculateAverageRating];
+        
+        if (beer.ratings.count > 0) {
+        NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
+        cell.ratingLabel.text = averageRatingString;
+        } else {
+            cell.ratingLabel.text = @"NR";
+        }
         
         return cell;
     } else {
