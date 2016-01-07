@@ -526,7 +526,8 @@ static NSString *authSessionToken = @"";
     
     NSString *breweryLogoURL = imageURLString;
     
-    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
+//    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
+    NSString *identifier = breweryLogoURL;
     
     returnImage = [self.photoCache objectForKey:identifier];
     if (!returnImage) {

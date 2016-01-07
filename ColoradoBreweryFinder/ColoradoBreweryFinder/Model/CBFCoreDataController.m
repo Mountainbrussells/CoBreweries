@@ -37,7 +37,7 @@
     if (!user) {
         NSLog(@"Fetch failed with Error: %@", error);
         return nil;
-    } 
+    }
     
     
     return user;
@@ -101,6 +101,25 @@
     
     return fetchedBreweries;
     
+}
+
+- (NSArray *) fetchBreweriesWithCompletion:(void (^)(NSError *error))completion;
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.moc];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *fetchedBreweries = [self.moc executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        if (completion) {
+            completion(error);
+        }
+    } else {
+        if (completion) {
+            completion(nil);
+        }
+    }
+    return fetchedBreweries;
 }
 
 - (NSArray *)fetchBreweryRatings

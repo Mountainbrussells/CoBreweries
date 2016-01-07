@@ -25,6 +25,7 @@
 - (CBFUser *) fetchUserWithUID:(NSString *)uid;
 
 - (NSArray *) fetchBreweries;
+- (NSArray *) fetchBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
 - (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 - (CBFBeer *) fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
