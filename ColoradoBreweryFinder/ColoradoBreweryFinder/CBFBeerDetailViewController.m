@@ -9,10 +9,12 @@
 #import "CBFBeerDetailViewController.h"
 #import "CBFBeer.h"
 #import "CBFUser.h"
+#import "CBFBeerRating.h"
 #import "CBFBeerHeaderCell.h"
 #import "CBFBeerReviewCell.h"
 #import "CBFBeerRating.h"
 #import "CBFBeerRatingViewController.h"
+#import "CBFBeerReviewDetailViewController.h"
 
 @interface CBFBeerDetailViewController ()
 
@@ -143,6 +145,13 @@
         destinationVC.beerManagedObjectId = self.beer.objectID;
         destinationVC.serviceController = self.serviceController;
         destinationVC.coredataController = self.coreDataController;
+    }
+    
+    if ([segue.identifier isEqualToString:@"showBeerReviewDetailVC"]) {
+        CBFBeerReviewDetailViewController *destinationVC = [segue destinationViewController];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
+        destinationVC.beerReviewManagedObjectId = rating.objectID;
     }
 }
 

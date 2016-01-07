@@ -814,7 +814,7 @@
                                     <outlet property="notesTextView" destination="WIV-FJ-65F" id="WG3-3s-NXQ"/>
                                     <outlet property="ratingLabel" destination="7Oi-WA-mmy" id="ewS-yi-oqZ"/>
                                     <outlet property="userNameLabel" destination="i5i-Ub-P57" id="Qgf-bm-ACd"/>
-                                    <segue destination="1xI-d6-5EI" kind="show" id="SdD-Ay-ZKl"/>
+                                    <segue destination="1xI-d6-5EI" kind="show" identifier="showBeerReviewDetailVC" id="SdD-Ay-ZKl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -828,10 +828,10 @@
             </objects>
             <point key="canvasLocation" x="3227" y="330"/>
         </scene>
-        <!--View Controller-->
+        <!--Beer Review Detail View Controller-->
         <scene sceneID="8J4-23-eyj">
             <objects>
-                <viewController id="1xI-d6-5EI" sceneMemberID="viewController">
+                <viewController id="1xI-d6-5EI" customClass="CBFBeerReviewDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f9v-XL-9ti"/>
                         <viewControllerLayoutGuide type="bottom" id="MTD-PH-Jct"/>
@@ -882,6 +882,11 @@
                             <constraint firstItem="t5i-fM-7jt" firstAttribute="centerX" secondItem="lZ7-5B-PNG" secondAttribute="centerX" id="yxc-h0-1AS"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="beerNameLabel" destination="t5i-fM-7jt" id="QQF-ij-RcJ"/>
+                        <outlet property="ratingLabel" destination="5IM-BM-krn" id="chv-Py-PLd"/>
+                        <outlet property="reviewTextView" destination="fet-sZ-ga3" id="ciV-77-XVv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tha-MA-SLJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

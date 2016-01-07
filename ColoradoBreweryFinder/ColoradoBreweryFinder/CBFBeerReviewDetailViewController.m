@@ -1,18 +1,21 @@
 //
-//  BeerReviewDetailViewController.m
+//  CBFBeerReviewDetailViewController.m
 //  ColoradoBreweryFinder
 //
 //  Created by Ben Russell on 1/6/16.
 //  Copyright © 2016 Ben Russell. All rights reserved.
 //
 
-#import "BeerReviewDetailViewController.h"
+#import "CBFBeerReviewDetailViewController.h"
 
-@interface BeerReviewDetailViewController ()
+@interface CBFBeerReviewDetailViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *beerNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
+@property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 
 @end
 
-@implementation BeerReviewDetailViewController
+@implementation CBFBeerReviewDetailViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
