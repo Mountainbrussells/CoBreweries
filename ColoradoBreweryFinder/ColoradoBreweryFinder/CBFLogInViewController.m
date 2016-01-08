@@ -200,7 +200,7 @@
         
         UINavigationController *navController = segue.destinationViewController;
         ViewController *mainView = navController.viewControllers[0];
-        mainView.user = self.user;
+        mainView.userManagedObjectId = self.user.objectID;
         mainView.persistenceController = self.persistenceController;
         mainView.serviceController = self.serviceController;
         mainView.coreDataController = self.coreDataController;

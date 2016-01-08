@@ -28,6 +28,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) CBFUser *user;
 
 
 @end
@@ -43,6 +44,7 @@
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
+    self.user = [self.coreDataController fetchUserWithId:self.userManagedObjectId];
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;

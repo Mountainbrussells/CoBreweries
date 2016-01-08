@@ -49,7 +49,8 @@ static NSString *authSessionToken = @"";
 {
     self = [super init];
     self.persistencController = persistenceController;
-    
+    self.writeMOC = self.persistencController.dataContext;
+    self.readMOC = self.persistencController.managedObjectContext;
     
     self.photoCache = [[NSCache alloc] init];
     
@@ -83,60 +84,69 @@ static NSString *authSessionToken = @"";
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
-    
-    
     // task creates parse user
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (response) {
             NSLog(@"Request Response:%@", response);
         }
         
-        NSManagedObjectID *managedObjectId;
-        
-        if (data) {
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"Data: %@", responseDictionary);
-            NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
-            NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
-            authSessionToken = sessionToken;
-            if (objectIDNumber) {
-                // if task is successful create CD user object
-                CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
-                user.userName = name;
-                user.password = password;
-                user.email = email;
-                user.uid = objectIDNumber;
-                NSArray *userArray = [[NSArray alloc] initWithObjects:user, nil];
-                NSError *objectIdError;
-                [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
-                
-                self.user = user;
-                
-                managedObjectId = self.user.objectID;
-                
-                
-                if (completion) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // pass back managedObjectId and sessionToken
-                        completion(managedObjectId, sessionToken, nil);
-                    });
+        __block NSManagedObjectID *managedObjectId;
+        [self.writeMOC performBlockAndWait:^{
+            if (data) {
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"Data: %@", responseDictionary);
+                NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
+                NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
+                authSessionToken = sessionToken;
+                if (objectIDNumber) {
+                    // if task is successful create CD user object
+                    CBFUser *user = [CBFUser insertInManagedObjectContext:self.writeMOC];
+                    user.userName = name;
+                    user.password = password;
+                    user.email = email;
+                    user.uid = objectIDNumber;
+                    NSArray *userArray = [[NSArray alloc] initWithObjects:user, nil];
+                    NSError *objectIdError;
+                    [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                    
+                    self.user = user;
+                    
+                    managedObjectId = self.user.objectID;
+                    
+                    
+                    
+                    NSError *error = nil;
+                    if (![self.writeMOC save:&error]) {
+                        NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                        abort();
+                    }
+                    
+                    
+                    
+                    
+                    if (completion) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // pass back managedObjectId and sessionToken
+                            completion(managedObjectId, sessionToken, nil);
+                        });
+                    }
+                } else {
+                    
+                    // Deal with invalid login error from parse
+                    
+                    NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                    NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
+                    if (completion) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(nil, nil, error);
+                        });
+                    }
                 }
-            } else {
                 
-                // Deal with invalid login error from parse
                 
-                NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
-                NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
-                if (completion) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(nil, nil, error);
-                    });
-                }
             }
-            
-            
-        }
+        }];
+        
         
         
         if (error) {
@@ -188,7 +198,6 @@ static NSString *authSessionToken = @"";
             // If user exist, get objectID and session Token
             
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
             NSLog(@"Data: %@", responseDictionary);
             NSString *objectID = [responseDictionary valueForKey:@"objectId"];
             NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
@@ -203,18 +212,18 @@ static NSString *authSessionToken = @"";
             if (objectID) {
                 
                 
-                [moc performBlockAndWait:^ {
+                [self.readMOC performBlockAndWait:^ {
                     
                     
                     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:moc];
+                    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.readMOC];
                     [fetchRequest setEntity:entity];
                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", objectID];
                     fetchRequest.predicate = predicate;
                     NSError *error;
-                    NSArray *fetchedUser = [moc executeFetchRequest:fetchRequest error:&error];
+                    NSArray *fetchedUser = [self.readMOC executeFetchRequest:fetchRequest error:&error];
                     NSError *idError;
-                    [moc obtainPermanentIDsForObjects:fetchedUser error:&idError];
+                    [self.readMOC obtainPermanentIDsForObjects:fetchedUser error:&idError];
                     
                     if (fetchedUser.count > 0 && fetchedUser.count < 2) {
                         
@@ -224,7 +233,7 @@ static NSString *authSessionToken = @"";
                     } else if (fetchedUser.count == 0) {
                         
                         // User exists but not on this device: create user
-                        CBFUser *user = [CBFUser insertInManagedObjectContext:moc];
+                        CBFUser *user = [CBFUser insertInManagedObjectContext:self.readMOC];
                         user.userName = name;
                         user.password = password;
                         user.uid = objectID;
@@ -299,8 +308,6 @@ static NSString *authSessionToken = @"";
 
 - (void)requestBreweriesWithCompletion:(void (^)(NSError *error))completion
 {
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
-    
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
     
@@ -320,32 +327,38 @@ static NSString *authSessionToken = @"";
             
             NSArray *breweries = [breweryData valueForKey:@"results"];
             
-            for (id brewery in breweries) {
-                CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:moc];
-                mocBrewery.name = [brewery objectForKey:@"name"];
-                mocBrewery.address = [brewery objectForKey:@"address"];
-                NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
-                mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
-                mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
-                mocBrewery.uid = [brewery objectForKey:@"objectId"];
+            [self.writeMOC performBlockAndWait:^{
+                for (id brewery in breweries) {
+                    CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:self.writeMOC];
+                    mocBrewery.name = [brewery objectForKey:@"name"];
+                    mocBrewery.address = [brewery objectForKey:@"address"];
+                    NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                    mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                    mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                    mocBrewery.uid = [brewery objectForKey:@"objectId"];
+                    
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
+                    mocBrewery.location = location;
+                    
+                    
+                    mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                    mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                    NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                    NSString *urlString = [photoDictionary objectForKey:@"url"];
+                    mocBrewery.logoURL = urlString;
+                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
+                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+                    //                mocBrewery.logo = data;
                 
-                CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
-                mocBrewery.location = location;
-                
-                
-                mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
-                mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
-                NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
-                NSString *urlString = [photoDictionary objectForKey:@"url"];
-                mocBrewery.logoURL = urlString;
-                //                NSURL *photoURL = [NSURL URLWithString:urlString];
-                //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
-                //                mocBrewery.logo = data;
-                
-                NSError *mocError;
-                [moc save:&mocError];
-                
-            }
+                    NSError *error = nil;
+                    if (![self.writeMOC save:&error]) {
+                        NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                        abort();
+                    }
+                    
+                }
+            }];
+            
             
             if (completion) {
                 completion(nil);
@@ -366,7 +379,6 @@ static NSString *authSessionToken = @"";
 
 - (void) updateBreweriesWithCompletion:(void (^)(NSError *error))completion
 {
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseBreweryClassVenue];
@@ -387,71 +399,75 @@ static NSString *authSessionToken = @"";
             
             NSArray *breweries = [breweryData valueForKey:@"results"];
             
-            NSMutableArray *mocBreweryArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweries]];
+            __block NSMutableArray *mocBreweryArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweries]];
+            [self.writeMOC performBlockAndWait:^{
+                for (id brewery in breweries) {
+                    
+                    NSString *breweryUID = [brewery objectForKey:@"objectId"];
+                    CBFBrewery *existingBrewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    if (existingBrewery) {
+                        
+                        existingBrewery.name = [brewery objectForKey:@"name"];
+                        existingBrewery.address = [brewery objectForKey:@"address"];
+                        NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                        existingBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                        existingBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                        existingBrewery.uid = [brewery objectForKey:@"objectId"];
+                        
+                        CLLocation *location = [[CLLocation alloc] initWithLatitude:[existingBrewery.lattitude doubleValue] longitude:[existingBrewery.longitude doubleValue]];
+                        existingBrewery.location = location;
+                        
+                        
+                        existingBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                        existingBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                        NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                        NSString *urlString = [photoDictionary objectForKey:@"url"];
+                        existingBrewery.logoURL = urlString;
+                        //                NSURL *photoURL = [NSURL URLWithString:urlString];
+                        //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+                        //                mocBrewery.logo = data;
+                        
+                        NSError *mocError;
+                        [self.readMOC save:&mocError];
+                        [mocBreweryArray removeObject:existingBrewery];
+                    } else {
+                        CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:self.writeMOC];
+                        mocBrewery.name = [brewery objectForKey:@"name"];
+                        mocBrewery.address = [brewery objectForKey:@"address"];
+                        NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
+                        mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
+                        mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
+                        mocBrewery.uid = [brewery objectForKey:@"objectId"];
+                        
+                        CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
+                        mocBrewery.location = location;
+                        
+                        
+                        mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
+                        mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
+                        NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
+                        NSString *urlString = [photoDictionary objectForKey:@"url"];
+                        mocBrewery.logoURL = urlString;
+                        //                NSURL *photoURL = [NSURL URLWithString:urlString];
+                        //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
+                        //                mocBrewery.logo = data;
+                        
+                        NSError *mocError;
+                        [self.writeMOC save:&mocError];
+                    }
+                    
+                    
+                    
+                }
+                
+                if (mocBreweryArray.count > 0) {
+                    for (CBFBrewery *brewery in mocBreweryArray) {
+                        [self.writeMOC deleteObject:brewery];
+                    }
+                }
+            }];
             
-            for (id brewery in breweries) {
-                
-                NSString *breweryUID = [brewery objectForKey:@"objectId"];
-                CBFBrewery *existingBrewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
-                if (existingBrewery) {
-                    
-                    existingBrewery.name = [brewery objectForKey:@"name"];
-                    existingBrewery.address = [brewery objectForKey:@"address"];
-                    NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
-                    existingBrewery.lattitude = [geolocation objectForKey:@"latitude"];
-                    existingBrewery.longitude = [geolocation objectForKey:@"longitude"];
-                    existingBrewery.uid = [brewery objectForKey:@"objectId"];
-                    
-                    CLLocation *location = [[CLLocation alloc] initWithLatitude:[existingBrewery.lattitude doubleValue] longitude:[existingBrewery.longitude doubleValue]];
-                    existingBrewery.location = location;
-                    
-                    
-                    existingBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
-                    existingBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
-                    NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
-                    NSString *urlString = [photoDictionary objectForKey:@"url"];
-                    existingBrewery.logoURL = urlString;
-                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
-                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
-                    //                mocBrewery.logo = data;
-                    
-                    NSError *mocError;
-                    [moc save:&mocError];
-                    [mocBreweryArray removeObject:existingBrewery];
-                } else {
-                    CBFBrewery *mocBrewery = [CBFBrewery insertInManagedObjectContext:moc];
-                    mocBrewery.name = [brewery objectForKey:@"name"];
-                    mocBrewery.address = [brewery objectForKey:@"address"];
-                    NSDictionary *geolocation = [brewery objectForKey:@"geolocation"];
-                    mocBrewery.lattitude = [geolocation objectForKey:@"latitude"];
-                    mocBrewery.longitude = [geolocation objectForKey:@"longitude"];
-                    mocBrewery.uid = [brewery objectForKey:@"objectId"];
-                    
-                    CLLocation *location = [[CLLocation alloc] initWithLatitude:[mocBrewery.lattitude doubleValue] longitude:[mocBrewery.longitude doubleValue]];
-                    mocBrewery.location = location;
-                    
-                    
-                    mocBrewery.phoneNumber = [brewery objectForKey:@"phoneNumber"];
-                    mocBrewery.websiteURL = [brewery objectForKey:@"websiteURL"];
-                    NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
-                    NSString *urlString = [photoDictionary objectForKey:@"url"];
-                    mocBrewery.logoURL = urlString;
-                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
-                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
-                    //                mocBrewery.logo = data;
-                    
-                    NSError *mocError;
-                    [moc save:&mocError];
-                }
-                
-                
-                
-            }
-            if (mocBreweryArray.count > 0) {
-                for (CBFBrewery *brewery in mocBreweryArray) {
-                    [moc deleteObject:brewery];
-                }
-            }
+            
             
             
             if (completion) {
@@ -1366,7 +1382,7 @@ static NSString *authSessionToken = @"";
     
     NSURLSession *session = [NSURLSession sharedSession];
     
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
     
     // task creates parse BreweryRating
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -1374,128 +1390,127 @@ static NSString *authSessionToken = @"";
             NSLog(@"Request Response:%@", response);
         }
         
-        NSManagedObjectID *managedObjectId;
-        
-        if (data) {
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"Data: %@", responseDictionary);
-            NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
-            
-            if (objectIDNumber) {
-                // if task is successful create CD user object
-                CBFBeerRating *rating = [CBFBeerRating insertInManagedObjectContext:moc];
+        __block NSManagedObjectID *managedObjectId;
+        [self.writeMOC performBlock:^{
+            if (data) {
+                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                NSLog(@"Data: %@", responseDictionary);
+                NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                 
-                rating.beer = beer;
-                rating.user = user;
+                if (objectIDNumber) {
+                    // if task is successful create CD user object
+                    CBFBeerRating *rating = [CBFBeerRating insertInManagedObjectContext:self.writeMOC];
+                    
+                    rating.beer = beer;
+                    rating.user = user;
+                    rating.rating = beerRating;
+                    rating.review = note;
+                    rating.uid = objectIDNumber;
+                    rating.username = self.user.userName;
+                    
+                    NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
+                    NSError *objectIdError;
+                    [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                    NSError *mocError;
+                    [self.writeMOC save:&mocError];
+                    managedObjectId = rating.objectID;
+                    [self.persistencController save];
+                    
+                    if (completion) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            // pass back managedObjectId and sessionToken
+                            completion(managedObjectId, nil);
+                        });
+                    }
+                } else {
+                    
+                    NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                    NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
+                    if (completion) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(nil, error);
+                        });
+                    }
+                }
+            }
+        }];
+         
+         if (error) {
+             NSLog(@"RequestError:%@", error);
+             
+             if (completion) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     completion(nil, error);
+                 });
+             }
+         }
+         }];
+        
+        [task resume];
+        
+    }
+                              
+                              - (void)updateBeerRating:(CBFBeerRating *)rating withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
+    {
+        NSNumber *beerRating = [NSNumber numberWithInteger:newRating];
+        
+        NSString *urlString = kBaseParseAPIURL;
+        urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
+        NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
+        urlString = [urlString stringByAppendingString:ratingIdString];
+        
+        
+        NSURL *parseURL = [NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+        [parseRequest setHTTPMethod:@"PUT"];
+        [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+        [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+        [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
+        
+        NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
+        
+        NSError *error;
+        NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+        if (postBody != nil) {
+            [parseRequest setHTTPBody:postBody];
+        }
+        
+        
+        NSURLSession *session = [NSURLSession sharedSession];
+        
+        NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+        
+        NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (response) {
+                NSLog(@"Request Response:%@", response);
                 rating.rating = beerRating;
                 rating.review = note;
-                rating.uid = objectIDNumber;
-                rating.username = self.user.userName;
-                
-                NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
-                NSError *objectIdError;
-                [moc obtainPermanentIDsForObjects:userArray error:&objectIdError];
-                NSError *mocError;
-                [moc save:&mocError];
-                managedObjectId = rating.objectID;
+                [moc save:nil];
                 [self.persistencController save];
                 
-                if (completion) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // pass back managedObjectId and sessionToken
-                        completion(managedObjectId, nil);
-                    });
-                }
-            } else {
-                
-                // Deal with invalid login error from parse
-                
-                NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
-                NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
-                if (completion) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(nil, error);
-                    });
-                }
             }
-        }
-        
-        if (error) {
-            NSLog(@"RequestError:%@", error);
             
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
-                });
+            
+            
+            if (data) {
+                
             }
-        }
-    }];
-    
-    [task resume];
-    
-}
-
-- (void)updateBeerRating:(CBFBeerRating *)rating withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
-{
-    NSNumber *beerRating = [NSNumber numberWithInteger:newRating];
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
-    NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
-    urlString = [urlString stringByAppendingString:ratingIdString];
-    
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"PUT"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
-    
-    NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
-    
-    NSError *error;
-    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
-    if (postBody != nil) {
-        [parseRequest setHTTPBody:postBody];
+            
+            if (error) {
+                NSLog(@"RequestError:%@", error);
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(error);
+                    });
+                }
+            }
+            
+        }];
+        
+        [task resume];
     }
-    
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
-    
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-            rating.rating = beerRating;
-            rating.review = note;
-            [moc save:nil];
-            [self.persistencController save];
-            
-        }
-        
-        
-        
-        if (data) {
-            
-        }
-        
-        if (error) {
-            NSLog(@"RequestError:%@", error);
-            
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(error);
-                });
-            }
-        }
-        
-    }];
-    
-    [task resume];
-}
-
-@end
+                              
+                              @end

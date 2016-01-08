@@ -111,8 +111,10 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"SingUpCompleteSeque"]) {
         
-        ViewController *mainView = segue.destinationViewController;
-        mainView.user = self.user;
+        UINavigationController *navController = segue.destinationViewController;
+        ViewController *mainView = navController.viewControllers[0];
+
+        mainView.userManagedObjectId = self.user.objectID;
         mainView.persistenceController = self.persistenceController;
         mainView.serviceController = self.serviceController;
         mainView.coreDataController = self.coreDataController;
