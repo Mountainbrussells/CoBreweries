@@ -66,9 +66,14 @@
                                                    
                                                    [spinner stopAnimating];
                                                    if (strongSelf.user) {
-                                                       [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
-                                                           [strongSelf.serviceController updateBreweryRatingsWithCompletion:nil];
-                                                       }];
+//                                                               [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+//                                                                   [self.serviceController updateBreweryRatingsWithCompletion:nil];
+//                                                               }];
+//                                                       
+//                                                               [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+//                                                                   [self.serviceController updateBeerReviewsWithCompletion:nil];
+//                                                               }];
+
                                                        // Need to persist User between launches
                                                        NSError *keychainError;
                                                        if (![STKeychain storeUsername:strongSelf.user.userName andPassword:strongSelf.user.password forServiceName:@"ColoradoBreweryFinder" updateExisting:YES error:&keychainError]) {

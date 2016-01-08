@@ -49,6 +49,8 @@
     [self setPrivateContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType]];
     [[self privateContext] setPersistentStoreCoordinator:coordinator];
     [[self managedObjectContext] setParentContext:[self privateContext]];
+    [self setDataContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType]];
+    [[self dataContext] setParentContext:[self managedObjectContext]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSPersistentStoreCoordinator *psc = [[self privateContext] persistentStoreCoordinator];
