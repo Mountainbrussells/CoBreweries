@@ -444,10 +444,12 @@ static NSString *authSessionToken = @"";
                 
                 
             }
-            
-            for (CBFBrewery *brewery in mocBreweryArray) {
-                [moc deleteObject:brewery];
+            if (mocBreweryArray.count > 0) {
+                for (CBFBrewery *brewery in mocBreweryArray) {
+                    [moc deleteObject:brewery];
+                }
             }
+            
             
             if (completion) {
                 completion(nil);
@@ -507,7 +509,7 @@ static NSString *authSessionToken = @"";
                     }
                 });
             } else {
-                NSError *error = [NSError errorWithDomain:@"Logo Download Error" code:50 userInfo:nil];
+                NSError *error = [NSError errorWithDomain:@"Logo Download Error" code:50 userInfo:NULL];
                 if (completion) {
                     completion(nil, error);
                 }
@@ -532,8 +534,8 @@ static NSString *authSessionToken = @"";
         identifier = [NSString CBF_MD5:breweryLogoURL];
     }
     
-//    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
-//    NSString *identifier = breweryLogoURL;
+    //    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
+    //    NSString *identifier = breweryLogoURL;
     if (identifier) {
         returnImage = [self.photoCache objectForKey:identifier];
         if (!returnImage) {
@@ -791,6 +793,113 @@ static NSString *authSessionToken = @"";
     [task resume];
 }
 
+- (void) updateBreweryRatingsWithCompletion:(void (^)(NSError *error))completion
+{
+    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
+    
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
+    
+    NSURL *parseURL = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"responseDicionary:%@", responseDictionary);
+            NSError *dataError;
+            NSDictionary *breweryRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
+            
+            NSArray *breweryRatings = [breweryRatingData valueForKey:@"results"];
+            
+            NSMutableArray *mocBreweryRatingsArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweryRatings]];
+            
+            for (id rating in breweryRatings) {
+                
+                NSString *breweryRatingId = [rating objectForKey:@"objectId"];
+                CBFBreweryRating *existingBreweryRating = [self.coreDataController fetchBreweryRatingWithUID:breweryRatingId];
+                if (existingBreweryRating) {
+                    existingBreweryRating.rating = [rating objectForKey:@"rating"];
+                    existingBreweryRating.uid = [rating objectForKey:@"objectId"];
+                    
+                    NSDictionary *breweryDict = [rating objectForKey:@"brewery"];
+                    NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
+                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    existingBreweryRating.brewery = brewery;
+                    
+                    NSDictionary *userDict = [rating objectForKey:@"user"];
+                    NSString *userUID = [userDict objectForKey:@"objectId"];
+                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                    
+                    if ([user.uid isEqualToString:self.user.uid]) {
+                        existingBreweryRating.user = user;
+                    } else {
+                        existingBreweryRating.user = nil;
+                    }
+                    
+                    NSError *mocError;
+                    [moc save:&mocError];
+                    [mocBreweryRatingsArray removeObject:existingBreweryRating];
+                    
+                } else {
+                    
+                    
+                    CBFBreweryRating *mocBreweryRating = [CBFBreweryRating insertInManagedObjectContext:moc];
+                    mocBreweryRating.rating = [rating objectForKey:@"rating"];
+                    mocBreweryRating.uid = [rating objectForKey:@"objectId"];
+                    
+                    NSDictionary *breweryDict = [rating objectForKey:@"brewery"];
+                    NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
+                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    mocBreweryRating.brewery = brewery;
+                    
+                    NSDictionary *userDict = [rating objectForKey:@"user"];
+                    NSString *userUID = [userDict objectForKey:@"objectId"];
+                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                    
+                    if ([user.uid isEqualToString:self.user.uid]) {
+                        mocBreweryRating.user = user;
+                    } else {
+                        mocBreweryRating.user = nil;
+                    }
+                    
+                    NSError *mocError;
+                    [moc save:&mocError];
+                }
+                
+            }
+            
+            if (mocBreweryRatingsArray.count > 0) {
+                for (CBFBreweryRating *rating in mocBreweryRatingsArray) {
+                    [moc deleteObject:rating];
+                }
+            }
+            
+            
+            if (completion) {
+                completion(nil);
+            }
+        }
+        
+        if (response) {
+            NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
+    
+    [task resume];
+    
+}
+
 
 
 #pragma mark - Beer Calls
@@ -866,6 +975,11 @@ static NSString *authSessionToken = @"";
     }];
     
     [task resume];
+    
+}
+
+- (void) updateBeersWtihCompletion:(void (^)(NSError *error))completion
+{
     
 }
 

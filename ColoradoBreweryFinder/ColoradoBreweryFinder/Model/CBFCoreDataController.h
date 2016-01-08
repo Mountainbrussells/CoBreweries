@@ -28,11 +28,15 @@
 - (NSArray *) fetchBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
 - (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+
 - (CBFBeer *) fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
 - (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid;
 
 - (NSArray *) fetchBreweryRatings;
+
+- (CBFBreweryRating *) fetchBreweryRatingWithUID:(NSString *)uid;
+
 - (NSArray *) fetchBeerReviewsForBeer:(CBFBeer *)beer;
 
 - (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;

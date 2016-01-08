@@ -133,6 +133,23 @@
     return fetchedBreweryRatings;
 }
 
+- (CBFBreweryRating *) fetchBreweryRatingWithUID:(NSString *)uid
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+    [request setPredicate:predicate];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    if (fetchResults.count > 0) {
+        CBFBreweryRating *rating = fetchResults[0];
+        return rating;
+    } else {
+        return nil;
+    }
+}
+
 - (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

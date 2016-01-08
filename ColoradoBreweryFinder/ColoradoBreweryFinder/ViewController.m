@@ -53,6 +53,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.breweries = [self.coreDataController fetchBreweries];
+    self.breweries = [self sortedBreweryArray];
+    [self.collectionView reloadData];
     
 }
 
@@ -175,10 +178,14 @@
     }];
     
     if (logoImage) {
-        if (cell.brewery.logoURL) {
+        
             cell.logoImageView.image = logoImage;
-        }
+        
        
+    }
+    
+    if (!cell.brewery.logoURL) {
+        cell.logoImageView.image = nil;
     }
     
     

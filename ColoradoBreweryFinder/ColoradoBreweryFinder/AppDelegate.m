@@ -12,6 +12,7 @@
 #import "CBFLogInViewController.h"
 #import "CBFServiceController.h"
 #import "CBFCoreDataController.h"
+#import "CBFUser.h"
 
 #import "STKeychain.h"
 
@@ -72,12 +73,23 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [self.serviceController updateBreweriesWithCompletion:nil];
+    CBFUser *user = self.serviceController.user;
+    if (user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+    }
+
     
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [self.serviceController updateBreweriesWithCompletion:nil];
+    CBFUser *user = self.serviceController.user;
+    if (user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
