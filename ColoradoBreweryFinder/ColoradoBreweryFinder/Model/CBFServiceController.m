@@ -1015,7 +1015,6 @@ static NSString *authSessionToken = @"";
 
 - (void) updateBeersWtihCompletion:(void (^)(NSError *error))completion
 {
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseBeerClassVenue];
@@ -1040,75 +1039,78 @@ static NSString *authSessionToken = @"";
             
             NSMutableArray *mocBeerArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeers]];
             
-            for (id beer in beers) {
-                
-                NSString *beerId = [beer objectForKey:@"objectId"];
-                CBFBeer *existingBeer = [self.coreDataController fetchBeerWithUID:beerId];
-                if (existingBeer) {
-                    existingBeer.name = [beer objectForKey:@"name"];
-                    existingBeer.style = [beer objectForKey:@"style"];
-                    existingBeer.abv = [beer objectForKey:@"abv"];
-                    existingBeer.ibus = [beer objectForKey:@"ibus"];
-                    existingBeer.uid = [beer objectForKey:@"objectId"];
+            [self.writeMOC performBlockAndWait:^{
+                for (id beer in beers) {
                     
-                    NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
-                    NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
-                    existingBeer.brewery = brewery;
-                    
-                    NSDictionary *userDict = [beer objectForKey:@"user"];
-                    NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
-                    
-                    if ([user.uid isEqualToString:self.user.uid]) {
-                        existingBeer.user = user;
+                    NSString *beerId = [beer objectForKey:@"objectId"];
+                    CBFBeer *existingBeer = [self.coreDataController fetchBeerWithUID:beerId];
+                    if (existingBeer) {
+                        existingBeer.name = [beer objectForKey:@"name"];
+                        existingBeer.style = [beer objectForKey:@"style"];
+                        existingBeer.abv = [beer objectForKey:@"abv"];
+                        existingBeer.ibus = [beer objectForKey:@"ibus"];
+                        existingBeer.uid = [beer objectForKey:@"objectId"];
+                        
+                        NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
+                        NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        existingBeer.brewery = brewery;
+                        
+                        NSDictionary *userDict = [beer objectForKey:@"user"];
+                        NSString *userUID = [userDict objectForKey:@"objectId"];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        
+                        if ([user.uid isEqualToString:self.user.uid]) {
+                            existingBeer.user = user;
+                            
+                        } else {
+                            existingBeer.user = nil;
+                        }
+                        
+                        NSError *mocError;
+                        [self.readMOC save:&mocError];
                         
                     } else {
-                        existingBeer.user = nil;
-                    }
-                    
-                    NSError *mocError;
-                    [moc save:&mocError];
-                    
-                } else {
-                    
-                    
-                    CBFBeer *mocBeer = [CBFBeer insertInManagedObjectContext:moc];
-                    mocBeer.name = [beer objectForKey:@"name"];
-                    mocBeer.style = [beer objectForKey:@"style"];
-                    mocBeer.abv = [beer objectForKey:@"abv"];
-                    mocBeer.ibus = [beer objectForKey:@"ibus"];
-                    mocBeer.uid = [beer objectForKey:@"objectId"];
-                    
-                    NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
-                    NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
-                    mocBeer.brewery = brewery;
-                    
-                    NSDictionary *userDict = [beer objectForKey:@"user"];
-                    NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
-                    
-                    if ([user.uid isEqualToString:self.user.uid]) {
-                        mocBeer.user = user;
                         
-                    } else {
-                        mocBeer.user = nil;
+                        
+                        CBFBeer *mocBeer = [CBFBeer insertInManagedObjectContext:self.writeMOC];
+                        mocBeer.name = [beer objectForKey:@"name"];
+                        mocBeer.style = [beer objectForKey:@"style"];
+                        mocBeer.abv = [beer objectForKey:@"abv"];
+                        mocBeer.ibus = [beer objectForKey:@"ibus"];
+                        mocBeer.uid = [beer objectForKey:@"objectId"];
+                        
+                        NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
+                        NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        mocBeer.brewery = brewery;
+                        
+                        NSDictionary *userDict = [beer objectForKey:@"user"];
+                        NSString *userUID = [userDict objectForKey:@"objectId"];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        
+                        if ([user.uid isEqualToString:self.user.uid]) {
+                            mocBeer.user = user;
+                            
+                        } else {
+                            mocBeer.user = nil;
+                        }
+                        
+                        NSError *mocError;
+                        [self.writeMOC save:&mocError];
                     }
                     
-                    NSError *mocError;
-                    [moc save:&mocError];
+                    
+                    
                 }
                 
-                
-                
-            }
+                if (mocBeerArray.count > 0) {
+                    for (CBFBeer *beer in mocBeerArray) {
+                        [self.readMOC deleteObject:beer];
+                    }
+                }
+            }];
             
-            if (mocBeerArray.count > 0) {
-                for (CBFBeer *beer in mocBeerArray) {
-                    [moc deleteObject:beer];
-                }
-            }
             
             if (completion) {
                 completion(nil);
@@ -1131,7 +1133,6 @@ static NSString *authSessionToken = @"";
 
 - (void)requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion
 {
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
@@ -1153,117 +1154,11 @@ static NSString *authSessionToken = @"";
             NSDictionary *beerRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
             NSArray *beerRatings = [beerRatingData valueForKey:@"results"];
-            
-            for (id rating in beerRatings) {
-                
-                
-                CBFBeerRating *mocBeerRating = [CBFBeerRating insertInManagedObjectContext:moc];
-                mocBeerRating.rating = [rating objectForKey:@"rating"];
-                mocBeerRating.uid = [rating objectForKey:@"objectId"];
-                mocBeerRating.review =[rating objectForKey:@"review"];
-                mocBeerRating.username = [rating objectForKey:@"username"];
-                
-                NSDictionary *beerDict = [rating objectForKey:@"beer"];
-                NSString *beerUID = [beerDict objectForKey:@"objectId"];
-                CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
-                mocBeerRating.beer = beer;
-                
-                NSDictionary *userDict = [rating objectForKey:@"user"];
-                NSString *userUID = [userDict objectForKey:@"objectId"];
-                CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
-                mocBeerRating.userUID = userUID;
-                
-                
-                if ([user.uid isEqualToString:self.user.uid]) {
-                    mocBeerRating.user = user;
-                } else {
-                    mocBeerRating.user = nil;
-                }
-                
-                NSError *mocError;
-                [moc save:&mocError];
-                
-            }
-            
-            if (completion) {
-                completion(nil);
-            }
-        }
-        
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-        }
-        
-        if (error) {
-            NSLog(@"RequestError:%@", error);
-        }
-    }];
-    
-    [task resume];
-    
-}
-
-- (void) updateBeerReviewsWithCompletion:(void (^)(NSError *error))completion
-{
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"GET"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data) {
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"responseDicionary:%@", responseDictionary);
-            NSError *dataError;
-            NSDictionary *beerRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
-            
-            NSArray *beerRatings = [beerRatingData valueForKey:@"results"];
-            
-            NSMutableArray *mocBeerReviewArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeerReviews]];
-            
-            for (id rating in beerRatings) {
-                
-                NSString *ratingId = [rating objectForKey:@"objectId"];
-                CBFBeerRating *existingRating = [self.coreDataController fetchBeerRatingWithUID:ratingId];
-                if (existingRating) {
-                    existingRating.rating = [rating objectForKey:@"rating"];
-                    existingRating.uid = [rating objectForKey:@"objectId"];
-                    existingRating.review =[rating objectForKey:@"review"];
-                    existingRating.username = [rating objectForKey:@"username"];
-                    
-                    NSDictionary *beerDict = [rating objectForKey:@"beer"];
-                    NSString *beerUID = [beerDict objectForKey:@"objectId"];
-                    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
-                    existingRating.beer = beer;
-                    
-                    NSDictionary *userDict = [rating objectForKey:@"user"];
-                    NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
-                    existingRating.userUID = userUID;
+            [self.writeMOC performBlockAndWait:^{
+                for (id rating in beerRatings) {
                     
                     
-                    if ([user.uid isEqualToString:self.user.uid]) {
-                        existingRating.user = user;
-                    } else {
-                        existingRating.user = nil;
-                    }
-                    
-                    NSError *mocError;
-                    [moc save:&mocError];
-                    
-                } else {
-                    
-                    
-                    CBFBeerRating *mocBeerRating = [CBFBeerRating insertInManagedObjectContext:moc];
+                    CBFBeerRating *mocBeerRating = [CBFBeerRating insertInManagedObjectContext:self.writeMOC];
                     mocBeerRating.rating = [rating objectForKey:@"rating"];
                     mocBeerRating.uid = [rating objectForKey:@"objectId"];
                     mocBeerRating.review =[rating objectForKey:@"review"];
@@ -1287,20 +1182,129 @@ static NSString *authSessionToken = @"";
                     }
                     
                     NSError *mocError;
-                    [moc save:&mocError];
+                    [self.writeMOC save:&mocError];
+                    
                 }
                 
-            }
-            
-            if (mocBeerReviewArray.count > 0) {
-                for (CBFBeerRating *rating in mocBeerReviewArray) {
-                    [moc deleteObject:rating];
+                if (completion) {
+                    completion(nil);
                 }
-            }
+            }];
+           
+        }
+        
+        if (response) {
+            NSLog(@"Request Response:%@", response);
+        }
+        
+        if (error) {
+            NSLog(@"RequestError:%@", error);
+        }
+    }];
+    
+    [task resume];
+    
+}
+
+- (void) updateBeerReviewsWithCompletion:(void (^)(NSError *error))completion
+{
+    
+    NSString *urlString = kBaseParseAPIURL;
+    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
+    
+    NSURL *parseURL = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+    [parseRequest setHTTPMethod:@"GET"];
+    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (data) {
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            NSLog(@"responseDicionary:%@", responseDictionary);
+            NSError *dataError;
+            NSDictionary *beerRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
-            if (completion) {
-                completion(nil);
-            }
+            NSArray *beerRatings = [beerRatingData valueForKey:@"results"];
+            
+            NSMutableArray *mocBeerReviewArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeerReviews]];
+            [self.writeMOC performBlockAndWait:^{
+                for (id rating in beerRatings) {
+                    
+                    NSString *ratingId = [rating objectForKey:@"objectId"];
+                    CBFBeerRating *existingRating = [self.coreDataController fetchBeerRatingWithUID:ratingId moc:self.writeMOC];
+                    if (existingRating) {
+                        existingRating.rating = [rating objectForKey:@"rating"];
+                        existingRating.uid = [rating objectForKey:@"objectId"];
+                        existingRating.review =[rating objectForKey:@"review"];
+                        existingRating.username = [rating objectForKey:@"username"];
+                        
+                        NSDictionary *beerDict = [rating objectForKey:@"beer"];
+                        NSString *beerUID = [beerDict objectForKey:@"objectId"];
+                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
+                        existingRating.beer = beer;
+                        
+                        NSDictionary *userDict = [rating objectForKey:@"user"];
+                        NSString *userUID = [userDict objectForKey:@"objectId"];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        existingRating.userUID = userUID;
+                        
+                        
+                        if ([user.uid isEqualToString:self.user.uid]) {
+                            existingRating.user = user;
+                        } else {
+                            existingRating.user = nil;
+                        }
+                        
+                        NSError *mocError;
+                        [self.writeMOC save:&mocError];
+                        
+                    } else {
+                        
+                        
+                        CBFBeerRating *mocBeerRating = [CBFBeerRating insertInManagedObjectContext:self.writeMOC];
+                        mocBeerRating.rating = [rating objectForKey:@"rating"];
+                        mocBeerRating.uid = [rating objectForKey:@"objectId"];
+                        mocBeerRating.review =[rating objectForKey:@"review"];
+                        mocBeerRating.username = [rating objectForKey:@"username"];
+                        
+                        NSDictionary *beerDict = [rating objectForKey:@"beer"];
+                        NSString *beerUID = [beerDict objectForKey:@"objectId"];
+                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
+                        mocBeerRating.beer = beer;
+                        
+                        NSDictionary *userDict = [rating objectForKey:@"user"];
+                        NSString *userUID = [userDict objectForKey:@"objectId"];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        mocBeerRating.userUID = userUID;
+                        
+                        
+                        if ([user.uid isEqualToString:self.user.uid]) {
+                            mocBeerRating.user = user;
+                        } else {
+                            mocBeerRating.user = nil;
+                        }
+                        
+                        NSError *mocError;
+                        [self.writeMOC save:&mocError];
+                    }
+                    
+                }
+                
+                if (mocBeerReviewArray.count > 0) {
+                    for (CBFBeerRating *rating in mocBeerReviewArray) {
+                        [self.writeMOC deleteObject:rating];
+                    }
+                }
+                
+                if (completion) {
+                    completion(nil);
+                }
+            }];
+            
         }
         
         if (response) {

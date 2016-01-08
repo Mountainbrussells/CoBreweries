@@ -24,6 +24,8 @@
 
 - (CBFUser *) fetchUserWithUID:(NSString *)uid;
 
+- (CBFUser *) fetchUserWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
+
 - (NSArray *) fetchBreweries;
 
 - (NSArray *) fetchBreweriesWithCompletion:(void (^)(NSError *error))completion;
@@ -34,9 +36,13 @@
 
 - (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid;
 
+- (CBFBrewery *) fetchBreweryWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
+
 - (NSArray *) fetchBreweryRatings;
 
 - (CBFBreweryRating *) fetchBreweryRatingWithUID:(NSString *)uid;
+
+- (CBFBreweryRating *) fetchBreweryRatingWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 
 - (NSArray *) fetchBeerReviewsForBeer:(CBFBeer *)beer;
 
@@ -48,13 +54,15 @@
 
 - (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
 
+- (CBFBeer *) fetchBeerWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
+
 - (NSArray *) fetchBeerReviews;
 
 - (CBFBeerRating *) fetchBeerRatingForBeer:(CBFBeer *)beer andUser:(CBFUser *)user;
 
 - (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
-- (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid;
+- (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 
 
 @end
