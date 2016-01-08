@@ -43,11 +43,17 @@
 
 - (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
 
+- (NSArray *) fetchBeers;
+
 - (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
+
+- (NSArray *) fetchBeerReviews;
 
 - (CBFBeerRating *) fetchBeerRatingForBeer:(CBFBeer *)beer andUser:(CBFUser *)user;
 
 - (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+
+- (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid;
 
 
 @end

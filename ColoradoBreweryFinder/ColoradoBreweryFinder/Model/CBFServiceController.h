@@ -48,7 +48,9 @@
 
 - (void) updateBeersWtihCompletion:(void (^)(NSError *error))completion;
 
-- (void)requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
+- (void) requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
+
+- (void) updateBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
 
 - (NSString *)getUserNameWithUID:(NSString *)uid completion:(void (^)(NSString *userName))completion;
 
