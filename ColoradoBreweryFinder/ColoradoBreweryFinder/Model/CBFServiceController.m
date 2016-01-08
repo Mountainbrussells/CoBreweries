@@ -37,6 +37,8 @@ static NSString *authSessionToken = @"";
 @property (strong, nonatomic) BRPersistenceController *persistencController;
 @property (strong, nonatomic) NSCache *photoCache;
 @property (strong, nonatomic) NSCache *userNameCache;
+@property (strong, nonatomic) NSManagedObjectContext *writeMOC;
+@property (strong, nonatomic) NSManagedObjectContext *readMOC;
 
 @end
 
@@ -47,6 +49,7 @@ static NSString *authSessionToken = @"";
 {
     self = [super init];
     self.persistencController = persistenceController;
+    
     
     self.photoCache = [[NSCache alloc] init];
     
