@@ -34,11 +34,12 @@ static NSString *authSessionToken = @"";
 @interface CBFServiceController ()
 
 @property (strong, readwrite) CBFUser *user;
+@property (strong, nonatomic) NSManagedObjectID *userManagedObjectId;
 @property (strong, nonatomic) BRPersistenceController *persistencController;
 @property (strong, nonatomic) NSCache *photoCache;
 @property (strong, nonatomic) NSCache *userNameCache;
 @property (strong, nonatomic) NSManagedObjectContext *writeMOC;
-@property (strong, nonatomic) NSManagedObjectContext *readMOC;
+
 
 @end
 
@@ -50,8 +51,6 @@ static NSString *authSessionToken = @"";
     self = [super init];
     self.persistencController = persistenceController;
     self.writeMOC = self.persistencController.dataContext;
-    self.readMOC = self.persistencController.managedObjectContext;
-    
     self.photoCache = [[NSCache alloc] init];
     
     return self;
@@ -110,6 +109,7 @@ static NSString *authSessionToken = @"";
                     [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
                     
                     self.user = user;
+                    self.userManagedObjectId = self.user.objectID;
                     
                     managedObjectId = self.user.objectID;
                     
@@ -212,18 +212,18 @@ static NSString *authSessionToken = @"";
             if (objectID) {
                 
                 
-                [self.readMOC performBlockAndWait:^ {
+                [self.writeMOC performBlockAndWait:^ {
                     
                     
                     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.readMOC];
+                    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.writeMOC];
                     [fetchRequest setEntity:entity];
                     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", objectID];
                     fetchRequest.predicate = predicate;
                     NSError *error;
-                    NSArray *fetchedUser = [self.readMOC executeFetchRequest:fetchRequest error:&error];
+                    NSArray *fetchedUser = [self.writeMOC executeFetchRequest:fetchRequest error:&error];
                     NSError *idError;
-                    [self.readMOC obtainPermanentIDsForObjects:fetchedUser error:&idError];
+                    [self.writeMOC obtainPermanentIDsForObjects:fetchedUser error:&idError];
                     
                     if (fetchedUser.count > 0 && fetchedUser.count < 2) {
                         
@@ -233,7 +233,7 @@ static NSString *authSessionToken = @"";
                     } else if (fetchedUser.count == 0) {
                         
                         // User exists but not on this device: create user
-                        CBFUser *user = [CBFUser insertInManagedObjectContext:self.readMOC];
+                        CBFUser *user = [CBFUser insertInManagedObjectContext:self.writeMOC];
                         user.userName = name;
                         user.password = password;
                         user.uid = objectID;
@@ -262,6 +262,7 @@ static NSString *authSessionToken = @"";
                 }];
                 
                 managedObjectId = self.user.objectID;
+                self.userManagedObjectId = self.user.objectID;
                 
                 if (completion) {
                     
@@ -404,7 +405,7 @@ static NSString *authSessionToken = @"";
                 for (id brewery in breweries) {
                     
                     NSString *breweryUID = [brewery objectForKey:@"objectId"];
-                    CBFBrewery *existingBrewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    CBFBrewery *existingBrewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                     if (existingBrewery) {
                         
                         existingBrewery.name = [brewery objectForKey:@"name"];
@@ -463,7 +464,7 @@ static NSString *authSessionToken = @"";
                 
                 if (mocBreweryArray.count > 0) {
                     for (CBFBrewery *brewery in mocBreweryArray) {
-                        [self.readMOC deleteObject:brewery];
+                        [self.writeMOC deleteObject:brewery];
                     }
                 }
             }];
@@ -592,7 +593,7 @@ static NSString *authSessionToken = @"";
 - (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
 {
     CBFUser *user = self.user;
-    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryId];
+    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryId moc:self.writeMOC];
     NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
     
     NSString *urlString = kBaseParseAPIURL;
@@ -779,14 +780,16 @@ static NSString *authSessionToken = @"";
                     
                     NSDictionary *breweryDict = [rating objectForKey:@"brewery"];
                     NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                     mocBreweryRating.brewery = brewery;
                     
                     NSDictionary *userDict = [rating objectForKey:@"user"];
                     NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                     
-                    if ([user.uid isEqualToString:self.user.uid]) {
+                    CBFUser *mainUser = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
+                    
+                    if ([user.uid isEqualToString:mainUser.uid]) {
                         mocBreweryRating.user = user;
                     } else {
                         mocBreweryRating.user = nil;
@@ -850,7 +853,7 @@ static NSString *authSessionToken = @"";
                 for (id rating in breweryRatings) {
                     
                     NSString *breweryRatingId = [rating objectForKey:@"objectId"];
-                    CBFBreweryRating *existingBreweryRating = [self.coreDataController fetchBreweryRatingWithUID:breweryRatingId];
+                    CBFBreweryRating *existingBreweryRating = [self.coreDataController fetchBreweryRatingWithUID:breweryRatingId moc:self.writeMOC];
                     if (existingBreweryRating) {
                         existingBreweryRating.rating = [rating objectForKey:@"rating"];
                         existingBreweryRating.uid = [rating objectForKey:@"objectId"];
@@ -871,7 +874,7 @@ static NSString *authSessionToken = @"";
                         }
                         
                         NSError *mocError;
-                        [self.readMOC save:&mocError];
+                        [self.writeMOC save:&mocError];
                         [mocBreweryRatingsArray removeObject:existingBreweryRating];
                         
                     } else {
@@ -909,7 +912,7 @@ static NSString *authSessionToken = @"";
                 
                 if (mocBreweryRatingsArray.count > 0) {
                     for (CBFBreweryRating *rating in mocBreweryRatingsArray) {
-                        [self.readMOC deleteObject:rating];
+                        [self.writeMOC deleteObject:rating];
                     }
                 }
 
@@ -974,12 +977,12 @@ static NSString *authSessionToken = @"";
                     
                     NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
                     NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                     mocBeer.brewery = brewery;
                     
                     NSDictionary *userDict = [beer objectForKey:@"user"];
                     NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                     
                     if ([user.uid isEqualToString:self.user.uid]) {
                         mocBeer.user = user;
@@ -1043,7 +1046,7 @@ static NSString *authSessionToken = @"";
                 for (id beer in beers) {
                     
                     NSString *beerId = [beer objectForKey:@"objectId"];
-                    CBFBeer *existingBeer = [self.coreDataController fetchBeerWithUID:beerId];
+                    CBFBeer *existingBeer = [self.coreDataController fetchBeerWithUID:beerId moc:self.writeMOC];
                     if (existingBeer) {
                         existingBeer.name = [beer objectForKey:@"name"];
                         existingBeer.style = [beer objectForKey:@"style"];
@@ -1053,12 +1056,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
                         NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                         existingBeer.brewery = brewery;
                         
                         NSDictionary *userDict = [beer objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         
                         if ([user.uid isEqualToString:self.user.uid]) {
                             existingBeer.user = user;
@@ -1068,7 +1071,7 @@ static NSString *authSessionToken = @"";
                         }
                         
                         NSError *mocError;
-                        [self.readMOC save:&mocError];
+                        [self.writeMOC save:&mocError];
                         
                     } else {
                         
@@ -1082,12 +1085,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *breweryDict = [beer objectForKey:@"brewery"];
                         NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                         mocBeer.brewery = brewery;
                         
                         NSDictionary *userDict = [beer objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         
                         if ([user.uid isEqualToString:self.user.uid]) {
                             mocBeer.user = user;
@@ -1106,7 +1109,7 @@ static NSString *authSessionToken = @"";
                 
                 if (mocBeerArray.count > 0) {
                     for (CBFBeer *beer in mocBeerArray) {
-                        [self.readMOC deleteObject:beer];
+                        [self.writeMOC deleteObject:beer];
                     }
                 }
             }];
@@ -1166,12 +1169,12 @@ static NSString *authSessionToken = @"";
                     
                     NSDictionary *beerDict = [rating objectForKey:@"beer"];
                     NSString *beerUID = [beerDict objectForKey:@"objectId"];
-                    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
+                    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID moc:self.writeMOC];
                     mocBeerRating.beer = beer;
                     
                     NSDictionary *userDict = [rating objectForKey:@"user"];
                     NSString *userUID = [userDict objectForKey:@"objectId"];
-                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                    CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                     mocBeerRating.userUID = userUID;
                     
                     
@@ -1244,12 +1247,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *beerDict = [rating objectForKey:@"beer"];
                         NSString *beerUID = [beerDict objectForKey:@"objectId"];
-                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
+                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID moc:self.writeMOC];
                         existingRating.beer = beer;
                         
                         NSDictionary *userDict = [rating objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         existingRating.userUID = userUID;
                         
                         
@@ -1273,12 +1276,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *beerDict = [rating objectForKey:@"beer"];
                         NSString *beerUID = [beerDict objectForKey:@"objectId"];
-                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID];
+                        CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerUID moc:self.writeMOC];
                         mocBeerRating.beer = beer;
                         
                         NSDictionary *userDict = [rating objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         mocBeerRating.userUID = userUID;
                         
                         
@@ -1372,8 +1375,10 @@ static NSString *authSessionToken = @"";
 
 - (void) createBeerRating:(NSString *)rating withNote:(NSString *)note beerId:(NSString *)beerId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion
 {
-    CBFUser *user = self.user;
-    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerId];
+    // TODO:  Cross context call to fix.
+    
+    CBFUser *user = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
+    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerId moc:self.writeMOC];
     long intRating = [rating longLongValue];
     NSNumber *beerRating = [NSNumber numberWithLong:intRating];
     

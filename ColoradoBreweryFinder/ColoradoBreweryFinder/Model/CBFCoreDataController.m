@@ -43,6 +43,22 @@
     return user;
 }
 
+- (CBFUser *) fetchUserWithId:(NSManagedObjectID *)ManagedObjectId inContext:(NSManagedObjectContext *)context;
+{
+    CBFUser *user;
+    NSError *error;
+    user = [context existingObjectWithID:ManagedObjectId error:&error];
+    
+    
+    if (!user) {
+        NSLog(@"Fetch failed with Error: %@", error);
+        return nil;
+    }
+    
+    
+    return user;
+}
+
 - (CBFUser *) fetchUserWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -51,7 +67,7 @@
     [request setPredicate:predicate];
     [request setEntity:entity];
     NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResults = [moc executeFetchRequest:request error:&error];
     if (fetchResults.count > 0) {
         CBFUser *user = fetchResults[0];
         return user;
@@ -116,7 +132,7 @@
     [request setPredicate:predicate];
     [request setEntity:entity];
     NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResults = [moc executeFetchRequest:request error:&error];
     if (fetchResults.count > 0) {
         CBFBrewery *brewery = fetchResults[0];
         return brewery;
@@ -192,7 +208,7 @@
     [request setPredicate:predicate];
     [request setEntity:entity];
     NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResults = [moc executeFetchRequest:request error:&error];
     if (fetchResults.count > 0) {
         CBFBreweryRating *rating = fetchResults[0];
         return rating;
@@ -290,7 +306,7 @@
     [request setPredicate:predicate];
     [request setEntity:entity];
     NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResults = [moc executeFetchRequest:request error:&error];
     if (fetchResults.count > 0) {
         CBFBeer *beer = fetchResults[0];
         return beer;
@@ -371,7 +387,7 @@
     [request setPredicate:predicate];
     [request setEntity:entity];
     NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
+    NSArray *fetchResults = [moc executeFetchRequest:request error:&error];
     if (fetchResults.count > 0) {
         CBFBeerRating *rating = fetchResults[0];
         return rating;

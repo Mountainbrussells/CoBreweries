@@ -1,4 +1,3 @@
-
 //
 //  ViewController.m
 //  ColoradoBreweryFinder
@@ -48,7 +47,7 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    
+    [self.collectionView reloadData];
     
 }
 
