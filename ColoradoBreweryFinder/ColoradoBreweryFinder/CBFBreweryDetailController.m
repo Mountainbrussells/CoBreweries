@@ -95,6 +95,8 @@
             
             UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL completion:^(UIImage *image) {
                 cell.logoImageView.image = image;
+                self.logoImage = image;
+                [self.tableView reloadData];
             }];
             cell.logoImageView.image = image;
             

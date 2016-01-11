@@ -93,7 +93,7 @@ static NSString *authSessionToken = @"";
         [self.writeMOC performBlockAndWait:^{
             if (data) {
                 NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                NSLog(@"Data: %@", responseDictionary);
+//                NSLog(@"Data: %@", responseDictionary);
                 NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                 NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
                 authSessionToken = sessionToken;
@@ -200,7 +200,7 @@ static NSString *authSessionToken = @"";
             // If user exist, get objectID and session Token
             
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"Data: %@", responseDictionary);
+//            NSLog(@"Data: %@", responseDictionary);
             NSString *objectID = [responseDictionary valueForKey:@"objectId"];
             NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
             authSessionToken = sessionToken;
@@ -633,7 +633,7 @@ static NSString *authSessionToken = @"";
             [self.writeMOC performBlockAndWait:^{
                 if (data) {
                     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                    NSLog(@"Data: %@", responseDictionary);
+//                    NSLog(@"Data: %@", responseDictionary);
                     NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                     
                     if (objectIDNumber) {
@@ -1047,7 +1047,7 @@ static NSString *authSessionToken = @"";
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"responseDicionary:%@", responseDictionary);
+//            NSLog(@"responseDicionary:%@", responseDictionary);
             NSError *dataError;
             NSDictionary *beersData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
@@ -1165,7 +1165,7 @@ static NSString *authSessionToken = @"";
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            NSLog(@"responseDicionary:%@", responseDictionary);
+//            NSLog(@"responseDicionary:%@", responseDictionary);
             NSError *dataError;
             NSDictionary *beerRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
