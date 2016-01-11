@@ -400,7 +400,7 @@ static NSString *authSessionToken = @"";
             
             NSArray *breweries = [breweryData valueForKey:@"results"];
             
-            __block NSMutableArray *mocBreweryArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweries]];
+            __block NSMutableArray *mocBreweryArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweriesInContext:self.writeMOC]];
             [self.writeMOC performBlockAndWait:^{
                 for (id brewery in breweries) {
                     
@@ -590,10 +590,10 @@ static NSString *authSessionToken = @"";
 
 #pragma mark - BreweryRating calls
 
-- (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
+- (void)createBreweryRating:(NSInteger)rating breweryId:(NSManagedObjectID *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
 {
     CBFUser *user = self.user;
-    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryId moc:self.writeMOC];
+    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:breweryId context:self.writeMOC];
     NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
     
     NSString *urlString = kBaseParseAPIURL;
@@ -1040,7 +1040,7 @@ static NSString *authSessionToken = @"";
             
             NSArray *beers = [beersData valueForKey:@"results"];
             
-            NSMutableArray *mocBeerArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeers]];
+            NSMutableArray *mocBeerArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeersInContext:self.writeMOC]];
             
             [self.writeMOC performBlockAndWait:^{
                 for (id beer in beers) {

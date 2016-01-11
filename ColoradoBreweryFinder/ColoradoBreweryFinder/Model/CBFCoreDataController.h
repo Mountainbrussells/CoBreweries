@@ -30,9 +30,13 @@
 
 - (NSArray *) fetchBreweries;
 
+- (NSArray *) fetchBreweriesInContext:(NSManagedObjectContext *)context;
+
 - (NSArray *) fetchBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
 - (CBFBrewery *) fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+
+- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context;
 
 - (CBFBeer *) fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
@@ -53,6 +57,8 @@
 - (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
 
 - (NSArray *) fetchBeers;
+
+- (NSArray *) fetchBeersInContext:(NSManagedObjectContext *)context;
 
 - (CBFBeer *) fetchBeerWithUID:(NSString *)uid;
 

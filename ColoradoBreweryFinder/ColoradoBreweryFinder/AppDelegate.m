@@ -77,13 +77,13 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     CBFUser *user = self.serviceController.user;
     if (user) {
-//        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
-//            [self.serviceController updateBreweryRatingsWithCompletion:nil];
-//        }];
-//        
-//        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-//            [self.serviceController updateBeerReviewsWithCompletion:nil];
-//        }];
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:nil];
+        }];
     }
 
     
@@ -92,12 +92,12 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     CBFUser *user = self.serviceController.user;
     if (user) {
-//        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
-//            [self.serviceController updateBreweryRatingsWithCompletion:nil];
-//        }];
-//        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-//            [self.serviceController updateBeerReviewsWithCompletion:nil];
-//        }];
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:nil];
+        }];
     }
 }
 

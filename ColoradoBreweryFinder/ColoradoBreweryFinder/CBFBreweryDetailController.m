@@ -170,11 +170,11 @@
 }
 
 - (void) rateBrewery:(NSNumber *) rating {
-    NSString *breweryId = self.brewery.uid;
+    NSManagedObjectID *breweryId = self.brewery.objectID;
     
     __block CBFBreweryRating *existingRating = nil;
     [self.user.breweryRatings enumerateObjectsUsingBlock:^(CBFBreweryRating *breweryRating, BOOL * _Nonnull stop) {
-        if([[[breweryRating brewery] uid] isEqualToString:breweryId]) {
+        if([[[breweryRating brewery] objectID] isEqual:breweryId]) {
             existingRating = breweryRating;
             *stop = YES;
         }
