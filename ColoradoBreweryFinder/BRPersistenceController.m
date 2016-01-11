@@ -12,6 +12,8 @@
 
 @property (strong, readwrite) NSManagedObjectContext *managedObjectContext;
 
+@property (strong, readwrite) NSManagedObjectContext *dataContext;
+
 @property (strong) NSManagedObjectContext *privateContext;
 
 @property (copy) InitCallbackBlock initCallback;
@@ -44,11 +46,16 @@
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
     NSAssert(coordinator, @"Failed to initialize coordinator");
     
-    [self setManagedObjectContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType]];
+
     
     [self setPrivateContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType]];
     [[self privateContext] setPersistentStoreCoordinator:coordinator];
+    
+    [self setManagedObjectContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType]];
     [[self managedObjectContext] setParentContext:[self privateContext]];
+    
+    [self setDataContext:[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType]];
+    [[self dataContext] setParentContext:[self managedObjectContext]];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSPersistentStoreCoordinator *psc = [[self privateContext] persistentStoreCoordinator];
@@ -75,16 +82,29 @@
 }
 
 - (void)save
-{
-    if (![[self privateContext] hasChanges] && ![[self managedObjectContext] hasChanges]) return;
+{   __block BOOL hasChanges = NO;
     
-    [[self managedObjectContext] performBlockAndWait:^{
-        NSError *error;
-        
-        NSAssert2([[self managedObjectContext] save:&error], @"Failed to save main context %@:%@", [error localizedDescription], [error userInfo]);
-        [[self privateContext] performBlockAndWait:^{
+    hasChanges = [[self managedObjectContext] hasChanges];
+    
+    if(!hasChanges) {
+        [[self dataContext] performBlockAndWait:^{
+            hasChanges = [[self dataContext] hasChanges];
+        }];
+    }
+    
+    if(!hasChanges) {
+        return;
+    }
+    
+    [[self dataContext] performBlockAndWait:^{
+        [[self managedObjectContext] performBlockAndWait:^{
             NSError *error;
-            NSAssert2([[self privateContext] save:&error], @"Error saving privateContext %@:%@", [error localizedDescription], [error userInfo]);
+            
+            NSAssert2([[self managedObjectContext] save:&error], @"Failed to save main context %@:%@", [error localizedDescription], [error userInfo]);
+            [[self privateContext] performBlockAndWait:^{
+                NSError *error;
+                NSAssert2([[self privateContext] save:&error], @"Error saving privateContext %@:%@", [error localizedDescription], [error userInfo]);
+            }];
         }];
     }];
 }

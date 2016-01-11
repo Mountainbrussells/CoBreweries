@@ -10,6 +10,7 @@ extern const struct CBFBeerRatingAttributes {
 	__unsafe_unretained NSString *review;
 	__unsafe_unretained NSString *uid;
 	__unsafe_unretained NSString *userUID;
+	__unsafe_unretained NSString *username;
 } CBFBeerRatingAttributes;
 
 extern const struct CBFBeerRatingRelationships {
@@ -57,6 +58,10 @@ extern const struct CBFBeerRatingRelationships {
 
 //- (BOOL)validateUserUID:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* username;
+
+//- (BOOL)validateUsername:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) CBFBeer *beer;
 
 //- (BOOL)validateBeer:(id*)value_ error:(NSError**)error_;
@@ -89,6 +94,9 @@ extern const struct CBFBeerRatingRelationships {
 
 - (NSString*)primitiveUserUID;
 - (void)setPrimitiveUserUID:(NSString*)value;
+
+- (NSString*)primitiveUsername;
+- (void)setPrimitiveUsername:(NSString*)value;
 
 - (CBFBeer*)primitiveBeer;
 - (void)setPrimitiveBeer:(CBFBeer*)value;

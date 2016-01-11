@@ -4,11 +4,11 @@ Parse.Cloud.define("hello", function(request, response) {
 
 Parse.Cloud.beforeSave("BeerRating", function(request, response) {
   console.log("Before save triggered")
-  var user = request.user();
+  var user = request.user;
   console.log("got user");
   var username = user.getUsername();
   console.log("Here is the username: " + username);
-  request.object.username = username;
+  request.object.set("username", username);
   response.success()
 })
 

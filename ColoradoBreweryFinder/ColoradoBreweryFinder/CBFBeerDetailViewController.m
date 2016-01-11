@@ -9,9 +9,12 @@
 #import "CBFBeerDetailViewController.h"
 #import "CBFBeer.h"
 #import "CBFUser.h"
+#import "CBFBeerRating.h"
 #import "CBFBeerHeaderCell.h"
 #import "CBFBeerReviewCell.h"
 #import "CBFBeerRating.h"
+#import "CBFBeerRatingViewController.h"
+#import "CBFBeerReviewDetailViewController.h"
 
 @interface CBFBeerDetailViewController ()
 
@@ -28,6 +31,22 @@
     self.beer = [self.coreDataController fetchBeerWithManagedObjectId:self.beerObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userObjectId];
     self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self selector:@selector(refreshTableView:) name:@"newReviewAdded" object:nil];
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    [self.tableView reloadData];
+}
+
+- (void)refreshTableView:(id)sender
+{
+    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
+    [self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -68,10 +87,11 @@
         CBFBeerReviewCell  *cell = [tableView dequeueReusableCellWithIdentifier:@"beerReviewCell"];
         CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
         
-        NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
-            cell.userNameLabel.text = [NSString stringWithFormat:@"User: %@", userName];
-        }];
-        cell.userNameLabel.text = userName;
+//        NSString *userName = [self.serviceController getUserNameWithUID:rating.userUID completion:^(NSString *userName) {
+//            cell.userNameLabel.text = [NSString stringWithFormat:@"User: %@", userName];
+//        }];
+        cell.userNameLabel.text = rating.username;
+//        cell.userNameLabel.text = userName;
         float ratingValue = [rating.rating floatValue];
         NSString *ratingValueString = [NSString stringWithFormat:@"Rating: %0.0f", ratingValue];
         cell.ratingLabel.text = ratingValueString;
@@ -122,5 +142,30 @@
     } else {
         return 80;
     }
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showRateBeerVC"]) {
+        
+        CBFBeerRatingViewController *destinationVC = [segue destinationViewController];
+        destinationVC.userManagedObjectId = self.user.objectID;
+        destinationVC.beerManagedObjectId = self.beer.objectID;
+        destinationVC.serviceController = self.serviceController;
+        destinationVC.coredataController = self.coreDataController;
+    }
+    
+    if ([segue.identifier isEqualToString:@"showBeerReviewDetailVC"]) {
+        CBFBeerReviewDetailViewController *destinationVC = [segue destinationViewController];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        CBFBeerRating *rating = self.beerReviewsArray[indexPath.row];
+        destinationVC.beerReviewManagedObjectId = rating.objectID;
+        destinationVC.coredataController = self.coreDataController;
+    }
+}
+
+-(IBAction)prepareForUnwindFromBeerRating:(UIStoryboardSegue *)segue {
 }
 @end

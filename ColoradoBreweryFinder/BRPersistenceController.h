@@ -15,6 +15,8 @@ typedef void (^InitCallbackBlock)(void);
 
 @property (strong, readonly) NSManagedObjectContext *managedObjectContext;
 
+@property (strong, readonly) NSManagedObjectContext *dataContext;
+
 - (id) initWithCallBack:(InitCallbackBlock)callBack;
 
 - (void) save;

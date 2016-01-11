@@ -83,16 +83,20 @@
         cell.lattitude = lattitude;
         cell.user = self.user;
         cell.coreDataController = self.coreDataController;
+        if (self.brewery.ratings.count > 0) {
+            float averageRating = [self.brewery calculateAverageRating];
+            NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
+            cell.averageRatingLabel.text = averageRatingString;
+        } else {
+            cell.averageRatingLabel.text = @"NR";
+        }
         
         if (!self.logoImage) {
             
-            // TODO: Dispatch Asynch
-//            NSString *urlString = self.brewery.logoURL;
-//            NSURL *photoURL = [NSURL URLWithString:urlString];
-//            NSData *data = [NSData dataWithContentsOfURL:photoURL];
-//            UIImage *image = [[UIImage alloc] initWithData:data];
             UIImage *image = [self.serviceController getImageWithURL:self.brewery.logoURL completion:^(UIImage *image) {
                 cell.logoImageView.image = image;
+                self.logoImage = image;
+                [self.tableView reloadData];
             }];
             cell.logoImageView.image = image;
             
@@ -111,6 +115,14 @@
         cell.beerStyleLabel.text = beer.style;
         cell.beerABVLabel.text = [NSString stringWithFormat:@"ABV: %@%%", beer.abv];
         cell.beerIBULabel.text = [NSString stringWithFormat:@"IBUs: %@", beer.ibus];
+        float averageRating = [beer calculateAverageRating];
+        
+        if (beer.ratings.count > 0) {
+            NSString *averageRatingString = [NSString stringWithFormat:@"%0.0f", averageRating];
+            cell.ratingLabel.text = averageRatingString;
+        } else {
+            cell.ratingLabel.text = @"NR";
+        }
         
         return cell;
     } else {
@@ -159,21 +171,31 @@
     }
 }
 
-- (void) rateBrewery:(NSNumber *) rating {
-    NSString *breweryId = self.brewery.uid;
+- (void)refreshTable;
+{
+    [self.tableView reloadData];
+}
 
+- (void) rateBrewery:(NSNumber *) rating {
+    NSManagedObjectID *breweryId = self.brewery.objectID;
+    
     __block CBFBreweryRating *existingRating = nil;
     [self.user.breweryRatings enumerateObjectsUsingBlock:^(CBFBreweryRating *breweryRating, BOOL * _Nonnull stop) {
-        if([[[breweryRating brewery] uid] isEqualToString:breweryId]) {
+        if([[[breweryRating brewery] objectID] isEqual:breweryId]) {
             existingRating = breweryRating;
             *stop = YES;
         }
     }];
     if (existingRating) {
-        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:nil];
+        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:^(NSError *error) {
+            [self refreshTable];
+        }];
+        
     } else {
         [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
-    }];
+            [self refreshTable];
+        }];
+        
     }
 }
 

@@ -12,6 +12,7 @@
 #import "CBFLogInViewController.h"
 #import "CBFServiceController.h"
 #import "CBFCoreDataController.h"
+#import "CBFUser.h"
 
 #import "STKeychain.h"
 
@@ -48,10 +49,18 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
+    
+    
     if ([defaults valueForKey:@"DataHasBeenLoaded"] == NO) {
         // populate brewery data
-        [self.serviceController requestBreweriesWithCompletion:nil];
+        [self.serviceController requestBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController requestBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController requestBeersWithCompletion:^(NSError *error) {
+            [self.serviceController requestBeerReviewsWithCompletion:nil];
+        }];
         [defaults setBool:YES forKey:@"DataHasBeenLoaded"];
+        [self.persistenceController save];
     }
     
     return YES;
@@ -64,7 +73,7 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [[self persistenceController] save];
+//    [[self persistenceController] save];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -72,11 +81,34 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    CBFUser *user = self.serviceController.user;
+    if (user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
+                NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                [notificationCenter postNotificationName:@"updatesComplete" object:nil];
+            }];
+        }];
+    }
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    CBFUser *user = self.serviceController.user;
+    if (user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:nil];
+        }];
+    }
+    
+   
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -353,7 +353,7 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vjq-l7-0bP">
-                                            <rect key="frame" x="388" y="134" width="42" height="21"/>
+                                            <rect key="frame" x="406" y="134.5" width="42" height="20.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="TC3-oo-lwc"/>
                                                 <constraint firstAttribute="width" constant="102" id="agV-5f-UKW"/>
@@ -446,7 +446,7 @@
                                         <constraint firstItem="FQS-wk-tcJ" firstAttribute="top" secondItem="OZX-rA-Opy" secondAttribute="topMargin" constant="8" id="2n1-bs-csg"/>
                                         <constraint firstItem="FQS-wk-tcJ" firstAttribute="top" secondItem="OZX-rA-Opy" secondAttribute="topMargin" constant="8" id="5N7-AB-o0c"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Vjq-l7-0bP" secondAttribute="trailing" constant="44" id="Cz6-x4-wAG"/>
-                                        <constraint firstItem="Vjq-l7-0bP" firstAttribute="leading" secondItem="1jm-0Q-xhF" secondAttribute="trailing" constant="25" id="DcT-Zw-Qrk"/>
+                                        <constraint firstItem="Vjq-l7-0bP" firstAttribute="leading" secondItem="1jm-0Q-xhF" secondAttribute="trailing" constant="43" id="DcT-Zw-Qrk"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="6h1-nA-1XZ" secondAttribute="trailing" constant="39" id="FJ1-A7-W1S"/>
                                         <constraint firstItem="FQS-wk-tcJ" firstAttribute="centerX" secondItem="OZX-rA-Opy" secondAttribute="centerX" id="FZP-Nj-aGG"/>
                                         <constraint firstItem="adn-38-09D" firstAttribute="firstBaseline" secondItem="VkP-jF-wew" secondAttribute="baseline" id="Ffn-3G-k8C"/>
@@ -492,6 +492,7 @@
                                     </variation>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="averageRatingLabel" destination="Vjq-l7-0bP" id="FQK-nb-4hT"/>
                                     <outlet property="breweryNameLabel" destination="FQS-wk-tcJ" id="UwI-rV-TlL"/>
                                     <outlet property="logoImageView" destination="1jm-0Q-xhF" id="NbM-SU-P0o"/>
                                     <outlet property="rateBreweryView" destination="ZWb-RO-mIf" id="MFI-35-lvD"/>
@@ -589,10 +590,10 @@
             </objects>
             <point key="canvasLocation" x="2500" y="330"/>
         </scene>
-        <!--View Controller-->
+        <!--Beer Rating View Controller-->
         <scene sceneID="LQb-gQ-iCI">
             <objects>
-                <viewController id="bAj-Qh-5u3" sceneMemberID="viewController">
+                <viewController id="bAj-Qh-5u3" customClass="CBFBeerRatingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bmi-Mb-XiG"/>
                         <viewControllerLayoutGuide type="bottom" id="zbo-Us-3LI"/>
@@ -604,7 +605,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfj-Ja-SkD">
                                 <rect key="frame" x="283" y="350" width="35" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KID-jQ-hEp">
@@ -613,18 +614,30 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9iy-hN-TjP">
                                         <rect key="frame" x="0.0" y="0.0" width="63" height="38"/>
                                         <state key="normal" title="1"/>
+                                        <connections>
+                                            <action selector="buttonOne:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="nBs-Fz-O7p"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAK-i1-E89">
                                         <rect key="frame" x="63" y="0.0" width="62" height="38"/>
                                         <state key="normal" title="2"/>
+                                        <connections>
+                                            <action selector="buttonTwo:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="SAP-Sa-EIy"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFl-71-OF4">
                                         <rect key="frame" x="125" y="0.0" width="63" height="38"/>
                                         <state key="normal" title="3"/>
+                                        <connections>
+                                            <action selector="buttonThree:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="swI-i6-Nob"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tHq-hc-EVs">
                                         <rect key="frame" x="188" y="0.0" width="62" height="38"/>
                                         <state key="normal" title="4"/>
+                                        <connections>
+                                            <action selector="buttonFour:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="tFy-KI-wTM"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -635,22 +648,26 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PIe-Uq-HDY">
                                 <rect key="frame" x="277" y="78" width="46" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="n91-QJ-R4K">
                                 <rect key="frame" x="20" y="106" width="560" height="235"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="235" id="rWN-rA-WGL"/>
+                                    <constraint firstAttribute="width" constant="560" id="uIq-ad-X6S"/>
                                 </constraints>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CCo-Qi-OIW">
                                 <rect key="frame" x="283" y="424" width="34" height="30"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="bAj-Qh-5u3" eventType="touchUpInside" id="DL8-em-e5I"/>
+                                    <segue destination="1oa-nS-r4D" kind="unwind" unwindAction="prepareForUnwindFromBeerRating:" id="40h-TW-CMo"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -669,8 +686,16 @@
                             <constraint firstItem="CCo-Qi-OIW" firstAttribute="centerX" secondItem="4SA-W1-BQf" secondAttribute="centerX" id="wQr-T1-S2T"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="buttonFour" destination="tHq-hc-EVs" id="0Kr-tz-EH6"/>
+                        <outlet property="buttonOne" destination="9iy-hN-TjP" id="zUr-EC-JUS"/>
+                        <outlet property="buttonThree" destination="fFl-71-OF4" id="YGU-wv-67E"/>
+                        <outlet property="buttonTwo" destination="nAK-i1-E89" id="Hcz-KX-Et8"/>
+                        <outlet property="noteTextView" destination="n91-QJ-R4K" id="QAN-54-HD2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ka1-54-dSC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1oa-nS-r4D" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3219" y="-435"/>
         </scene>
@@ -687,7 +712,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="183"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fK2-wm-pYu" id="IVb-HM-fVd">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="183"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="182.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="center" axis="vertical" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gEk-NY-t16">
@@ -696,13 +721,13 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beer Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCi-Hr-72c">
                                                     <rect key="frame" x="225" y="0.0" width="119" height="55"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avg. Rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0zt-S0-Hct">
                                                     <rect key="frame" x="241" y="55" width="87" height="56"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Eg-ae-2qL">
@@ -713,7 +738,7 @@
                                                     <state key="normal" title="Rate"/>
                                                     <connections>
                                                         <action selector="rateBeerButton:" destination="fK2-wm-pYu" eventType="touchUpInside" id="DfC-Vl-Klw"/>
-                                                        <segue destination="bAj-Qh-5u3" kind="show" id="3w8-i6-cS5"/>
+                                                        <segue destination="bAj-Qh-5u3" kind="show" identifier="showRateBeerVC" id="3w8-i6-cS5"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -735,7 +760,7 @@
                                 <rect key="frame" x="0.0" y="275" width="600" height="122"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xVF-dP-scc" id="PD1-eh-QID">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="122"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="121.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="31l-ix-Czo">
@@ -747,13 +772,13 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i5i-Ub-P57">
                                                             <rect key="frame" x="0.0" y="0.0" width="292" height="53"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Oi-WA-mmy">
                                                             <rect key="frame" x="0.0" y="53" width="292" height="53"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -764,7 +789,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHL-fW-qEL">
                                                             <rect key="frame" x="0.0" y="0.0" width="292" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WIV-FJ-65F">
@@ -790,6 +815,7 @@
                                     <outlet property="notesTextView" destination="WIV-FJ-65F" id="WG3-3s-NXQ"/>
                                     <outlet property="ratingLabel" destination="7Oi-WA-mmy" id="ewS-yi-oqZ"/>
                                     <outlet property="userNameLabel" destination="i5i-Ub-P57" id="Qgf-bm-ACd"/>
+                                    <segue destination="1xI-d6-5EI" kind="show" identifier="showBeerReviewDetailVC" id="SdD-Ay-ZKl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -802,6 +828,70 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YIg-a3-5cb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3227" y="330"/>
+        </scene>
+        <!--Beer Review Detail View Controller-->
+        <scene sceneID="8J4-23-eyj">
+            <objects>
+                <viewController id="1xI-d6-5EI" customClass="CBFBeerReviewDetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="f9v-XL-9ti"/>
+                        <viewControllerLayoutGuide type="bottom" id="MTD-PH-Jct"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lZ7-5B-PNG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beer Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t5i-fM-7jt">
+                                <rect key="frame" x="174" y="90" width="252" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="EEA-bq-m9f"/>
+                                    <constraint firstAttribute="width" constant="252" id="rHI-TE-zF8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5IM-BM-krn">
+                                <rect key="frame" x="275" y="157" width="50" height="87"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="87" id="qiN-TG-0g0"/>
+                                    <constraint firstAttribute="width" constant="50" id="vFO-XC-RQF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="59"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fet-sZ-ga3">
+                                <rect key="frame" x="138" y="273" width="324" height="266"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="324" id="SBB-hO-T8A"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="t5i-fM-7jt" firstAttribute="top" secondItem="f9v-XL-9ti" secondAttribute="bottom" constant="26" id="9QP-Wj-DWe"/>
+                            <constraint firstItem="fet-sZ-ga3" firstAttribute="top" secondItem="5IM-BM-krn" secondAttribute="bottom" constant="29" id="9jS-z1-RHo"/>
+                            <constraint firstItem="fet-sZ-ga3" firstAttribute="centerX" secondItem="lZ7-5B-PNG" secondAttribute="centerX" id="Chl-WM-lfE"/>
+                            <constraint firstItem="MTD-PH-Jct" firstAttribute="top" secondItem="fet-sZ-ga3" secondAttribute="bottom" constant="17" id="GUZ-e6-5dQ"/>
+                            <constraint firstItem="5IM-BM-krn" firstAttribute="top" secondItem="t5i-fM-7jt" secondAttribute="bottom" constant="23" id="Mfw-I9-jka"/>
+                            <constraint firstItem="5IM-BM-krn" firstAttribute="centerX" secondItem="lZ7-5B-PNG" secondAttribute="centerX" id="iQt-PV-AU7"/>
+                            <constraint firstItem="t5i-fM-7jt" firstAttribute="centerX" secondItem="lZ7-5B-PNG" secondAttribute="centerX" id="yxc-h0-1AS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="beerNameLabel" destination="t5i-fM-7jt" id="QQF-ij-RcJ"/>
+                        <outlet property="ratingLabel" destination="5IM-BM-krn" id="chv-Py-PLd"/>
+                        <outlet property="reviewTextView" destination="fet-sZ-ga3" id="ciV-77-XVv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tha-MA-SLJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3935" y="330"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="L6v-rd-kzB">

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 #import "BRPersistenceController.h"
 #import "CBFServiceController.h"
 #import "CBFCoreDataController.h"
@@ -19,7 +20,8 @@
 @property (strong, nonatomic) BRPersistenceController *persistenceController;
 @property (strong, nonatomic) CBFServiceController *serviceController;
 @property (strong, nonatomic) CBFCoreDataController *coreDataController;
-@property (strong, nonatomic) CBFUser *user;
+@property (strong, nonatomic) NSManagedObjectID *userManagedObjectId;
+
 @property (strong, nonatomic) NSString *sessionToken;
 
 @end

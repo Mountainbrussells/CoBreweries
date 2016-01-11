@@ -1,4 +1,3 @@
-
 //
 //  ViewController.m
 //  ColoradoBreweryFinder
@@ -28,6 +27,7 @@
 @property (strong, nonatomic) CLLocation *location;
 @property (strong, nonatomic) CBFGeofenceManager *geofenceManager;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) CBFUser *user;
 
 
 @end
@@ -37,17 +37,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.user = [self.coreDataController fetchUserWithId:self.userManagedObjectId];
+    if (self.user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:nil];
+        }];
+    }
+    [self.persistenceController save];
     
     self.breweries = [self.coreDataController fetchBreweries];
     self.geofenceManager = [CBFGeofenceManager sharedManager];
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
+//    [defaultCenter addObserver:self selector:@selector(refreshCollectionView:) name:@"updatesComplete" object:nil];
+    
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    [self.collectionView reloadData];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.breweries = [self.coreDataController fetchBreweries];
+    self.breweries = [self sortedBreweryArray];
+    [self.collectionView reloadData];
     
+}
+
+- (void)refreshCollectionView:(id)sender
+{
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -169,7 +195,14 @@
     }];
     
     if (logoImage) {
-        cell.logoImageView.image = logoImage;
+        
+            cell.logoImageView.image = logoImage;
+        
+       
+    }
+    
+    if (!cell.brewery.logoURL) {
+        cell.logoImageView.image = nil;
     }
     
     

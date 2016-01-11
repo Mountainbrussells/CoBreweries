@@ -31,18 +31,26 @@
 
 - (void) requestBreweriesWithCompletion:(void (^)(NSError *error))completion;
 
+- (void) updateBreweriesWithCompletion:(void (^)(NSError *error))completion;
+
 - (void) getImageForBrewery:(CBFBrewery *)brewery completion:(void (^)(UIImage *image, NSError *error))completion;
 
 - (UIImage *) getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
 - (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 
-- (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion;
+- (void) updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion;
 
 - (void) requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
 
+- (void) updateBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
+
 - (void) requestBeersWithCompletion:(void (^)(NSError *error))completion;
 
-- (void)requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
+- (void) updateBeersWtihCompletion:(void (^)(NSError *error))completion;
+
+- (void) requestBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
+
+- (void) updateBeerReviewsWithCompletion:(void (^)(NSError *error))completion;
 
 - (NSString *)getUserNameWithUID:(NSString *)uid completion:(void (^)(NSString *userName))completion;
 

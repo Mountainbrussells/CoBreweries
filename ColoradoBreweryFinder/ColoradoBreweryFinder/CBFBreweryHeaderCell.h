@@ -20,6 +20,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
+@property (weak, nonatomic) IBOutlet UILabel *averageRatingLabel;
 
 
 @property (strong, nonatomic)NSString *address;
