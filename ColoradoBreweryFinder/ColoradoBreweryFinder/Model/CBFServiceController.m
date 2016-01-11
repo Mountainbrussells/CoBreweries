@@ -643,6 +643,7 @@ static NSString *authSessionToken = @"";
                         rating.brewery = brewery;
                         rating.user = user;
                         rating.uid = objectIDNumber;
+                        rating.rating = breweryRating;
                         
                         NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
                         NSError *objectIdError;

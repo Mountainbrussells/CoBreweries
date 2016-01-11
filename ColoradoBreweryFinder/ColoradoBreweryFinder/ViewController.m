@@ -53,6 +53,7 @@
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
+//    [defaultCenter addObserver:self selector:@selector(refreshCollectionView:) name:@"updatesComplete" object:nil];
     
     
     self.collectionView.delegate = self;
@@ -68,6 +69,11 @@
     self.breweries = [self sortedBreweryArray];
     [self.collectionView reloadData];
     
+}
+
+- (void)refreshCollectionView:(id)sender
+{
+    [self.collectionView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {

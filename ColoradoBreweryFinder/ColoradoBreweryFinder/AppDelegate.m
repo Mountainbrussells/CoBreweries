@@ -88,7 +88,10 @@
         }];
         
         [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-            [self.serviceController updateBeerReviewsWithCompletion:nil];
+            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
+                NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                [notificationCenter postNotificationName:@"updatesComplete" object:nil];
+            }];
         }];
     }
 

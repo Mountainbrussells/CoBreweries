@@ -169,6 +169,11 @@
     }
 }
 
+- (void)refreshTable;
+{
+    [self.tableView reloadData];
+}
+
 - (void) rateBrewery:(NSNumber *) rating {
     NSManagedObjectID *breweryId = self.brewery.objectID;
     
@@ -180,10 +185,15 @@
         }
     }];
     if (existingRating) {
-        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:nil];
+        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:^(NSError *error) {
+            [self refreshTable];
+        }];
+        
     } else {
         [self.serviceController createBreweryRating:[rating integerValue] breweryId:breweryId completion:^(NSManagedObjectID *ratingObjectID, NSError *error) {
+            [self refreshTable];
         }];
+        
     }
 }
 
