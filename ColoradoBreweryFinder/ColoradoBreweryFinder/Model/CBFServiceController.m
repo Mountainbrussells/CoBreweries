@@ -165,6 +165,8 @@ static NSString *authSessionToken = @"";
     
     [task resume];
     
+    
+    
 }
 
 - (void)logInUserWithName:(NSString *)name andPassword:(NSString *)password completion:(void (^)(NSManagedObjectID *, NSString *, NSError *))completion
@@ -238,6 +240,8 @@ static NSString *authSessionToken = @"";
                         user.password = password;
                         user.uid = objectID;
                         self.user = user;
+                        NSError *error;
+                        [self.writeMOC save:&error];
                         
                     } else if (idError) {
                         
@@ -347,9 +351,6 @@ static NSString *authSessionToken = @"";
                     NSDictionary *photoDictionary = [brewery objectForKey:@"logo"];
                     NSString *urlString = [photoDictionary objectForKey:@"url"];
                     mocBrewery.logoURL = urlString;
-                    //                NSURL *photoURL = [NSURL URLWithString:urlString];
-                    //                NSData *data = [NSData dataWithContentsOfURL:photoURL];
-                    //                mocBrewery.logo = data;
                     
                     NSError *error = nil;
                     if (![self.writeMOC save:&error]) {
@@ -592,98 +593,101 @@ static NSString *authSessionToken = @"";
 
 - (void)createBreweryRating:(NSInteger)rating breweryId:(NSManagedObjectID *)breweryId completion:(void (^)(NSManagedObjectID *, NSError *))completion
 {
-    CBFUser *user = self.user;
-    CBFBrewery *brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:breweryId context:self.writeMOC];
-    NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"POST"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
-    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    NSDictionary *breweryDict = @{@"__type": @"Pointer", @"className": @"Brewery", @"objectId": breweryId};
-    NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
-    
-    NSDictionary *postDictionary = @{@"rating": breweryRating, @"brewery": breweryDict, @"user": userDict};
-    
-    NSError *error;
-    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
-    
-    [parseRequest setHTTPBody:postBody];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    // task creates parse BreweryRating
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-        }
+    [self.writeMOC performBlockAndWait:^{
         
-        __block NSManagedObjectID *managedObjectId;
-        [self.writeMOC performBlockAndWait:^{
-            if (data) {
-                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                NSLog(@"Data: %@", responseDictionary);
-                NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
-                
-                if (objectIDNumber) {
-                    // if task is successful create CD user object
-                    CBFBreweryRating *rating = [CBFBreweryRating insertInManagedObjectContext:self.writeMOC];
+        CBFUser *user = self.user;
+        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:breweryId context:self.writeMOC];
+        NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
+        
+        NSString *urlString = kBaseParseAPIURL;
+        urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
+        
+        NSURL *parseURL = [NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+        [parseRequest setHTTPMethod:@"POST"];
+        [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+        [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+        [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
+        [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        NSDictionary *breweryDict = @{@"__type": @"Pointer", @"className": @"Brewery", @"objectId": brewery.uid};
+        NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
+        
+        NSDictionary *postDictionary = @{@"rating": breweryRating, @"brewery": breweryDict, @"user": userDict};
+        
+        NSError *error;
+        NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
+        
+        [parseRequest setHTTPBody:postBody];
+        
+        NSURLSession *session = [NSURLSession sharedSession];
+        
+        // task creates parse BreweryRating
+        NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (response) {
+                NSLog(@"Request Response:%@", response);
+            }
+            
+            __block NSManagedObjectID *managedObjectId;
+            [self.writeMOC performBlockAndWait:^{
+                if (data) {
+                    NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    NSLog(@"Data: %@", responseDictionary);
+                    NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                     
-                    rating.brewery = brewery;
-                    rating.user = user;
-                    rating.uid = objectIDNumber;
-                    
-                    NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
-                    NSError *objectIdError;
-                    [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
-                    
-                    managedObjectId = rating.objectID;
-                    
-                    NSError *error = nil;
-                    if (![self.writeMOC save:&error]) {
-                        NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
-                        abort();
-                    }
-                    
-                    if (completion) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            // pass back managedObjectId and sessionToken
-                            completion(managedObjectId, nil);
-                        });
-                    }
-                } else {
-                    NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
-                    NSError *error = [NSError errorWithDomain:@"ParseRequestError" code:code userInfo:responseDictionary];
-                    if (completion) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            completion(nil, error);
-                        });
+                    if (objectIDNumber) {
+                        // if task is successful create CD user object
+                        CBFBreweryRating *rating = [NSEntityDescription insertNewObjectForEntityForName:@"BreweryRating" inManagedObjectContext:self.writeMOC];
+                        
+                        rating.brewery = brewery;
+                        rating.user = user;
+                        rating.uid = objectIDNumber;
+                        
+                        NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
+                        NSError *objectIdError;
+                        [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                        
+                        managedObjectId = rating.objectID;
+                        
+                        NSError *error = nil;
+                        if (![self.writeMOC save:&error]) {
+                            NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                            abort();
+                        }
+                        
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                // pass back managedObjectId and sessionToken
+                                completion(managedObjectId, nil);
+                            });
+                        }
+                    } else {
+                        NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                        NSError *error = [NSError errorWithDomain:@"ParseRequestError" code:code userInfo:responseDictionary];
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                completion(nil, error);
+                            });
+                        }
                     }
                 }
-            }
+                
+            }];
             
+            if (error) {
+                NSLog(@"RequestError:%@", error);
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, error);
+                    });
+                }
+            }
         }];
         
-        if (error) {
-            NSLog(@"RequestError:%@", error);
-            
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
-                });
-            }
-        }
+        [task resume];
     }];
-    
-    [task resume];
     
 }
 
@@ -786,14 +790,19 @@ static NSString *authSessionToken = @"";
                     NSDictionary *userDict = [rating objectForKey:@"user"];
                     NSString *userUID = [userDict objectForKey:@"objectId"];
                     CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
-                    
-                    CBFUser *mainUser = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
-                    
-                    if ([user.uid isEqualToString:mainUser.uid]) {
-                        mocBreweryRating.user = user;
-                    } else {
-                        mocBreweryRating.user = nil;
+                    CBFUser *mainUser;
+                    if (self.userManagedObjectId) {
+                        mainUser = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
                     }
+                    
+                    if (mainUser) {
+                        if ([user.uid isEqualToString:mainUser.uid]) {
+                            mocBreweryRating.user = user;
+                        } else {
+                            mocBreweryRating.user = nil;
+                        }
+                    }
+                    
                     
                     NSError *error = nil;
                     if (![self.writeMOC save:&error]) {
@@ -824,7 +833,7 @@ static NSString *authSessionToken = @"";
 
 - (void) updateBreweryRatingsWithCompletion:(void (^)(NSError *error))completion
 {
-   
+    
     
     NSString *urlString = kBaseParseAPIURL;
     urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
@@ -848,7 +857,7 @@ static NSString *authSessionToken = @"";
             
             NSArray *breweryRatings = [breweryRatingData valueForKey:@"results"];
             
-            NSMutableArray *mocBreweryRatingsArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweryRatings]];
+            NSMutableArray *mocBreweryRatingsArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBreweryRatingsInContext:self.writeMOC]];
             [self.writeMOC performBlockAndWait:^{
                 for (id rating in breweryRatings) {
                     
@@ -860,12 +869,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *breweryDict = [rating objectForKey:@"brewery"];
                         NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                         existingBreweryRating.brewery = brewery;
                         
                         NSDictionary *userDict = [rating objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         
                         if ([user.uid isEqualToString:self.user.uid]) {
                             existingBreweryRating.user = user;
@@ -884,12 +893,12 @@ static NSString *authSessionToken = @"";
                         
                         NSDictionary *breweryDict = [rating objectForKey:@"brewery"];
                         NSString *breweryUID = [breweryDict objectForKey:@"objectId"];
-                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID];
+                        CBFBrewery *brewery = [self.coreDataController fetchBreweryWithUID:breweryUID moc:self.writeMOC];
                         mocBreweryRating.brewery = brewery;
                         
                         NSDictionary *userDict = [rating objectForKey:@"user"];
                         NSString *userUID = [userDict objectForKey:@"objectId"];
-                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID];
+                        CBFUser *user = [self.coreDataController fetchUserWithUID:userUID moc:self.writeMOC];
                         
                         if ([user.uid isEqualToString:self.user.uid]) {
                             mocBreweryRating.user = user;
@@ -915,7 +924,7 @@ static NSString *authSessionToken = @"";
                         [self.writeMOC deleteObject:rating];
                     }
                 }
-
+                
             }];
             
             
@@ -991,8 +1000,11 @@ static NSString *authSessionToken = @"";
                         mocBeer.user = nil;
                     }
                     
-                    NSError *mocError;
-                    [self.writeMOC save:&mocError];
+                    NSError *error = nil;
+                    if (![self.writeMOC save:&error]) {
+                        NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                        abort();
+                    }
                     
                 }
                 
@@ -1184,8 +1196,11 @@ static NSString *authSessionToken = @"";
                         mocBeerRating.user = nil;
                     }
                     
-                    NSError *mocError;
-                    [self.writeMOC save:&mocError];
+                    NSError *error = nil;
+                    if (![self.writeMOC save:&error]) {
+                        NSLog(@"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+                        abort();
+                    }
                     
                 }
                 
@@ -1193,7 +1208,7 @@ static NSString *authSessionToken = @"";
                     completion(nil);
                 }
             }];
-           
+            
         }
         
         if (response) {
@@ -1233,7 +1248,7 @@ static NSString *authSessionToken = @"";
             
             NSArray *beerRatings = [beerRatingData valueForKey:@"results"];
             
-            NSMutableArray *mocBeerReviewArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeerReviews]];
+            NSMutableArray *mocBeerReviewArray = [NSMutableArray arrayWithArray:[self.coreDataController fetchBeerReviewsInContext:self.writeMOC]];
             [self.writeMOC performBlockAndWait:^{
                 for (id rating in beerRatings) {
                     
@@ -1373,105 +1388,109 @@ static NSString *authSessionToken = @"";
     return returnString;
 }
 
-- (void) createBeerRating:(NSString *)rating withNote:(NSString *)note beerId:(NSString *)beerId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion
+- (void) createBeerRating:(NSString *)rating withNote:(NSString *)note beerId:(NSManagedObjectID *)beerId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion
 {
-    // TODO:  Cross context call to fix.
-    
-    CBFUser *user = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
-    CBFBeer *beer = [self.coreDataController fetchBeerWithUID:beerId moc:self.writeMOC];
-    long intRating = [rating longLongValue];
-    NSNumber *beerRating = [NSNumber numberWithLong:intRating];
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"POST"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
-    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
-    
-    NSDictionary *beerdict = @{@"__type": @"Pointer", @"className": @"Beer", @"objectId": beerId};
-    NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
-    
-    NSDictionary *postDictionary = @{@"rating": beerRating, @"beer": beerdict, @"user": userDict, @"review": note};
-    
-    NSError *error;
-    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
-    
-    [parseRequest setHTTPBody:postBody];
-    
-    NSURLSession *session = [NSURLSession sharedSession];
     
     
-    
-    // task creates parse BreweryRating
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-        }
+    [self.writeMOC performBlock:^{
         
-        __block NSManagedObjectID *managedObjectId;
-        [self.writeMOC performBlock:^{
-            if (data) {
-                NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                NSLog(@"Data: %@", responseDictionary);
-                NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
+        CBFUser *user = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
+        CBFBeer *beer = [self.coreDataController fetchBeerWithManagedObjectId:beerId inContext:self.writeMOC];
+        long intRating = [rating longLongValue];
+        NSNumber *beerRating = [NSNumber numberWithLong:intRating];
+        
+        NSString *urlString = kBaseParseAPIURL;
+        urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
+        
+        NSURL *parseURL = [NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+        [parseRequest setHTTPMethod:@"POST"];
+        [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+        [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+        [parseRequest setValue:@"1" forHTTPHeaderField:@"X-Parse-Revocable-Session"];
+        [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
+        
+        NSDictionary *beerdict = @{@"__type": @"Pointer", @"className": @"Beer", @"objectId": beer.uid};
+        NSDictionary *userDict = @{@"__type": @"Pointer", @"className": @"_User", @"objectId": user.uid};
+        
+        NSDictionary *postDictionary = @{@"rating": beerRating, @"beer": beerdict, @"user": userDict, @"review": note};
+        
+        NSError *error;
+        NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
+        
+        [parseRequest setHTTPBody:postBody];
+        
+        NSURLSession *session = [NSURLSession sharedSession];
+        
+        
+        
+        // task creates parse BreweryRating
+        NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (response) {
+                NSLog(@"Request Response:%@", response);
+            }
+            
+            __block NSManagedObjectID *managedObjectId;
+            [self.writeMOC performBlock:^{
+                if (data) {
+                    NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                    NSLog(@"Data: %@", responseDictionary);
+                    NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
+                    
+                    if (objectIDNumber) {
+                        // if task is successful create CD user object
+                        CBFBeerRating *rating = [NSEntityDescription insertNewObjectForEntityForName:@"BeerRating" inManagedObjectContext:self.writeMOC];
+                        
+                        rating.beer = beer;
+                        rating.user = user;
+                        rating.rating = beerRating;
+                        rating.review = note;
+                        rating.uid = objectIDNumber;
+                        rating.username = self.user.userName;
+                        
+                        NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
+                        NSError *objectIdError;
+                        [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
+                        NSError *mocError;
+                        [self.writeMOC save:&mocError];
+                        managedObjectId = rating.objectID;
+                        
+                        
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                // pass back managedObjectId and sessionToken
+                                completion(managedObjectId, nil);
+                            });
+                        }
+                    } else {
+                        
+                        NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
+                        NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                completion(nil, error);
+                            });
+                        }
+                    }
+                }
+            }];
+            
+            if (error) {
+                NSLog(@"RequestError:%@", error);
                 
-                if (objectIDNumber) {
-                    // if task is successful create CD user object
-                    CBFBeerRating *rating = [CBFBeerRating insertInManagedObjectContext:self.writeMOC];
-                    
-                    rating.beer = beer;
-                    rating.user = user;
-                    rating.rating = beerRating;
-                    rating.review = note;
-                    rating.uid = objectIDNumber;
-                    rating.username = self.user.userName;
-                    
-                    NSArray *userArray = [[NSArray alloc] initWithObjects:rating, nil];
-                    NSError *objectIdError;
-                    [self.writeMOC obtainPermanentIDsForObjects:userArray error:&objectIdError];
-                    NSError *mocError;
-                    [self.writeMOC save:&mocError];
-                    managedObjectId = rating.objectID;
-                    [self.persistencController save];
-                    
-                    if (completion) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            // pass back managedObjectId and sessionToken
-                            completion(managedObjectId, nil);
-                        });
-                    }
-                } else {
-                    
-                    NSInteger code = [[responseDictionary valueForKey:@"code"] integerValue];
-                    NSError *error = [NSError errorWithDomain:@"ParseLoginError" code:code userInfo:responseDictionary];
-                    if (completion) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            completion(nil, error);
-                        });
-                    }
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil, error);
+                    });
                 }
             }
         }];
         
-        if (error) {
-            NSLog(@"RequestError:%@", error);
-            
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
-                });
-            }
-        }
+        [task resume];
+        
     }];
-    
-    [task resume];
     
 }
 

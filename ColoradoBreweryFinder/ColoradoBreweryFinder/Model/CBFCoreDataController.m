@@ -188,7 +188,7 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.moc];
         [fetchRequest setEntity:entity];
         NSError *error;
-        fetchedBreweries = [self.moc executeFetchRequest:fetchRequest error:&error];
+        fetchedBreweries = [context executeFetchRequest:fetchRequest error:&error];
     }];
     
     return fetchedBreweries;
@@ -220,6 +220,21 @@
     [fetchRequest setEntity:entity];
     NSError *error;
     NSArray *fetchedBreweryRatings = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    return fetchedBreweryRatings;
+}
+
+-(NSArray *) fetchBreweryRatingsInContext:(NSManagedObjectContext *)context
+
+{
+    __block NSArray *fetchedBreweryRatings;
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+        [fetchRequest setEntity:entity];
+        NSError *error;
+        fetchedBreweryRatings = [context executeFetchRequest:fetchRequest error:&error];
+    }];
     
     return fetchedBreweryRatings;
 }
@@ -287,7 +302,7 @@
     [fetchRequest setEntity:entity];
     NSError *error;
     NSArray *fetchedBeers = [self.moc executeFetchRequest:fetchRequest error:&error];
-    
+    NSLog(@"Beer fetch error: %@", error);
     return fetchedBeers;
 }
 
@@ -329,11 +344,44 @@
     return fetchedBeerReviews;
 }
 
+- (NSArray *) fetchBeerReviewsInContext:(NSManagedObjectContext *)context;
+{
+    __block NSArray *fetchedBeerReviews;
+    
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BeerRating" inManagedObjectContext:self.moc];
+        [fetchRequest setEntity:entity];
+        NSError *error;
+        fetchedBeerReviews = [context executeFetchRequest:fetchRequest error:&error];
+    }];
+    
+    return fetchedBeerReviews;
+}
+
 - (CBFBeer *)fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId
 {
     CBFBeer *beer;
     NSError *error;
     beer = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beer) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beer;
+}
+
+- (CBFBeer *) fetchBeerWithManagedObjectId:(NSManagedObjectID *)ManagedObjectId inContext:(NSManagedObjectContext *)context
+{
+    __block CBFBeer *beer;
+    __block NSError *error;
+    
+    [context performBlockAndWait:^{
+         beer = [context existingObjectWithID:ManagedObjectId error:&error];
+    }];
+
     
     if (!beer) {
         NSLog(@"Fetch failed with error: %@", error);

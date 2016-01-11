@@ -53,8 +53,14 @@
     
     if ([defaults valueForKey:@"DataHasBeenLoaded"] == NO) {
         // populate brewery data
-        [self.serviceController requestBreweriesWithCompletion:nil];
+        [self.serviceController requestBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController requestBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController requestBeersWithCompletion:^(NSError *error) {
+            [self.serviceController requestBeerReviewsWithCompletion:nil];
+        }];
         [defaults setBool:YES forKey:@"DataHasBeenLoaded"];
+        [self.persistenceController save];
     }
     
     return YES;
@@ -67,7 +73,7 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [[self persistenceController] save];
+//    [[self persistenceController] save];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -86,7 +92,6 @@
         }];
     }
 
-    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -99,6 +104,8 @@
             [self.serviceController updateBeerReviewsWithCompletion:nil];
         }];
     }
+    
+   
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

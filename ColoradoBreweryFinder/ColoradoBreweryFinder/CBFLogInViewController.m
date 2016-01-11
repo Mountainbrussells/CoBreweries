@@ -66,10 +66,8 @@
                                                    
                                                    [spinner stopAnimating];
                                                    if (strongSelf.user) {
-//                                                               [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
-//                                                                   [self.serviceController updateBreweryRatingsWithCompletion:nil];
-//                                                               }];
-//                                                       
+                                                               [self.serviceController updateBreweriesWithCompletion:nil];
+                                                       
 //                                                               [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
 //                                                                   [self.serviceController updateBeerReviewsWithCompletion:nil];
 //                                                               }];
@@ -142,14 +140,14 @@
                                            if (objectId) {
                                                
                                                strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
-                                               if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
-                                                   [strongSelf.serviceController requestBreweryRatingsWithCompletion:nil];
-                                                   [strongSelf.serviceController requestBeersWithCompletion:^(NSError *error) {
-                                                       [strongSelf.serviceController requestBeerReviewsWithCompletion:nil];
-                                                   }];
-                                                   
-                                                   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
-                                               }
+//                                               if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
+//                                                   [strongSelf.serviceController requestBreweryRatingsWithCompletion:nil];
+//                                                   [strongSelf.serviceController requestBeersWithCompletion:^(NSError *error) {
+//                                                       [strongSelf.serviceController requestBeerReviewsWithCompletion:nil];
+//                                                   }];
+//                                                   [self.persistenceController save];
+//                                                   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
+//                                               }
                                                
                                                
                                                [spinner stopAnimating];
@@ -197,7 +195,7 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"LogInSuccessful"]) {
-        
+    
         UINavigationController *navController = segue.destinationViewController;
         ViewController *mainView = navController.viewControllers[0];
         mainView.userManagedObjectId = self.user.objectID;

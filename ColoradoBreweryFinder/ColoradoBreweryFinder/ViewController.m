@@ -37,13 +37,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.user = [self.coreDataController fetchUserWithId:self.userManagedObjectId];
+    if (self.user) {
+        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+        }];
+        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+            [self.serviceController updateBeerReviewsWithCompletion:nil];
+        }];
+    }
+    [self.persistenceController save];
     
     self.breweries = [self.coreDataController fetchBreweries];
     self.geofenceManager = [CBFGeofenceManager sharedManager];
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter addObserver:self selector:@selector(prepareForLocationUpdate:) name:@"LocationWillChange" object:self.geofenceManager];
     [defaultCenter addObserver:self selector:@selector(updateLocation:) name:@"LocationDidChange" object:self.geofenceManager];
-    self.user = [self.coreDataController fetchUserWithId:self.userManagedObjectId];
+    
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
