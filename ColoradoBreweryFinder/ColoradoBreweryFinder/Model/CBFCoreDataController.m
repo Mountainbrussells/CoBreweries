@@ -293,8 +293,6 @@
     return fetchedBreweryRatings;
 }
 
-
-
 - (NSArray *) fetchBeers
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
