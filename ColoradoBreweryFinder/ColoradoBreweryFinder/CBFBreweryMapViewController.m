@@ -182,6 +182,7 @@ static double const kDefaultMapHieght = 500000;
     CBFBreweryDetailController *detailVC = [segue destinationViewController];
     detailVC.breweryObjectId = selectedBrewery.objectID;
     detailVC.coreDataController = self.coreDataController;
+    detailVC.serviceController = self.serviceController;
     detailVC.userdObjectId = self.userObjectId;
     }
     
