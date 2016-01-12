@@ -81,19 +81,19 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    CBFUser *user = self.serviceController.user;
-    if (user) {
-        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
-            [self.serviceController updateBreweryRatingsWithCompletion:nil];
-        }];
-        
-        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
-                NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-                [notificationCenter postNotificationName:@"updatesComplete" object:nil];
-            }];
-        }];
-    }
+//    CBFUser *user = self.serviceController.user;
+//    if (user) {
+//        [self.serviceController updateBreweriesWithCompletion:^(NSError *error) {
+//            [self.serviceController updateBreweryRatingsWithCompletion:nil];
+//        }];
+//        
+//        [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
+//            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
+//                NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+//                [notificationCenter postNotificationName:@"updatesComplete" object:nil];
+//            }];
+//        }];
+//    }
 
 }
 
@@ -104,7 +104,10 @@
             [self.serviceController updateBreweryRatingsWithCompletion:nil];
         }];
         [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-            [self.serviceController updateBeerReviewsWithCompletion:nil];
+            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
+                NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+                [notificationCenter postNotificationName:@"updatesComplete" object:nil];
+            }];
         }];
     }
     
