@@ -58,8 +58,6 @@
 
 - (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
 
-- (NSArray *) fetchBeersForBrewery:(CBFBrewery *)brewery;
-
 - (NSArray *) fetchBeers;
 
 - (NSArray *) fetchBeersInContext:(NSManagedObjectContext *)context;
