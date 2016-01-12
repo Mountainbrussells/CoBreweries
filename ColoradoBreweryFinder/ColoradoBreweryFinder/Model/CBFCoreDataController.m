@@ -230,7 +230,7 @@
     __block NSArray *fetchedBreweryRatings;
     [context performBlockAndWait:^{
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:self.moc];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"BreweryRating" inManagedObjectContext:context];
         [fetchRequest setEntity:entity];
         NSError *error;
         fetchedBreweryRatings = [context executeFetchRequest:fetchRequest error:&error];
@@ -293,18 +293,7 @@
     return fetchedBreweryRatings;
 }
 
-- (NSArray *)fetchBeersForBrewery:(CBFBrewery *)brewery
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"brewery = %@", brewery];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Beer" inManagedObjectContext:self.moc];
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setEntity:entity];
-    NSError *error;
-    NSArray *fetchedBeers = [self.moc executeFetchRequest:fetchRequest error:&error];
-    NSLog(@"Beer fetch error: %@", error);
-    return fetchedBeers;
-}
+
 
 - (NSArray *) fetchBeers
 {

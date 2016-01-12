@@ -1007,6 +1007,8 @@ static NSString *authSessionToken = @"";
                         abort();
                     }
                     
+                  
+                    
                 }
                 
                 if (completion) {
@@ -1085,6 +1087,7 @@ static NSString *authSessionToken = @"";
                         
                         NSError *mocError;
                         [self.writeMOC save:&mocError];
+                        [mocBeerArray removeObject:existingBeer];
                         
                     } else {
                         

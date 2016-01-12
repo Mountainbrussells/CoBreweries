@@ -29,7 +29,7 @@
 {
     self.brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:self.breweryObjectId];
     self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
-    self.beers = [self.coreDataController fetchBeersForBrewery:self.brewery];
+    self.beers = [self.brewery.beers allObjects];
     [self.tableView reloadData];
     
     [self becomeFirstResponder];
