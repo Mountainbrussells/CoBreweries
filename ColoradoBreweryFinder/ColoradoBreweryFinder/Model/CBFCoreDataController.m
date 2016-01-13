@@ -173,15 +173,26 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Brewery" inManagedObjectContext:self.moc];
     [fetchRequest setEntity:entity];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO];
+    NSArray *sort = [NSArray arrayWithObject:sortDescriptor];
+    fetchRequest.sortDescriptors = sort;
     NSError *error;
-    NSArray *fetchedBreweries = [self.moc executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedBreweries;
     
-    return fetchedBreweries;
+    fetchedBreweries = [self.moc executeFetchRequest:fetchRequest error:&error];
+    
+    
+    if (fetchedBreweries.count > 0) {
+        return fetchedBreweries;
+    }
+    return nil;
     
 }
 
 - (NSArray *) fetchBreweriesInContext:(NSManagedObjectContext *)context;
 {
+    
+
     __block NSArray *fetchedBreweries;
     [context performBlockAndWait:^{
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
