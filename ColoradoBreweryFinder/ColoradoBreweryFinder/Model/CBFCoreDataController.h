@@ -74,6 +74,8 @@
 
 - (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
 
+- (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context;
+
 - (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 
 

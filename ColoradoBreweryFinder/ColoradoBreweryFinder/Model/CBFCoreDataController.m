@@ -475,6 +475,20 @@
     return beerRating;
 }
 
+- (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context
+{
+    CBFBeerRating *beerRating;
+    NSError *error;
+    beerRating = [context existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beerRating) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beerRating;
+}
+
 - (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
