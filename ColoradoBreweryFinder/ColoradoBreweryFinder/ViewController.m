@@ -43,7 +43,16 @@
             [self.serviceController updateBreweryRatingsWithCompletion:nil];
         }];
         [self.serviceController updateBeersWtihCompletion:^(NSError *error) {
-            [self.serviceController updateBeerReviewsWithCompletion:nil];
+            [self.serviceController updateBeerReviewsWithCompletion:^(NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSArray *breweries = [self.coreDataController fetchBreweries];
+                    if (breweries) {
+                        self.breweries = breweries;
+                        self.breweries = [self sortedBreweryArray];
+                        [self.collectionView reloadData];
+                    }
+                });
+            }];
         }];
     }
     [self.persistenceController save];
@@ -73,7 +82,15 @@
 
 - (void)refreshCollectionView:(id)sender
 {
-    [self.collectionView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *breweries = [self.coreDataController fetchBreweries];
+        if (breweries) {
+            self.breweries = breweries;
+            self.breweries = [self sortedBreweryArray];
+            [self.collectionView reloadData];
+        }
+    });
+   
 }
 
 - (void)didReceiveMemoryWarning {
