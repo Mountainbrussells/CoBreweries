@@ -59,7 +59,7 @@
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     if (self.alreadyRatedBeer) {
         NSInteger ratingInt = [self.ratingString integerValue];
-        [self.serviceController updateBeerRating:self.rating withValue:ratingInt andNote:self.noteTextView.text completion:^(NSError *error) {
+        [self.serviceController updateBeerRating:self.rating.objectID withValue:ratingInt andNote:self.noteTextView.text completion:^(NSError *error) {
             [notificationCenter postNotificationName:@"newReviewAdded" object:nil];
         }];
     } else {

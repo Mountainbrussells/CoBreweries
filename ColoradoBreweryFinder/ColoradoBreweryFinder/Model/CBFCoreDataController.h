@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "CBFUser.h"
 #import "CBFBrewery.h"
+#import "CBFBreweryRating.h"
 #import "CBFBeer.h"
 #import "CBFBeerRating.h"
 #import "BRPersistenceController.h"
@@ -54,6 +55,8 @@
 
 - (CBFBreweryRating *) fetchBreweryRatingWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 
+- (CBFBreweryRating *) fetchBreweryRatingWithManagedObjectId:(NSManagedObjectID *)ratingId context:(NSManagedObjectContext *)context;
+
 - (NSArray *) fetchBeerReviewsForBeer:(CBFBeer *)beer;
 
 - (NSArray *) fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery;
@@ -73,6 +76,8 @@
 - (CBFBeerRating *) fetchBeerRatingForBeer:(CBFBeer *)beer andUser:(CBFUser *)user;
 
 - (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId;
+
+- (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context;
 
 - (CBFBeerRating *)fetchBeerRatingWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 

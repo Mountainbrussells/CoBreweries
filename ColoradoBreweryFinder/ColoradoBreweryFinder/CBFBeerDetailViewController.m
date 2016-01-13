@@ -39,14 +39,19 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.beerReviewsArray = [self.beer.ratings allObjects];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)refreshTableView:(id)sender
 {
-    self.beerReviewsArray = [self.coreDataController fetchBeerReviewsForBeer:self.beer];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.beerReviewsArray = [self.beer.ratings allObjects];
+        [self.tableView reloadData];
+    });
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

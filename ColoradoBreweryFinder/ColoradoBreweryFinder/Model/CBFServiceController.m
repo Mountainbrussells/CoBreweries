@@ -93,7 +93,7 @@ static NSString *authSessionToken = @"";
         [self.writeMOC performBlockAndWait:^{
             if (data) {
                 NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                NSLog(@"Data: %@", responseDictionary);
+                //                NSLog(@"Data: %@", responseDictionary);
                 NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                 NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
                 authSessionToken = sessionToken;
@@ -200,7 +200,7 @@ static NSString *authSessionToken = @"";
             // If user exist, get objectID and session Token
             
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//            NSLog(@"Data: %@", responseDictionary);
+            //            NSLog(@"Data: %@", responseDictionary);
             NSString *objectID = [responseDictionary valueForKey:@"objectId"];
             NSString *sessionToken = [responseDictionary valueForKey:@"sessionToken"];
             authSessionToken = sessionToken;
@@ -633,7 +633,7 @@ static NSString *authSessionToken = @"";
             [self.writeMOC performBlockAndWait:^{
                 if (data) {
                     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//                    NSLog(@"Data: %@", responseDictionary);
+                    //                    NSLog(@"Data: %@", responseDictionary);
                     NSString *objectIDNumber = [responseDictionary valueForKey:@"objectId"];
                     
                     if (objectIDNumber) {
@@ -692,63 +692,76 @@ static NSString *authSessionToken = @"";
     
 }
 
-- (void)updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion
+- (void)updateBreweryRating:(NSManagedObjectID *)ratingId withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion
 {
-    NSNumber *breweryRating = [NSNumber numberWithInteger:newRating];
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
-    NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
-    urlString = [urlString stringByAppendingString:ratingIdString];
-    
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"PUT"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    NSDictionary *postDictionary = @{@"rating": @(newRating)};
-    
-    NSError *error;
-    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
-    if (postBody != nil) {
-        [parseRequest setHTTPBody:postBody];
-    }
-    
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-            rating.rating = breweryRating;
-            [self.persistencController save];
-            [self.writeMOC save:nil];
-            
+    [self.writeMOC performBlockAndWait:^{
+        
+        CBFBreweryRating *rating = [self.coreDataController fetchBreweryRatingWithManagedObjectId:ratingId context:self.writeMOC];
+        NSNumber *breweryRating = [NSNumber numberWithInteger:newRating];
+        
+        NSString *urlString = kBaseParseAPIURL;
+        urlString = [urlString stringByAppendingString:kPArseBreweryRatingVenue];
+        NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
+        urlString = [urlString stringByAppendingString:ratingIdString];
+        
+        
+        NSURL *parseURL = [NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+        [parseRequest setHTTPMethod:@"PUT"];
+        [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+        [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+        [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        NSDictionary *postDictionary = @{@"rating": @(newRating)};
+        
+        NSError *error;
+        NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+        if (postBody != nil) {
+            [parseRequest setHTTPBody:postBody];
         }
         
         
+        NSURLSession *session = [NSURLSession sharedSession];
         
-        if (data) {
+        NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            [self.writeMOC performBlockAndWait:^{
+                if (response) {
+                    NSLog(@"Request Response:%@", response);
+                    
+                    rating.rating = breweryRating;
+                    [self.writeMOC save:nil];
+                    
+                }
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil);
+                    });
+                }
+            }];
             
-        }
-        
-        if (error) {
-            NSLog(@"RequestError:%@", error);
             
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(error);
-                });
+            
+            
+            if (data) {
+                
             }
-        }
+            
+            if (error) {
+                NSLog(@"RequestError:%@", error);
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(error);
+                    });
+                }
+            }
+            
+        }];
         
+        [task resume];
     }];
-    
-    [task resume];
 }
 
 
@@ -1007,7 +1020,7 @@ static NSString *authSessionToken = @"";
                         abort();
                     }
                     
-                  
+                    
                     
                 }
                 
@@ -1049,7 +1062,7 @@ static NSString *authSessionToken = @"";
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//            NSLog(@"responseDicionary:%@", responseDictionary);
+            //            NSLog(@"responseDicionary:%@", responseDictionary);
             NSError *dataError;
             NSDictionary *beersData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
@@ -1168,7 +1181,7 @@ static NSString *authSessionToken = @"";
     NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (data) {
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//            NSLog(@"responseDicionary:%@", responseDictionary);
+            //            NSLog(@"responseDicionary:%@", responseDictionary);
             NSError *dataError;
             NSDictionary *beerRatingData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&dataError];
             
@@ -1498,67 +1511,84 @@ static NSString *authSessionToken = @"";
     
 }
 
-- (void)updateBeerRating:(CBFBeerRating *)rating withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
+- (void)updateBeerRating:(NSManagedObjectID *)ratingId withValue:(NSInteger)newRating andNote:(NSString *)note completion:(void (^)(NSError *error))completion
 {
-    NSNumber *beerRating = [NSNumber numberWithInteger:newRating];
-    
-    NSString *urlString = kBaseParseAPIURL;
-    urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
-    NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
-    urlString = [urlString stringByAppendingString:ratingIdString];
-    
-    
-    NSURL *parseURL = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
-    [parseRequest setHTTPMethod:@"PUT"];
-    [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
-    [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
-    
-    NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
-    
-    NSError *error;
-    NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
-    if (postBody != nil) {
-        [parseRequest setHTTPBody:postBody];
-    }
-    
-    
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    NSManagedObjectContext *moc = self.persistencController.managedObjectContext;
-    
-    NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (response) {
-            NSLog(@"Request Response:%@", response);
-            rating.rating = beerRating;
-            rating.review = note;
-            [moc save:nil];
-            [self.persistencController save];
-            
+    [self.writeMOC performBlockAndWait:^{
+        
+        CBFBeerRating *rating = [self.coreDataController fetchBeerRatingWithNSManagedObjectId:ratingId context:self.writeMOC];
+        
+        NSNumber *beerRating = [NSNumber numberWithInteger:newRating];
+        
+        NSString *urlString = kBaseParseAPIURL;
+        urlString = [urlString stringByAppendingString:kParseBeerRatingClassVenue];
+        NSString *ratingIdString = [NSString stringWithFormat:@"/%@",rating.uid];
+        urlString = [urlString stringByAppendingString:ratingIdString];
+        
+        
+        NSURL *parseURL = [NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *parseRequest = [[NSMutableURLRequest alloc] initWithURL:parseURL];
+        [parseRequest setHTTPMethod:@"PUT"];
+        [parseRequest setValue:kPARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
+        [parseRequest setValue:kREST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
+        [parseRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [parseRequest setValue:authSessionToken forHTTPHeaderField:@"X-Parse-Session-Token"];
+        
+        NSDictionary *postDictionary = @{@"rating": @(newRating), @"review": note};
+        
+        NSError *error;
+        NSData *postBody = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+        if (postBody != nil) {
+            [parseRequest setHTTPBody:postBody];
         }
         
         
+        NSURLSession *session = [NSURLSession sharedSession];
         
-        if (data) {
-            
-        }
         
-        if (error) {
-            NSLog(@"RequestError:%@", error);
+        NSURLSessionTask *task = [session dataTaskWithRequest:parseRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            [self.writeMOC performBlockAndWait:^{
+                if (response) {
+                    NSLog(@"Request Response:%@", response);
+                    if (beerRating != 0) {
+                        rating.rating = beerRating;
+                    }
+                    
+                    rating.review = note;
+                    [self.writeMOC save:nil];
+                    
+                    
+                    
+                }
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(nil);
+                    });
+                }
+            }];
             
-            if (completion) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(error);
-                });
+            
+            
+            
+            if (data) {
+                
             }
-        }
+            
+            if (error) {
+                NSLog(@"RequestError:%@", error);
+                
+                if (completion) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(error);
+                    });
+                }
+            }
+            
+        }];
         
+        [task resume];
     }];
-    
-    [task resume];
 }
 
 @end

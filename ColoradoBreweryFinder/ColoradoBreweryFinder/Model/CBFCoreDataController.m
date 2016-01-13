@@ -289,7 +289,19 @@
     }
 }
 
-
+- (CBFBreweryRating *) fetchBreweryRatingWithManagedObjectId:(NSManagedObjectID *)ratingId context:(NSManagedObjectContext *)context
+{
+    CBFBreweryRating *breweryRating;
+    NSError *error;
+    breweryRating = [context existingObjectWithID:ratingId error:&error];
+    
+    if (!breweryRating) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return breweryRating;
+}
 
 - (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery
 {
@@ -466,6 +478,20 @@
     CBFBeerRating *beerRating;
     NSError *error;
     beerRating = [self.moc existingObjectWithID:ManagedObjectId error:&error];
+    
+    if (!beerRating) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return beerRating;
+}
+
+- (CBFBeerRating *)fetchBeerRatingWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context
+{
+    CBFBeerRating *beerRating;
+    NSError *error;
+    beerRating = [context existingObjectWithID:ManagedObjectId error:&error];
     
     if (!beerRating) {
         NSLog(@"Fetch failed with error: %@", error);
