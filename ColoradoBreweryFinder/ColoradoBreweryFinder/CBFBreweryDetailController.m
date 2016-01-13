@@ -187,7 +187,7 @@
         }
     }];
     if (existingRating) {
-        [self.serviceController updateBreweryRating:existingRating withValue:[rating integerValue] completion:^(NSError *error) {
+        [self.serviceController updateBreweryRating:existingRating.objectID withValue:[rating integerValue] completion:^(NSError *error) {
             [self refreshTable];
         }];
         

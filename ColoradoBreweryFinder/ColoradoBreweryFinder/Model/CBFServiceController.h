@@ -38,7 +38,7 @@
 - (UIImage *) getImageWithURL:(NSString *)imageURLString completion:(void (^)(UIImage *)) completion;
 - (void)createBreweryRating:(NSInteger)rating breweryId:(NSString *)breweryId completion:(void (^)(NSManagedObjectID *ratingObjectID, NSError *error))completion;
 
-- (void) updateBreweryRating:(CBFBreweryRating *)rating withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion;
+- (void) updateBreweryRating:(NSManagedObjectID *)ratingId withValue:(NSInteger)newRating completion:(void (^)(NSError *error))completion;
 
 - (void) requestBreweryRatingsWithCompletion:(void (^)(NSError *error))completion;
 

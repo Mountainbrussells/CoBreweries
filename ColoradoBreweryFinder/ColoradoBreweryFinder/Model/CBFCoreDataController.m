@@ -289,7 +289,19 @@
     }
 }
 
-
+- (CBFBreweryRating *) fetchBreweryRatingWithManagedObjectId:(NSManagedObjectID *)ratingId context:(NSManagedObjectContext *)context
+{
+    CBFBreweryRating *breweryRating;
+    NSError *error;
+    breweryRating = [context existingObjectWithID:ratingId error:&error];
+    
+    if (!breweryRating) {
+        NSLog(@"Fetch failed with error: %@", error);
+        return nil;
+    }
+    
+    return breweryRating;
+}
 
 - (NSArray *)fetchBreweryRatingsForBrewery:(CBFBrewery *)brewery
 {
