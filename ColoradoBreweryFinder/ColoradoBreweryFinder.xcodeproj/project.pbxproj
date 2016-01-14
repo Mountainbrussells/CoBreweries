@@ -110,6 +110,7 @@
 		C9429CA41C287AF100C9D844 /* CBFBreweryLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBFBreweryLocation.m; sourceTree = "<group>"; };
 		C9429CA61C31DE6800C9D844 /* NSString+MD5String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5String.h"; sourceTree = "<group>"; };
 		C9429CA71C31DE6800C9D844 /* NSString+MD5String.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5String.m"; sourceTree = "<group>"; };
+		C95BD3441C47036F00DE1C25 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		C97A199F1C3D854800C95DA6 /* CBFBeerRatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBFBeerRatingViewController.h; path = ../CBFBeerRatingViewController.h; sourceTree = "<group>"; };
 		C97A19A01C3D854800C95DA6 /* CBFBeerRatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CBFBeerRatingViewController.m; path = ../CBFBeerRatingViewController.m; sourceTree = "<group>"; };
 		C996D3291C3E1676004180FC /* CBFBeerReviewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBFBeerReviewDetailViewController.h; sourceTree = "<group>"; };
@@ -312,6 +313,7 @@
 				C9FBC3CC1BFE80E00055E01B /* LaunchScreen.storyboard */,
 				C9FBC3CF1BFE80E00055E01B /* Info.plist */,
 				C9FBC3BB1BFE80E00055E01B /* Supporting Files */,
+				C95BD3441C47036F00DE1C25 /* Defines.h */,
 			);
 			path = ColoradoBreweryFinder;
 			sourceTree = "<group>";

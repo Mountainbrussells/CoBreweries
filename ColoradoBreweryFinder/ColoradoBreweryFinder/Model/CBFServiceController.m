@@ -7,6 +7,7 @@
 //
 
 #import "CBFServiceController.h"
+#import "Defines.h"
 #import "CBFUser.h"
 #import "NSString+NSString_EscapedString.h"
 #import "NSString+MD5String.h"
@@ -146,8 +147,6 @@ static NSString *authSessionToken = @"";
                 
             }
         }];
-        
-        
         
         if (error) {
             NSLog(@"RequestError:%@", error);
