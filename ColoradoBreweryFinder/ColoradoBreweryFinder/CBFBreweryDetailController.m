@@ -28,6 +28,9 @@
 - (void)viewDidLoad
 {
     self.brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:self.breweryObjectId];
+    NSArray *breweryArray = [[NSArray alloc] initWithObjects:self.brewery, nil];
+    NSError *objectIdError;
+    [self.persistenceController.managedObjectContext obtainPermanentIDsForObjects:breweryArray error:&objectIdError];
     self.user = [self.coreDataController fetchUserWithId:self.userdObjectId];
     self.beers = [self.brewery.beers allObjects];
     [self.tableView reloadData];

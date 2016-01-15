@@ -204,12 +204,17 @@
     NSString *distance = [self getDistanceToBreweyFromCurrentLocation:brewery.location];
     cell.distanceLabel.text = [NSString stringWithFormat:@"%@ mi", distance];
     
-    UIImage *logoImage = [self.serviceController getImageWithURL:brewery.logoURL completion:^(UIImage *image) {
-        NSLog(@"--\nSetting image for cell with brewery name: %@\nIndex Path: %@\n--", brewery.name, indexPath);
-        if(cell.brewery == brewery) {
-            cell.logoImageView.image = image;
-        }
-    }];
+    UIImage *logoImage;
+    
+    if (brewery.logoURL) {
+        logoImage = [self.serviceController getImageWithURL:brewery.logoURL completion:^(UIImage *image) {
+            NSLog(@"--\nSetting image for cell with brewery name: %@\nIndex Path: %@\n--", brewery.name, indexPath);
+            if(cell.brewery == brewery) {
+                cell.logoImageView.image = image;
+            }
+        }];
+    };
+    
     
     if (logoImage) {
         
@@ -246,6 +251,7 @@
         detailVC.userdObjectId = self.user.objectID;
         detailVC.coreDataController = self.coreDataController;
         detailVC.serviceController = self.serviceController;
+        detailVC.persistenceController = self.persistenceController;
         
         
     }
