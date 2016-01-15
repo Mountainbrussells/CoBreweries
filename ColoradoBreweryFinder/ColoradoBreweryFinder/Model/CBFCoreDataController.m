@@ -118,6 +118,8 @@
     __block NSError *error;
     [context performBlockAndWait:^{
         brewery = [context existingObjectWithID:ManagedObjectId error:&error];
+        
+        NSLog(@"User :%@", brewery);
     }];
 
     if (!brewery) {

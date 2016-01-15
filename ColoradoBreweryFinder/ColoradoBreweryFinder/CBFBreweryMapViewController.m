@@ -184,6 +184,7 @@ static double const kDefaultMapHieght = 500000;
     detailVC.coreDataController = self.coreDataController;
     detailVC.serviceController = self.serviceController;
     detailVC.userdObjectId = self.userObjectId;
+        detailVC.persistenceController = self.persistenceController;
     }
     
 }

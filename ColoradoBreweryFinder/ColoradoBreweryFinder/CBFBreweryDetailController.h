@@ -12,6 +12,7 @@
 #import "CBFServiceController.h"
 #import "CBFBrewery.h"
 #import "CBFUser.h"
+#import "BRPersistenceController.h"
 
 @interface CBFBreweryDetailController : UITableViewController
 
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic) CBFCoreDataController *coreDataController;
 @property (strong, nonatomic) CBFServiceController *serviceController;
+@property (strong, nonatomic) BRPersistenceController *persistenceController;
 @property (strong, nonatomic) UIImage *logoImage;
 
 @end

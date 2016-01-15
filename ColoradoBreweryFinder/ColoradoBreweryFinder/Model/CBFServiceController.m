@@ -557,10 +557,17 @@ static NSString *authSessionToken = @"";
         identifier = [NSString CBF_MD5:breweryLogoURL];
     }
     
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *imageURL = [documentsURL URLByAppendingPathComponent:identifier];
+    __block NSString *path = [imageURL path];
+    
     //    NSString *identifier = [NSString CBF_MD5:breweryLogoURL];
     //    NSString *identifier = breweryLogoURL;
     if (identifier) {
-        returnImage = [self.photoCache objectForKey:identifier];
+//        returnImage = [self.photoCache objectForKey:identifier];
+        returnImage = [UIImage imageWithContentsOfFile:path];
+        
         if (!returnImage) {
             NSString *urlString = breweryLogoURL;
             
@@ -572,7 +579,10 @@ static NSString *authSessionToken = @"";
             NSURLSessionTask *task = [session dataTaskWithRequest:logoRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 
                 UIImage *image = [[UIImage alloc] initWithData:data];
-                [weakSelf.photoCache setObject:image forKey:identifier];
+                
+                
+                [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+                //                [weakSelf.photoCache setObject:image forKey:identifier];
                 if (completion) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         completion(image);
@@ -594,7 +604,7 @@ static NSString *authSessionToken = @"";
 {
     [self.writeMOC performBlockAndWait:^{
         
-        CBFUser *user = self.user;
+        CBFUser *user = [self.coreDataController fetchUserWithId:self.userManagedObjectId inContext:self.writeMOC];
         CBFBrewery *brewery = [self.coreDataController fetchBreweryWithNSManagedObjectId:breweryId context:self.writeMOC];
         NSNumber *breweryRating = [NSNumber numberWithInteger:rating];
         
