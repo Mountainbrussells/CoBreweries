@@ -81,23 +81,6 @@
     }
 }
 
-- (CBFUser *)fetchUserWithUID:(NSString *)uid
-{
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid = %@", uid];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:self.moc];
-    [request setPredicate:predicate];
-    [request setEntity:entity];
-    NSError *error;
-    NSArray *fetchResults = [self.moc executeFetchRequest:request error:&error];
-    if (fetchResults.count > 0) {
-        CBFUser *user = fetchResults[0];
-        return user;
-    } else {
-        return nil;
-    }
-}
-
 - (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId
 {
     CBFBrewery *brewery;
@@ -112,12 +95,12 @@
     return brewery;
 }
 
-- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)ManagedObjectId context:(NSManagedObjectContext *)context
+- (CBFBrewery *)fetchBreweryWithNSManagedObjectId:(NSManagedObjectID *)managedObjectId context:(NSManagedObjectContext *)context
 {
     __block CBFBrewery *brewery;
     __block NSError *error;
     [context performBlockAndWait:^{
-        brewery = [context existingObjectWithID:ManagedObjectId error:&error];
+        brewery = [context existingObjectWithID:managedObjectId error:&error];
         
         NSLog(@"User :%@", brewery);
     }];
