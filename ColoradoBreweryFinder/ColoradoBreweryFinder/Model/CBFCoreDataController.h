@@ -25,8 +25,6 @@
 
 - (CBFUser *) fetchUserWithId:(NSManagedObjectID *)ManagedObjectId inContext:(NSManagedObjectContext *)context;
 
-- (CBFUser *) fetchUserWithUID:(NSString *)uid;
-
 - (CBFUser *) fetchUserWithUID:(NSString *)uid moc:(NSManagedObjectContext *)moc;
 
 - (NSArray *) fetchBreweries;

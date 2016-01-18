@@ -112,10 +112,6 @@
 
 - (IBAction)logInPressed:(id)sender {
     
-    
-    
-    
-    
     if (self.userNameTextField.text.length > 0 && self.passwordTextField.text.length > 0) {
         
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -140,14 +136,6 @@
                                            if (objectId) {
                                                
                                                strongSelf.user =[strongSelf.coreDataController fetchUserWithId:objectId];
-//                                               if ([[NSUserDefaults standardUserDefaults] valueForKey:@"BreweryRatingsLoaded"] == NO) {
-//                                                   [strongSelf.serviceController requestBreweryRatingsWithCompletion:nil];
-//                                                   [strongSelf.serviceController requestBeersWithCompletion:^(NSError *error) {
-//                                                       [strongSelf.serviceController requestBeerReviewsWithCompletion:nil];
-//                                                   }];
-//                                                   [self.persistenceController save];
-//                                                   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"BreweryRatingsLoaded"];
-//                                               }
                                                
                                                
                                                [spinner stopAnimating];
